@@ -209,29 +209,48 @@ with tab4:
 
             import plotly.graph_objects as go
             from components.charts import base_layout, PAPER_BG, BG
+            from utils.forecasting import get_or_create_forecast
+
+            ml_pred = get_or_create_forecast(base_df, sim_country, "gdp")
+            ml_debt_pred = get_or_create_forecast(base_debt_df, sim_country, "debt_pct_gdp") if not base_debt_df.empty else pd.DataFrame()
 
             fig = go.Figure()
             # Historical GDP
             fig.add_trace(go.Scatter(
                 x=base_df["year"], y=base_df["value"],
-                name="Historical GDP", line=dict(color="#00D4FF", width=2),
+                name="Historical", line=dict(color="#00D4FF", width=2),
                 mode="lines+markers", marker=dict(size=4),
             ))
+            # ML Baseline Forecast
+            if not ml_pred.empty:
+                ml_pred_plot = ml_pred[ml_pred["year"].isin(proj_years)]
+                fig.add_trace(go.Scatter(
+                    x=ml_pred_plot["year"], y=ml_pred_plot["predicted"],
+                    name="ML Baseline (Prophet)", line=dict(color="#FFE66D", width=2, dash="dot"),
+                ))
             # Projected GDP
             fig.add_trace(go.Scatter(
                 x=proj_years, y=proj_gdp,
-                name="Projected GDP", line=dict(color="#4ECDC4", width=2.5, dash="dash"),
+                name="What-If Scenario", line=dict(color="#4ECDC4", width=2.5, dash="dash"),
             ))
-            layout = base_layout(f"{cname} — GDP What-If Projection")
+            layout = base_layout(f"{cname} — GDP What-If vs ML Baseline")
             layout["yaxis"]["title"] = "GDP (USD)"
             fig.update_layout(**layout)
             st.plotly_chart(fig, use_container_width=True)
 
             final_gdp = proj_gdp[-1]
             final_debt = proj_debt[-1]
+            
+            ml_final_gdp = ml_pred[ml_pred["year"] == proj_years[-1]]["predicted"].values[0] if not ml_pred.empty and proj_years[-1] in ml_pred["year"].values else None
+            ml_final_debt = ml_debt_pred[ml_debt_pred["year"] == proj_years[-1]]["predicted"].values[0] if not ml_debt_pred.empty and proj_years[-1] in ml_debt_pred["year"].values else None
+
             c_a, c_b, c_c = st.columns(3)
-            c_a.metric("Projected GDP", format_value(final_gdp, "gdp"), f"in {base_year + years_forward}")
-            c_b.metric("Projected Debt Ratio", f"{final_debt:.1f}%", f"{final_debt - base_debt:+.1f}pp")
+            
+            gdp_delta = f"vs ML Baseline: {((final_gdp - ml_final_gdp) / ml_final_gdp * 100):+.1f}%" if ml_final_gdp else f"in {base_year + years_forward}"
+            debt_delta = f"vs ML Baseline: {(final_debt - ml_final_debt):+.1f}pp" if ml_final_debt else f"{final_debt - base_debt:+.1f}pp"
+            
+            c_a.metric("Scenario GDP", format_value(final_gdp, "gdp"), gdp_delta)
+            c_b.metric("Scenario Debt Ratio", f"{final_debt:.1f}%", debt_delta, delta_color="inverse")
             c_c.metric("Growth Multiplier", f"{final_gdp / base_gdp:.2f}x", f"over {years_forward} years")
         else:
             st.info("No GDP data available for the selected country.")
