@@ -35,6 +35,22 @@ with st.sidebar:
     st.markdown("<p style='color:#64748B;font-size:11px;'>Global Economic Intelligence</p>", unsafe_allow_html=True)
     st.divider()
 
+    # Data refresh moved to top
+    if st.button("🔄 Refresh Data", use_container_width=True):
+        from utils.data_fetcher import load_country_data
+        codes = st.session_state.selected_countries
+        cmap = {c["code"]: c["name"] for c in all_countries}
+        with st.spinner("Fetching from World Bank & FRED..."):
+            for code in codes:
+                name = cmap.get(code, code)
+                load_country_data(code, name, force=True)
+        st.cache_data.clear()
+        st.success("Data refreshed!")
+        st.rerun()
+
+    st.divider()
+    st.markdown("### ⚙️ Filters")
+
     # Country selector
     all_countries = get_all_countries()
     country_options = {c["name"]: c["code"] for c in all_countries}
@@ -83,20 +99,6 @@ with st.sidebar:
     st.session_state.year_range = year_range
 
     st.divider()
-
-    # Data refresh
-    if st.button("🔄 Refresh Data", use_container_width=True):
-        from utils.data_fetcher import load_country_data
-        codes = st.session_state.selected_countries
-        cmap = {c["code"]: c["name"] for c in all_countries}
-        with st.spinner("Fetching from World Bank & FRED..."):
-            for code in codes:
-                name = cmap.get(code, code)
-                load_country_data(code, name, force=True)
-        st.cache_data.clear()
-        st.success("Data refreshed!")
-        st.rerun()
-
     st.markdown("<p style='color:#374151;font-size:10px;text-align:center;margin-top:24px'>Sources: World Bank · FRED<br>ML: Prophet · Linear Trend<br>AI: Claude Sonnet</p>", unsafe_allow_html=True)
 
 # ── Landing page ─────────────────────────────────────────────────────────────

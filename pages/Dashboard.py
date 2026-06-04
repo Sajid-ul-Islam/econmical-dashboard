@@ -11,7 +11,7 @@ from utils.ui import inject_custom_css
 inject_custom_css()
 
 from utils.data_fetcher import get_country_data_cached, get_all_countries, load_country_data
-from utils.forecasting import get_or_create_forecast, detect_anomalies
+from utils.forecasting import get_or_create_forecast, detect_anomalies, compute_economic_health_score
 from components.charts import timeline_chart, health_score_gauge, format_value
 
 # ── Load session state ────────────────────────────────────────────────────
@@ -100,6 +100,22 @@ if not latest_df.empty:
                 delta=delta,
             )
 
+# ── Economic Health Scores ────────────────────────────────────────────────
+st.divider()
+st.markdown("#### 🏆 Economic Health Scores")
+st.caption("Composite score based on GDP per capita and debt ratio (0 = weak, 100 = strong)")
+
+score_cols = st.columns(min(len(countries), 5))
+for i, code in enumerate(countries[:5]):
+    cdf = df[df["country_code"] == code]
+    if cdf.empty:
+        continue
+    cname = cdf["country_name"].iloc[0] if "country_name" in cdf.columns else code
+    scores = compute_economic_health_score(cdf, latest_year)
+    with score_cols[i % 5]:
+        fig = health_score_gauge(scores.get("composite", 50), cname)
+        st.plotly_chart(fig, use_container_width=True)
+
 # ── Timeline Charts ───────────────────────────────────────────────────────
 st.divider()
 st.markdown("#### Time Series")
@@ -144,21 +160,3 @@ for code in countries:
 
 if not anomaly_found:
     st.success("✅ No significant anomalies detected in the current selection.")
-
-# ── Economic Health Scores ────────────────────────────────────────────────
-from utils.forecasting import compute_economic_health_score
-
-st.divider()
-st.markdown("#### 🏆 Economic Health Scores")
-st.caption("Composite score based on GDP per capita and debt ratio (0 = weak, 100 = strong)")
-
-score_cols = st.columns(min(len(countries), 5))
-for i, code in enumerate(countries[:5]):
-    cdf = df[df["country_code"] == code]
-    if cdf.empty:
-        continue
-    cname = cdf["country_name"].iloc[0] if "country_name" in cdf.columns else code
-    scores = compute_economic_health_score(cdf, latest_year)
-    with score_cols[i % 5]:
-        fig = health_score_gauge(scores.get("composite", 50), cname)
-        st.plotly_chart(fig, use_container_width=True)
