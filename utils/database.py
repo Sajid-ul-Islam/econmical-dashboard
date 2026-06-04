@@ -200,6 +200,21 @@ def log_query(query: str, response: str):
         st.warning(f"Query log error: {e}")
 
 
+def get_recent_queries(limit: int = 100) -> pd.DataFrame:
+    """Fetch recent queries to use for the semantic cache / vectorized knowledge base."""
+    try:
+        db = get_supabase()
+        if not db:
+            return pd.DataFrame()
+        result = db.table("query_log").select("*").order("created_at", desc=True).limit(limit).execute()
+        if result.data:
+            return pd.DataFrame(result.data)
+        return pd.DataFrame()
+    except Exception as e:
+        st.warning(f"Failed to fetch query logs: {e}")
+        return pd.DataFrame()
+
+
 def get_all_countries_in_db() -> list[dict]:
     try:
         db = get_supabase()

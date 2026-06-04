@@ -13,7 +13,9 @@ except ImportError:
 import requests
 import pandas as pd
 import json
-from utils.database import log_query
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from utils.database import log_query, get_recent_queries
 
 
 SYSTEM_PROMPT = """You are an expert economic analyst AI assistant with deep knowledge in macroeconomics, development economics, and global finance.
@@ -114,6 +116,30 @@ def _get_unit(indicator: str) -> str:
     return units.get(indicator, "")
 
 
+def check_semantic_cache(user_query: str, threshold: float = 0.92) -> str | None:
+    """Check if a semantically similar query exists in the recent logs using a TF-IDF vectorized knowledge base."""
+    logs_df = get_recent_queries(limit=200)
+    if logs_df.empty or "query" not in logs_df.columns:
+        return None
+
+    queries = logs_df["query"].tolist()
+    responses = logs_df["response"].tolist()
+    
+    try:
+        vectorizer = TfidfVectorizer()
+        tfidf_matrix = vectorizer.fit_transform(queries + [user_query])
+        
+        # Compare the last element (user_query) with all previous queries
+        cosine_similarities = cosine_similarity(tfidf_matrix[-1], tfidf_matrix[:-1]).flatten()
+        best_match_idx = cosine_similarities.argmax()
+        
+        if cosine_similarities[best_match_idx] >= threshold:
+            return responses[best_match_idx]
+    except Exception:
+        pass
+    return None
+
+
 def ask_agent(
     user_query: str,
     df: pd.DataFrame,
@@ -126,6 +152,11 @@ def ask_agent(
     Send query to AI agent with full data context, returning (response, model_name).
     Checks available keys in secrets and falls back if one fails.
     """
+    # 0. Check Semantic Cache (Vectorized KB) to save API costs
+    cached_response = check_semantic_cache(user_query)
+    if cached_response:
+        return cached_response, "⚡ Semantic Cache (Vectorized KB)"
+
     secrets = st.secrets.get("anthropic", {})
     anthropic_key = secrets.get("api_key", "")
     groq_key = secrets.get("groq_key", "")
