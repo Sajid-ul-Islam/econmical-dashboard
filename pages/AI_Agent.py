@@ -62,17 +62,19 @@ with st.expander("💡 Suggested Questions", expanded=len(st.session_state.chat_
             if st.button(q, key=f"sq_{i}", use_container_width=True):
                 st.session_state.chat_history.append({"role": "user", "content": q})
                 with st.spinner("Thinking..."):
-                    response = ask_agent(
+                    response, model = ask_agent(
                         q, df, predictions_df, countries, indicators,
                         st.session_state.chat_history[:-1],
                     )
-                st.session_state.chat_history.append({"role": "assistant", "content": response})
+                st.session_state.chat_history.append({"role": "assistant", "content": response, "model": model})
                 st.rerun()
 
 # ── Chat history ──────────────────────────────────────────────────────────
 for msg in st.session_state.chat_history:
     with st.chat_message(msg["role"], avatar="🧑" if msg["role"] == "user" else "📊"):
         st.markdown(msg["content"])
+        if msg.get("model"):
+            st.caption(f"⚡ Answered by: {msg['model']}")
 
 # ── Input ─────────────────────────────────────────────────────────────────
 if prompt := st.chat_input("Ask about the economic data... (e.g. 'Which country has the highest debt?')"):
@@ -83,7 +85,7 @@ if prompt := st.chat_input("Ask about the economic data... (e.g. 'Which country 
 
     with st.chat_message("assistant", avatar="📊"):
         with st.spinner("Analysing economic data..."):
-            response = ask_agent(
+            response, model = ask_agent(
                 prompt,
                 df,
                 predictions_df,
@@ -92,8 +94,10 @@ if prompt := st.chat_input("Ask about the economic data... (e.g. 'Which country 
                 st.session_state.chat_history[:-1],
             )
         st.markdown(response)
+        if model:
+            st.caption(f"⚡ Answered by: {model}")
 
-    st.session_state.chat_history.append({"role": "assistant", "content": response})
+    st.session_state.chat_history.append({"role": "assistant", "content": response, "model": model})
     st.rerun()
 
 # ── Context info panel ────────────────────────────────────────────────────

@@ -5,7 +5,12 @@ No vector DB needed — data fits in Claude's context window.
 """
 
 import streamlit as st
-import anthropic
+try:
+    import anthropic
+    HAS_ANTHROPIC = True
+except ImportError:
+    HAS_ANTHROPIC = False
+import requests
 import pandas as pd
 import json
 from utils.database import log_query
@@ -116,50 +121,110 @@ def ask_agent(
     selected_countries: list[str],
     selected_indicators: list[str],
     conversation_history: list[dict],
-) -> str:
+) -> tuple[str, str]:
     """
-    Send query to Claude with full data context.
-    Returns response string.
+    Send query to AI agent with full data context, returning (response, model_name).
+    Checks available keys in secrets and falls back if one fails.
     """
-    try:
-        api_key = st.secrets.get("anthropic", {}).get("api_key", "")
-        if not api_key:
-            return "⚠️ Anthropic API key not configured. Add it to your Streamlit secrets."
+    secrets = st.secrets.get("anthropic", {})
+    anthropic_key = secrets.get("api_key", "")
+    groq_key = secrets.get("groq_key", "")
+    gemini_key = secrets.get("gemini_key", "")
+    openrouter_key = secrets.get("openrouter_key", "")
+    hf_key = secrets.get("huggingface_key", "")
 
-        client = anthropic.Anthropic(api_key=api_key)
+    data_context = build_data_context(df, predictions_df, selected_countries, selected_indicators)
 
-        data_context = build_data_context(df, predictions_df, selected_countries, selected_indicators)
+    # Build messages with history
+    messages = []
+    for msg in conversation_history[-8:]:  # Keep last 8 turns
+        messages.append({"role": msg["role"], "content": msg["content"]})
 
-        # Build messages with history
-        messages = []
-        for msg in conversation_history[-8:]:  # Keep last 8 turns
-            messages.append({"role": msg["role"], "content": msg["content"]})
+    # Add context + current query
+    messages.append({
+        "role": "user",
+        "content": f"Here is the current economic data context:\n\n{data_context}\n\nUser question: {user_query}"
+    })
 
-        # Add context + current query
-        messages.append({
-            "role": "user",
-            "content": f"""Here is the current economic data context:
+    errors = []
 
-{data_context}
+    # 1. Try Anthropic (Claude 3.5 Sonnet)
+    if anthropic_key and not anthropic_key.startswith("your-"):
+        if HAS_ANTHROPIC:
+            try:
+                client = anthropic.Anthropic(api_key=anthropic_key)
+                response = client.messages.create(
+                    model="claude-3-5-sonnet-20241022",
+                    max_tokens=1500,
+                    system=SYSTEM_PROMPT,
+                    messages=messages,
+                )
+                answer = response.content[0].text
+                log_query(user_query, answer)
+                return answer, "Claude 3.5 Sonnet (Anthropic)"
+            except Exception as e:
+                errors.append(f"Anthropic error: {str(e)}")
+        else:
+            if "anthropic_warning_shown" not in st.session_state:
+                st.warning("⚠️ Anthropic library is missing! Skipping Claude 3.5 Sonnet.", icon="⚠️")
+                st.session_state.anthropic_warning_shown = True
+            errors.append("Anthropic library missing.")
 
-User question: {user_query}"""
-        })
+    # 2. Try Groq (Llama 3 70B)
+    if groq_key:
+        try:
+            headers = {"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"}
+            payload = {
+                "model": "llama3-70b-8192",
+                "messages": [{"role": "system", "content": SYSTEM_PROMPT}] + messages,
+                "max_tokens": 1500
+            }
+            r = requests.post("https://api.groq.com/openai/v1/chat/completions", json=payload, headers=headers)
+            r.raise_for_status()
+            answer = r.json()["choices"][0]["message"]["content"]
+            log_query(user_query, answer)
+            return answer, "Llama 3 70B (Groq)"
+        except Exception as e:
+            errors.append(f"Groq error: {str(e)}")
 
-        response = client.messages.create(
-            model="claude-sonnet-4-20250514",
-            max_tokens=1500,
-            system=SYSTEM_PROMPT,
-            messages=messages,
-        )
+    # 3. Try Gemini (1.5 Flash)
+    if gemini_key:
+        try:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={gemini_key}"
+            # Combine history into a single string for Gemini to avoid strict alternating role constraints
+            combined_chat = f"System: {SYSTEM_PROMPT}\n\n"
+            for m in messages:
+                combined_chat += f"{m['role'].capitalize()}: {m['content']}\n\n"
+            
+            payload = {"contents": [{"parts": [{"text": combined_chat}]}]}
+            r = requests.post(url, json=payload)
+            r.raise_for_status()
+            answer = r.json()["candidates"][0]["content"]["parts"][0]["text"]
+            log_query(user_query, answer)
+            return answer, "Gemini 1.5 Flash (Google)"
+        except Exception as e:
+            errors.append(f"Gemini error: {str(e)}")
 
-        answer = response.content[0].text
-        log_query(user_query, answer)
-        return answer
+    # 4. Try OpenRouter (Llama 3 8B Instruct Free)
+    if openrouter_key:
+        try:
+            headers = {"Authorization": f"Bearer {openrouter_key}", "Content-Type": "application/json"}
+            payload = {
+                "model": "meta-llama/llama-3-8b-instruct:free",
+                "messages": [{"role": "system", "content": SYSTEM_PROMPT}] + messages,
+            }
+            r = requests.post("https://openrouter.ai/api/v1/chat/completions", json=payload, headers=headers)
+            r.raise_for_status()
+            answer = r.json()["choices"][0]["message"]["content"]
+            log_query(user_query, answer)
+            return answer, "Llama 3 8B (OpenRouter)"
+        except Exception as e:
+            errors.append(f"OpenRouter error: {str(e)}")
 
-    except anthropic.AuthenticationError:
-        return "⚠️ Invalid Anthropic API key. Check your secrets configuration."
-    except Exception as e:
-        return f"⚠️ Agent error: {str(e)}"
+    if errors:
+        return "⚠️ All configured AI providers failed. Details:\n\n" + "\n".join(errors), "Error"
+    
+    return "⚠️ No valid API keys found in secrets. Check your `.streamlit/secrets.toml` file.", "Error"
 
 
 SUGGESTED_QUESTIONS = [

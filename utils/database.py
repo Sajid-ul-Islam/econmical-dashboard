@@ -1,17 +1,27 @@
 """
 Database layer — Supabase (PostgreSQL).
-Run init_schema() once to create all tables.
+Run SCHEMA_SQL in the Supabase SQL Editor once to create all tables.
 """
 
 import streamlit as st
-from supabase import create_client, Client
+try:
+    from supabase import create_client, Client
+    HAS_SUPABASE = True
+except ImportError:
+    HAS_SUPABASE = False
+    Client = type("Client", (object,), {})  # Dummy class
 from datetime import datetime, timezone
 import pandas as pd
 import json
 
 
 @st.cache_resource
-def get_supabase() -> Client:
+def get_supabase() -> Client | None:
+    if not HAS_SUPABASE:
+        if "supabase_warning_shown" not in st.session_state:
+            st.error("🚨 Supabase library is missing! Database features will be disabled.", icon="🚨")
+            st.session_state.supabase_warning_shown = True
+        return None
     url = st.secrets["supabase"]["url"]
     key = st.secrets["supabase"]["key"]
     return create_client(url, key)
@@ -71,6 +81,8 @@ def upsert_economic_data(rows: list[dict]) -> bool:
     """Insert or update economic data rows."""
     try:
         db = get_supabase()
+        if not db:
+            return False
         db.table("economic_data").upsert(rows, on_conflict="country_code,indicator,year").execute()
         return True
     except Exception as e:
@@ -87,6 +99,8 @@ def fetch_economic_data(
     """Fetch economic data from Supabase."""
     try:
         db = get_supabase()
+        if not db:
+            return pd.DataFrame()
         q = db.table("economic_data").select("*")
         if country_codes:
             q = q.in_("country_code", country_codes)
@@ -108,6 +122,8 @@ def fetch_predictions(
 ) -> pd.DataFrame:
     try:
         db = get_supabase()
+        if not db:
+            return pd.DataFrame()
         q = db.table("predictions").select("*")
         if country_codes:
             q = q.in_("country_code", country_codes)
@@ -118,12 +134,15 @@ def fetch_predictions(
             return pd.DataFrame(result.data)
         return pd.DataFrame()
     except Exception as e:
+        st.error(f"Prediction read error: {e}")
         return pd.DataFrame()
 
 
 def upsert_predictions(rows: list[dict]) -> bool:
     try:
         db = get_supabase()
+        if not db:
+            return False
         db.table("predictions").upsert(
             rows, on_conflict="country_code,indicator,year,model"
         ).execute()
@@ -136,6 +155,8 @@ def upsert_predictions(rows: list[dict]) -> bool:
 def get_freshness(country_code: str, indicator: str) -> dict | None:
     try:
         db = get_supabase()
+        if not db:
+            return None
         result = (
             db.table("data_freshness")
             .select("*")
@@ -146,13 +167,16 @@ def get_freshness(country_code: str, indicator: str) -> dict | None:
         if result.data:
             return result.data[0]
         return None
-    except Exception:
+    except Exception as e:
+        st.error(f"Freshness read error: {e}")
         return None
 
 
 def update_freshness(country_code: str, indicator: str, status: str = "ok"):
     try:
         db = get_supabase()
+        if not db:
+            return
         db.table("data_freshness").upsert(
             {
                 "country_code": country_code,
@@ -162,21 +186,25 @@ def update_freshness(country_code: str, indicator: str, status: str = "ok"):
             },
             on_conflict="country_code,indicator",
         ).execute()
-    except Exception:
-        pass
+    except Exception as e:
+        st.warning(f"Freshness update error: {e}")
 
 
 def log_query(query: str, response: str):
     try:
         db = get_supabase()
+        if not db:
+            return
         db.table("query_log").insert({"query": query, "response": response}).execute()
-    except Exception:
-        pass
+    except Exception as e:
+        st.warning(f"Query log error: {e}")
 
 
 def get_all_countries_in_db() -> list[dict]:
     try:
         db = get_supabase()
+        if not db:
+            return []
         result = (
             db.table("economic_data")
             .select("country_code, country_name")
@@ -186,5 +214,6 @@ def get_all_countries_in_db() -> list[dict]:
             df = pd.DataFrame(result.data).drop_duplicates()
             return df.to_dict("records")
         return []
-    except Exception:
+    except Exception as e:
+        st.error(f"Country list read error: {e}")
         return []

@@ -27,6 +27,9 @@ def run_prophet_forecast(
         logging.getLogger("prophet").setLevel(logging.ERROR)
         logging.getLogger("cmdstanpy").setLevel(logging.ERROR)
     except ImportError:
+        if "prophet_warning_shown" not in st.session_state:
+            st.warning("⚠️ Prophet library is missing! Falling back to simple linear trend forecasting.", icon="⚠️")
+            st.session_state.prophet_warning_shown = True
         return _fallback_forecast(df, country_code, indicator, forecast_years)
 
     series = df[["year", "value"]].dropna().copy()
