@@ -7,15 +7,8 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-st.set_page_config(page_title="World Map — EconVision", page_icon="🌍", layout="wide")
-
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap');
-html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; }
-h1,h2,h3 { font-family: 'Space Mono', monospace; }
-</style>
-""", unsafe_allow_html=True)
+from utils.ui import inject_custom_css
+inject_custom_css()
 
 from utils.data_fetcher import get_all_countries, load_country_data, get_country_data_cached
 from components.charts import indicator_label, format_value
@@ -24,6 +17,7 @@ from components.charts import indicator_label, format_value
 all_countries = get_all_countries()
 all_codes = [c["code"] for c in all_countries]
 country_map = {c["code"]: c["name"] for c in all_countries}
+st.set_page_config(page_title="World Map — EconVision", page_icon="🌍", layout="wide")
 
 st.markdown("## 🌍 World Map")
 st.caption("Choropleth view of economic indicators across all available countries")
