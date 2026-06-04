@@ -12,130 +12,8 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ── Global CSS ──────────────────────────────────────────────────────────────
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap');
-
-html, body, [class*="css"] {
-    font-family: 'DM Sans', sans-serif;
-}
-
-h1, h2, h3 {
-    font-family: 'Space Mono', monospace;
-    letter-spacing: -0.5px;
-}
-
-/* Sidebar */
-[data-testid="stSidebar"] {
-    background: #0D1224 !important;
-    border-right: 1px solid #1E2740;
-}
-[data-testid="stSidebar"] .stSelectbox label,
-[data-testid="stSidebar"] .stMultiSelect label,
-[data-testid="stSidebar"] p {
-    color: #94A3B8 !important;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* KPI metric cards */
-[data-testid="metric-container"] {
-    background: #111827;
-    border: 1px solid #1E2740;
-    border-radius: 8px;
-    padding: 16px;
-}
-[data-testid="metric-container"] label {
-    color: #64748B !important;
-    font-size: 11px !important;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-}
-[data-testid="metric-container"] [data-testid="stMetricValue"] {
-    color: #00D4FF !important;
-    font-family: 'Space Mono', monospace;
-    font-size: 1.6rem !important;
-}
-[data-testid="metric-container"] [data-testid="stMetricDelta"] {
-    font-size: 12px !important;
-}
-
-/* Buttons */
-.stButton > button {
-    background: linear-gradient(135deg, #00D4FF22, #00D4FF11);
-    border: 1px solid #00D4FF44;
-    color: #00D4FF;
-    font-family: 'Space Mono', monospace;
-    font-size: 12px;
-    border-radius: 6px;
-    transition: all 0.2s;
-}
-.stButton > button:hover {
-    background: linear-gradient(135deg, #00D4FF44, #00D4FF22);
-    border-color: #00D4FF;
-    box-shadow: 0 0 12px #00D4FF33;
-}
-
-/* Tabs */
-.stTabs [data-baseweb="tab-list"] {
-    gap: 8px;
-    background: transparent;
-}
-.stTabs [data-baseweb="tab"] {
-    background: #111827;
-    border: 1px solid #1E2740;
-    border-radius: 6px;
-    color: #64748B;
-    font-family: 'Space Mono', monospace;
-    font-size: 12px;
-    padding: 8px 16px;
-}
-.stTabs [aria-selected="true"] {
-    background: #00D4FF22 !important;
-    border-color: #00D4FF44 !important;
-    color: #00D4FF !important;
-}
-
-/* Chat messages */
-.stChatMessage {
-    background: #111827;
-    border: 1px solid #1E2740;
-    border-radius: 8px;
-}
-
-/* Expander */
-.streamlit-expanderHeader {
-    background: #111827;
-    border: 1px solid #1E2740;
-    border-radius: 6px;
-    color: #94A3B8 !important;
-    font-family: 'Space Mono', monospace;
-    font-size: 12px;
-}
-
-/* Divider */
-hr { border-color: #1E2740; }
-
-/* Status badges */
-.badge-ok { color: #4ECDC4; font-size: 11px; }
-.badge-stale { color: #FFE66D; font-size: 11px; }
-.badge-error { color: #FF6B6B; font-size: 11px; }
-
-/* Page header */
-.page-header {
-    border-bottom: 1px solid #1E2740;
-    padding-bottom: 12px;
-    margin-bottom: 24px;
-}
-.page-subtitle {
-    color: #64748B;
-    font-size: 13px;
-    margin-top: -8px;
-}
-</style>
-""", unsafe_allow_html=True)
+from utils.ui import inject_custom_css
+inject_custom_css()
 
 # ── Session state defaults ──────────────────────────────────────────────────
 defaults = {
@@ -224,8 +102,12 @@ with st.sidebar:
 # ── Landing page ─────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="page-header">
-    <h1 style="font-size:2rem;margin:0">📊 EconVision</h1>
-    <p class="page-subtitle">Global Economic Intelligence Dashboard — GDP · Debt · Gold · AI Analysis</p>
+    <div style="background: linear-gradient(90deg, rgba(0, 212, 255, 0.05), transparent); padding: 24px; border-radius: 12px; border-left: 4px solid #00D4FF; margin-bottom: 32px;">
+        <h1 style="font-size:2.5rem;margin:0;color:#E2E8F0;">📊 EconVision</h1>
+        <p style="color:#94A3B8; font-size:15px; margin-top:8px; font-weight:400; font-family:'Inter', sans-serif;">
+            Global Economic Intelligence Dashboard — GDP · Debt · Gold · AI Analysis
+        </p>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 

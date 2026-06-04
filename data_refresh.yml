@@ -1,0 +1,37 @@
+name: Daily Data Refresh
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # Runs at 02:00 UTC every day
+  workflow_dispatch: # Allows manual trigger from the GitHub Actions tab
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Set up Streamlit secrets
+        run: |
+          mkdir -p .streamlit
+          cat << EOF > .streamlit/secrets.toml
+          [supabase]
+          url = "${{ secrets.SUPABASE_URL }}"
+          key = "${{ secrets.SUPABASE_KEY }}"
+          
+          [fred]
+          api_key = "${{ secrets.FRED_API_KEY }}"
+          EOF
+
+      - name: Run update script
+        run: python cron_update.py

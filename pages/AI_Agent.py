@@ -8,14 +8,8 @@ import pandas as pd
 
 st.set_page_config(page_title="AI Agent — EconVision", page_icon="🤖", layout="wide")
 
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap');
-html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; }
-h1,h2,h3 { font-family: 'Space Mono', monospace; }
-[data-testid="stChatMessage"] { background: #111827; border: 1px solid #1E2740; border-radius: 8px; margin-bottom: 8px; }
-</style>
-""", unsafe_allow_html=True)
+from utils.ui import inject_custom_css
+inject_custom_css()
 
 from utils.agent import ask_agent, SUGGESTED_QUESTIONS
 from utils.data_fetcher import get_country_data_cached, get_all_countries, load_country_data

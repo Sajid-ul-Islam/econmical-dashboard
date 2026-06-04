@@ -8,13 +8,8 @@ from datetime import datetime, timezone
 
 st.set_page_config(page_title="Data Lab — EconVision", page_icon="🗄️", layout="wide")
 
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap');
-html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; }
-h1,h2,h3 { font-family: 'Space Mono', monospace; }
-</style>
-""", unsafe_allow_html=True)
+from utils.ui import inject_custom_css
+inject_custom_css()
 
 from utils.database import get_supabase, get_all_countries_in_db
 from utils.data_fetcher import (
