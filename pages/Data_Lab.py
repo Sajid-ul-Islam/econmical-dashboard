@@ -2,25 +2,34 @@
 Page 4 — Data Lab: provenance, data freshness, raw explorer, verification
 """
 
+import sys
+import os
 import streamlit as st
 import pandas as pd
 from datetime import datetime, timezone
 
+# Ensure the project root is in sys.path to prevent module resolution errors
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 st.set_page_config(page_title="Data Lab — EconVision", page_icon="🗄️", layout="wide")
 
-from utils.ui import inject_custom_css
-inject_custom_css()
-from utils.ui import render_sidebar
-render_sidebar()
+try:
+    from utils.ui import inject_custom_css, render_sidebar
+    inject_custom_css()
+    render_sidebar()
 
-from utils.database import get_supabase, get_all_countries_in_db
-from utils.data_fetcher import (
-    get_all_countries, get_country_data_cached,
-    load_country_data, WB_INDICATORS, GOLD_INDICATOR
-)
-from utils.forecasting import detect_anomalies
-from components.charts import format_value
-from utils.agent import ask_agent, SUGGESTED_QUESTIONS
+    from utils.database import get_supabase, get_all_countries_in_db
+    from utils.data_fetcher import (
+        get_all_countries, get_country_data_cached,
+        load_country_data, WB_INDICATORS, GOLD_INDICATOR
+    )
+    from utils.forecasting import detect_anomalies
+    from components.charts import format_value
+    from utils.agent import ask_agent, SUGGESTED_QUESTIONS
+except ImportError as e:
+    st.error(f"🚨 **Import Error Detected:** `{e}`")
+    st.warning("💡 **Fix:** This usually happens when a required library is missing from `requirements.txt`. Please check your dependencies and redeploy on Streamlit Cloud.")
+    st.stop()
 
 countries = st.session_state.get("selected_countries", ["USA", "CHN"])
 indicators = st.session_state.get("selected_indicators", ["gdp", "gdp_per_capita"])

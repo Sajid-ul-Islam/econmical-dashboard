@@ -2,21 +2,30 @@
 Page 1 — Dashboard: KPI cards, timeline charts, and forecasts
 """
 
+import sys
+import os
 import streamlit as st
 import pandas as pd
 
+# Ensure the project root is in sys.path to prevent module resolution errors
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 st.set_page_config(page_title="Dashboard — EconVision", page_icon="📈", layout="wide")
 
-from utils.ui import inject_custom_css
-inject_custom_css()
-from utils.ui import render_sidebar
-render_sidebar()
+try:
+    from utils.ui import inject_custom_css, render_sidebar
+    inject_custom_css()
+    render_sidebar()
 
-from utils.data_fetcher import get_country_data_cached, get_all_countries, load_country_data, get_last_updated_str
-from utils.forecasting import get_or_create_forecast, detect_anomalies, compute_economic_health_score
-from components.charts import timeline_chart, health_score_gauge, format_value, base_layout, add_event_annotations, indicator_label
-import plotly.graph_objects as go
-from datetime import datetime
+    from utils.data_fetcher import get_country_data_cached, get_all_countries, load_country_data, get_last_updated_str
+    from utils.forecasting import get_or_create_forecast, detect_anomalies, compute_economic_health_score
+    from components.charts import timeline_chart, health_score_gauge, format_value, base_layout, add_event_annotations, indicator_label
+    import plotly.graph_objects as go
+    from datetime import datetime
+except ImportError as e:
+    st.error(f"🚨 **Import Error Detected:** `{e}`")
+    st.warning("💡 **Fix:** This usually happens when a required library is missing from `requirements.txt`. Please check your dependencies (e.g., `requests`, `wbdata`, `fredapi`, `prophet`) and redeploy on Streamlit Cloud.")
+    st.stop()
 
 countries = st.session_state.selected_countries
 indicators = st.session_state.selected_indicators

@@ -2,20 +2,29 @@
 Page 5 — World Map: choropleth of economic indicators
 """
 
+import sys
+import os
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
+# Ensure the project root is in sys.path to prevent module resolution errors
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 st.set_page_config(page_title="World Map — EconVision", page_icon="🌍", layout="wide")
 
-from utils.ui import inject_custom_css
-inject_custom_css()
-from utils.ui import render_sidebar
-render_sidebar()
+try:
+    from utils.ui import inject_custom_css, render_sidebar
+    inject_custom_css()
+    render_sidebar()
 
-from utils.data_fetcher import get_all_countries, load_country_data, get_country_data_cached, get_last_updated_str
-from components.charts import indicator_label, format_value, classify_debt, DEBT_COLOR_MAP
+    from utils.data_fetcher import get_all_countries, load_country_data, get_country_data_cached, get_last_updated_str
+    from components.charts import indicator_label, format_value, classify_debt, DEBT_COLOR_MAP
+except ImportError as e:
+    st.error(f"🚨 **Import Error Detected:** `{e}`")
+    st.warning("💡 **Fix:** This usually happens when a required library is missing from `requirements.txt`. Please check your dependencies and redeploy on Streamlit Cloud.")
+    st.stop()
 
 # ── Load all countries for map ────────────────────────────────────────────
 all_countries = get_all_countries()
