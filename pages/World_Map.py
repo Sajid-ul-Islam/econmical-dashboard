@@ -34,7 +34,9 @@ else:
     st.caption("Choropleth view of economic indicators across all available countries")
     st.divider()
 
-col1, col2, col3, col4 = st.columns([1.5, 1.5, 1, 1])
+year_range = st.session_state.get("year_range", (2000, 2026))
+
+col1, col2, col3 = st.columns([1.5, 1.2, 1.2])
 with col1:
     map_indicator = st.selectbox(
         "Indicator",
@@ -43,16 +45,12 @@ with col1:
         key="map_indicator",
     )
 with col2:
-    current_df = st.session_state.get("current_df", pd.DataFrame())
-    default_year = int(current_df["year"].max()) if not current_df.empty else 2024
-    map_year = st.slider("Year", 1995, 2026, default_year, key="map_year")
-with col3:
     color_scale = st.selectbox(
         "Color Scale",
         ["Viridis", "Plasma", "RdYlGn", "Blues", "Reds", "Turbo"],
         index=2,
     )
-with col4:
+with col3:
     projection_style = st.selectbox(
         "Projection",
         ["natural earth", "orthographic", "equirectangular", "mercator", "kavrayskiy7", "robinson"],
@@ -61,13 +59,13 @@ with col4:
 
 # ── Load data for map (use cached session data + auto-load top countries) ─
 @st.cache_data(ttl=3600, show_spinner="Loading world map data...")
-def get_map_data(indicator: str, year: int) -> pd.DataFrame:
-    """Get data for all countries for one indicator/year."""
+def get_map_data(indicator: str, year_start: int, year_end: int) -> pd.DataFrame:
+    """Get data for all countries for one indicator and year range."""
     from utils.database import fetch_economic_data
-    df = fetch_economic_data(indicators=[indicator], year_start=year, year_end=year)
+    df = fetch_economic_data(indicators=[indicator], year_start=year_start, year_end=year_end)
     return df
 
-map_df = get_map_data(map_indicator, map_year)
+map_df = get_map_data(map_indicator, year_range[0], year_range[1])
 
 if map_df.empty:
     st.info("No map data loaded yet. Go to the Dashboard page first and load some countries, then return here.")
@@ -87,15 +85,15 @@ if map_df.empty:
         st.cache_data.clear()
         st.rerun()
 else:
-    # Filter to selected year and deduplicate
-    year_df = map_df[map_df["year"] == map_year].drop_duplicates(subset=["country_code"])
+    # Sort by year to ensure animation frames are chronological
+    year_df = map_df.sort_values(["year", "country_code"]).copy()
 
     selected_codes = st.session_state.get("selected_countries", [])
     if selected_codes:
         year_df = year_df[year_df["country_code"].isin(selected_codes)]
 
     if year_df.empty:
-        st.warning(f"No data available for {map_year}. Try a different year.")
+        st.warning(f"No data available for the selected range. Try different settings.")
     else:
         fig = px.choropleth(
             year_df,
@@ -105,8 +103,10 @@ else:
             hover_name="country_name",
             hover_data={"value": ":.2f", "country_code": False},
             color_continuous_scale=color_scale,
-            title=f"{indicator_label(map_indicator)} — {map_year}",
+            range_color=[year_df["value"].min(), year_df["value"].max()],
+            title=f"{indicator_label(map_indicator)} — {year_range[0]} to {year_range[1]}",
             labels={"value": indicator_label(map_indicator)},
+            animation_frame="year",
         )
 
         fig.update_geos(
@@ -128,13 +128,25 @@ else:
             ),
             margin=dict(l=0, r=0, t=40, b=0),
         )
+        
+        # Style the animation controls if they exist
+        if "sliders" in fig.layout:
+            fig.layout.sliders[0].font.color = "#E2E8F0"
+        if "updatemenus" in fig.layout:
+            fig.layout.updatemenus[0].font.color = "#E2E8F0"
 
         st.plotly_chart(fig, use_container_width=True)
 
         if not fullscreen:
             # Stats
+            latest_map_year = int(year_df["year"].max())
+            metrics_df = year_df[year_df["year"] == latest_map_year]
+            
             c1, c2, c3, c4 = st.columns(4)
-            c1.metric("Countries with data", len(year_df))
-            c2.metric("Highest", f"{year_df.sort_values('value', ascending=False).iloc[0]['country_name']} ({format_value(year_df['value'].max(), map_indicator)})")
-            c3.metric("Lowest", f"{year_df.sort_values('value').iloc[0]['country_name']} ({format_value(year_df['value'].min(), map_indicator)})")
-            c4.metric("Global avg", format_value(year_df["value"].mean(), map_indicator))
+            c1.metric(f"Countries with data ({latest_map_year})", len(metrics_df))
+            if not metrics_df.empty:
+                highest = metrics_df.sort_values('value', ascending=False).iloc[0]
+                lowest = metrics_df.sort_values('value').iloc[0]
+                c2.metric("Highest", f"{highest['country_name']} ({format_value(highest['value'], map_indicator)})")
+                c3.metric("Lowest", f"{lowest['country_name']} ({format_value(lowest['value'], map_indicator)})")
+                c4.metric("Global avg", format_value(metrics_df["value"].mean(), map_indicator))
