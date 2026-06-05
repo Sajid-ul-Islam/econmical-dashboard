@@ -16,13 +16,16 @@ h1,h2,h3 { font-family: 'Space Mono', monospace; }
 </style>
 """, unsafe_allow_html=True)
 
+from utils.ui import render_sidebar
+render_sidebar()
+
 from utils.data_fetcher import get_country_data_cached, get_all_countries, load_country_data
 from components.charts import comparison_bar, correlation_heatmap, timeline_chart, format_value, indicator_label, COLORS
 
 # ── Load ──────────────────────────────────────────────────────────────────
 countries = st.session_state.get("selected_countries", ["USA", "CHN", "DEU"])
 indicators = st.session_state.get("selected_indicators", ["gdp", "gdp_per_capita", "debt_pct_gdp"])
-year_range = st.session_state.get("year_range", (2000, 2024))
+year_range = st.session_state.get("year_range", (2000, 2026))
 
 all_countries_list = get_all_countries()
 country_map = {c["code"]: c["name"] for c in all_countries_list}
@@ -32,7 +35,7 @@ if df.empty:
     with st.spinner("Loading data..."):
         for code in countries:
             load_country_data(code, country_map.get(code, code))
-        df = get_country_data_cached(countries, indicators, year_range[0], min(year_range[1], 2024))
+        df = get_country_data_cached(countries, indicators, year_range[0], min(year_range[1], 2026))
         st.session_state["current_df"] = df
 
 predictions_df = st.session_state.get("predictions_df", pd.DataFrame())

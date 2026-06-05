@@ -50,7 +50,7 @@ with st.sidebar:
         "Year Range",
         min_value=1990,
         max_value=2031,
-        value=st.session_state.get("year_range", (2000, 2024)),
+        value=st.session_state.get("year_range", (2000, 2026)),
         step=1,
     )
 
@@ -86,6 +86,7 @@ if not indicators:
     st.stop()
 
 # ── Auto-load data ────────────────────────────────────────────────────────
+all_countries = get_all_countries()
 country_map = {c["code"]: c["name"] for c in all_countries}
 
 with st.spinner("Loading economic data..."):
@@ -93,7 +94,7 @@ with st.spinner("Loading economic data..."):
         name = country_map.get(code, code)
         load_country_data(code, name)  # no-op if fresh
 
-    df = get_country_data_cached(countries, indicators, year_range[0], min(year_range[1], 2024))
+    df = get_country_data_cached(countries, indicators, year_range[0], min(year_range[1], 2026))
 
 if df.empty:
     st.error("No data found. Try clicking **Refresh Data** in the sidebar.")
@@ -112,7 +113,7 @@ if not latest_df.empty:
 
 # ── Build predictions ────────────────────────────────────────────────────
 predictions_dfs = []
-if st.session_state.show_predictions and year_range[1] > 2024:
+if st.session_state.show_predictions and year_range[1] > 2026:
     for code in countries:
         for indicator in [i for i in indicators if i != "gold_price"]:
             cdf = df[(df["country_code"] == code) & (df["indicator"] == indicator)]

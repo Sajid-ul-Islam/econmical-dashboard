@@ -9,6 +9,8 @@ import plotly.graph_objects as go
 
 from utils.ui import inject_custom_css
 inject_custom_css()
+from utils.ui import render_sidebar
+render_sidebar()
 
 from utils.data_fetcher import get_all_countries, load_country_data, get_country_data_cached
 from components.charts import indicator_label, format_value
@@ -19,11 +21,20 @@ all_codes = [c["code"] for c in all_countries]
 country_map = {c["code"]: c["name"] for c in all_countries}
 st.set_page_config(page_title="World Map — EconVision", page_icon="🌍", layout="wide")
 
-st.markdown("## 🌍 World Map")
-st.caption("Choropleth view of economic indicators across all available countries")
-st.divider()
+fullscreen = st.toggle("🗺️ Fullscreen Map View", value=False)
+if fullscreen:
+    st.markdown("""
+    <style>
+    [data-testid="stHeader"] {display: none;}
+    .block-container {padding-top: 1.5rem !important; padding-bottom: 1.5rem !important;}
+    </style>
+    """, unsafe_allow_html=True)
+else:
+    st.markdown("## 🌍 World Map")
+    st.caption("Choropleth view of economic indicators across all available countries")
+    st.divider()
 
-col1, col2, col3 = st.columns([2, 1, 1])
+col1, col2, col3, col4 = st.columns([1.5, 1.5, 1, 1])
 with col1:
     map_indicator = st.selectbox(
         "Indicator",
@@ -32,12 +43,20 @@ with col1:
         key="map_indicator",
     )
 with col2:
-    map_year = st.slider("Year", 1995, 2024, 2022, key="map_year")
+    current_df = st.session_state.get("current_df", pd.DataFrame())
+    default_year = int(current_df["year"].max()) if not current_df.empty else 2024
+    map_year = st.slider("Year", 1995, 2026, default_year, key="map_year")
 with col3:
     color_scale = st.selectbox(
         "Color Scale",
         ["Viridis", "Plasma", "RdYlGn", "Blues", "Reds", "Turbo"],
         index=2,
+    )
+with col4:
+    projection_style = st.selectbox(
+        "Projection",
+        ["natural earth", "orthographic", "equirectangular", "mercator", "kavrayskiy7", "robinson"],
+        index=0,
     )
 
 # ── Load data for map (use cached session data + auto-load top countries) ─
@@ -92,10 +111,10 @@ else:
             showocean=True, oceancolor="#060A14",
             showlakes=True, lakecolor="#060A14",
             showframe=False,
-            projection_type="natural earth",
+            projection_type=projection_style,
         )
         fig.update_layout(
-            height=560,
+            height=800 if fullscreen else 560,
             paper_bgcolor="#111827",
             font=dict(color="#E2E8F0", family="monospace"),
             coloraxis_colorbar=dict(
@@ -108,9 +127,10 @@ else:
 
         st.plotly_chart(fig, use_container_width=True)
 
-        # Stats
-        c1, c2, c3, c4 = st.columns(4)
-        c1.metric("Countries with data", len(year_df))
-        c2.metric("Highest", f"{year_df.sort_values('value', ascending=False).iloc[0]['country_name']} ({format_value(year_df['value'].max(), map_indicator)})")
-        c3.metric("Lowest", f"{year_df.sort_values('value').iloc[0]['country_name']} ({format_value(year_df['value'].min(), map_indicator)})")
-        c4.metric("Global avg", format_value(year_df["value"].mean(), map_indicator))
+        if not fullscreen:
+            # Stats
+            c1, c2, c3, c4 = st.columns(4)
+            c1.metric("Countries with data", len(year_df))
+            c2.metric("Highest", f"{year_df.sort_values('value', ascending=False).iloc[0]['country_name']} ({format_value(year_df['value'].max(), map_indicator)})")
+            c3.metric("Lowest", f"{year_df.sort_values('value').iloc[0]['country_name']} ({format_value(year_df['value'].min(), map_indicator)})")
+            c4.metric("Global avg", format_value(year_df["value"].mean(), map_indicator))

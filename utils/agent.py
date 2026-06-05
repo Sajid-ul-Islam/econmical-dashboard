@@ -166,6 +166,12 @@ def ask_agent(
 
     data_context = build_data_context(df, predictions_df, selected_countries, selected_indicators)
 
+    # Dynamic system prompt based on predictions visibility
+    current_system_prompt = SYSTEM_PROMPT
+    if predictions_df.empty:
+        current_system_prompt = current_system_prompt.replace(" with ML-based projections to 2030", "")
+        current_system_prompt += "\n- NOTE: ML predictions are currently hidden by the user. Do not forecast or mention future projections."
+
     # Build messages with history
     messages = []
     for msg in conversation_history[-8:]:  # Keep last 8 turns
@@ -187,7 +193,7 @@ def ask_agent(
                 response = client.messages.create(
                     model="claude-3-5-sonnet-20241022",
                     max_tokens=1500,
-                    system=SYSTEM_PROMPT,
+                    system=current_system_prompt,
                     messages=messages,
                 )
                 answer = response.content[0].text
@@ -207,7 +213,7 @@ def ask_agent(
             headers = {"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"}
             payload = {
                 "model": "llama3-70b-8192",
-                "messages": [{"role": "system", "content": SYSTEM_PROMPT}] + messages,
+                "messages": [{"role": "system", "content": current_system_prompt}] + messages,
                 "max_tokens": 1500
             }
             r = requests.post("https://api.groq.com/openai/v1/chat/completions", json=payload, headers=headers)
@@ -223,7 +229,7 @@ def ask_agent(
         try:
             url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={gemini_key}"
             # Combine history into a single string for Gemini to avoid strict alternating role constraints
-            combined_chat = f"System: {SYSTEM_PROMPT}\n\n"
+            combined_chat = f"System: {current_system_prompt}\n\n"
             for m in messages:
                 combined_chat += f"{m['role'].capitalize()}: {m['content']}\n\n"
             
@@ -242,7 +248,7 @@ def ask_agent(
             headers = {"Authorization": f"Bearer {openrouter_key}", "Content-Type": "application/json"}
             payload = {
                 "model": "meta-llama/llama-3-8b-instruct:free",
-                "messages": [{"role": "system", "content": SYSTEM_PROMPT}] + messages,
+                "messages": [{"role": "system", "content": current_system_prompt}] + messages,
             }
             r = requests.post("https://openrouter.ai/api/v1/chat/completions", json=payload, headers=headers)
             r.raise_for_status()

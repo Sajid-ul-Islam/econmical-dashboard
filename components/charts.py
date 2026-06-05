@@ -130,7 +130,7 @@ def timeline_chart(
                 ))
 
     # Add vertical line at current year
-    fig.add_vline(x=2024, line_dash="dot", line_color="#666", annotation_text="Now", annotation_font_color="#999")
+    fig.add_vline(x=2026, line_dash="dot", line_color="#666", annotation_text="Now", annotation_font_color="#999")
 
     layout = base_layout(indicator_label(indicator), height=450)
     layout["xaxis"]["title"] = "Year"

@@ -10,6 +10,8 @@ st.set_page_config(page_title="Data Lab — EconVision", page_icon="🗄️", la
 
 from utils.ui import inject_custom_css
 inject_custom_css()
+from utils.ui import render_sidebar
+render_sidebar()
 
 from utils.database import get_supabase, get_all_countries_in_db
 from utils.data_fetcher import (
@@ -21,7 +23,7 @@ from components.charts import format_value
 
 countries = st.session_state.get("selected_countries", ["USA", "CHN"])
 indicators = st.session_state.get("selected_indicators", ["gdp", "gdp_per_capita"])
-year_range = st.session_state.get("year_range", (2000, 2024))
+year_range = st.session_state.get("year_range", (2000, 2026))
 
 all_countries_list = get_all_countries()
 country_map = {c["code"]: c["name"] for c in all_countries_list}
@@ -58,7 +60,7 @@ with tab1:
             key="raw_indicators",
         )
     with col_f3:
-        yr_min, yr_max = st.slider("Year Range", 1990, 2024, (2015, 2024), key="raw_year")
+        yr_min, yr_max = st.slider("Year Range", 1990, 2026, (2015, 2026), key="raw_year")
 
     if not df.empty and filter_countries and filter_indicators:
         raw = df[
@@ -66,7 +68,19 @@ with tab1:
             (df["indicator"].isin(filter_indicators)) &
             (df["year"] >= yr_min) &
             (df["year"] <= yr_max)
-        ].sort_values(["country_code", "indicator", "year"], ascending=[True, True, False])
+        ].copy()
+        
+        # Apply same sorting logic as Dashboard
+        kpi_indicator = indicators[0] if indicators else filter_indicators[0]
+        latest_year = int(df["year"].max()) if not df.empty else 2026
+        latest_df = df[(df["indicator"] == kpi_indicator) & (df["year"] == latest_year)]
+        if not latest_df.empty:
+            raw_ascending = st.session_state.get("sort_order", "Highest to Lowest") == "Lowest to Highest"
+            sorted_codes = latest_df.sort_values("value", ascending=raw_ascending)["country_code"].tolist()
+            ordered_countries = [c for c in sorted_codes if c in filter_countries] + [c for c in filter_countries if c not in sorted_codes]
+            raw["country_code"] = pd.Categorical(raw["country_code"], categories=ordered_countries, ordered=True)
+            
+        raw = raw.sort_values(["country_code", "indicator", "year"], ascending=[True, True, False])
 
         display_raw = raw[["country_name", "country_code", "indicator", "year", "value", "source", "fetched_at"]].copy()
         display_raw["value_fmt"] = display_raw.apply(
