@@ -59,7 +59,8 @@ with tab1:
         bar_year = st.selectbox("Year", options=available_years[:20], key="bar_year")
 
     if not df.empty and bar_indicator:
-        fig = comparison_bar(df[df["country_code"].isin(countries)], bar_indicator, bar_year)
+        bar_ascending = st.session_state.get("sort_order", "Highest to Lowest") == "Highest to Lowest"
+        fig = comparison_bar(df[df["country_code"].isin(countries)], bar_indicator, bar_year, ascending=bar_ascending)
         st.plotly_chart(fig, use_container_width=True)
 
         # Top/bottom callouts
@@ -126,11 +127,12 @@ with tab3:
     available_years = sorted(df["year"].unique(), reverse=True)
     rank_year = st.selectbox("Year", options=available_years[:20], key="rank_year")
 
+    rank_ascending = st.session_state.get("sort_order", "Highest to Lowest") == "Lowest to Highest"
     rank_df = df[
         (df["country_code"].isin(countries)) &
         (df["indicator"] == rank_indicator) &
         (df["year"] == rank_year)
-    ].copy().sort_values("value", ascending=False)
+    ].copy().sort_values("value", ascending=rank_ascending)
 
     if not rank_df.empty:
         rank_df["Rank"] = range(1, len(rank_df) + 1)
@@ -222,7 +224,8 @@ with tab4:
                 mode="lines+markers", marker=dict(size=4),
             ))
             # ML Baseline Forecast
-            if not ml_pred.empty:
+        show_preds = st.session_state.get("show_predictions", True)
+        if show_preds and not ml_pred.empty:
                 ml_pred_plot = ml_pred[ml_pred["year"].isin(proj_years)]
                 fig.add_trace(go.Scatter(
                     x=ml_pred_plot["year"], y=ml_pred_plot["predicted"],
