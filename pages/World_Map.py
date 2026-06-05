@@ -37,6 +37,8 @@ def get_flag_emoji(iso2: str) -> str:
     return chr(ord(iso2[0].upper()) + 127397) + chr(ord(iso2[1].upper()) + 127397)
 
 iso2_map = {c["code"]: c.get("iso2", "") for c in all_countries}
+region_map = {c["code"]: c.get("region", "Unknown") for c in all_countries}
+income_map = {c["code"]: c.get("income_level", "Unknown") for c in all_countries}
 
 fullscreen = st.toggle("🗺️ Fullscreen Map View", value=False)
 if not fullscreen:
@@ -143,7 +145,9 @@ else:
             cat_order = list(DEBT_COLOR_MAP.keys())
             plot_df["debt_category"] = pd.Categorical(plot_df["debt_category"], categories=cat_order, ordered=True)
 
-            plot_df["country_label"] = plot_df["country_code"].map(lambda c: get_flag_emoji(iso2_map.get(c, ""))) + " " + plot_df["country_name"]
+            plot_df["country_label"] = plot_df["country_code"].astype(str).map(lambda c: get_flag_emoji(iso2_map.get(c, ""))) + " " + plot_df["country_name"].astype(str)
+            plot_df["Region"] = plot_df["country_code"].astype(str).map(region_map)
+            plot_df["Income Level"] = plot_df["country_code"].astype(str).map(income_map)
 
             fig = px.choropleth(
                 plot_df,
@@ -151,13 +155,16 @@ else:
                 locationmode="ISO-3",
                 color="debt_category",
                 color_discrete_map=DEBT_COLOR_MAP,
-                hover_name="country_ ":.1f", "country_code": False, "debt_category": False},
+                hover_name="country_label",
+                hover_data={"value": ":.1f", "country_code": False, "debt_category": False, "Region": True, "Income Level": True},
                 title=f"Debt Risk Categories — {latest_year_available}",
                 labels={"debt_category": "Debt Risk", "value": "Debt % GDP"},
                 category_orders={"debt_category": cat_order},
             )
         else:
-            plot_df["country_label"] = plot_df["country_code"].map(lambda c: get_flag_emoji(iso2_map.get(c, ""))) + " " + plot_df["country_name"]
+            plot_df["country_label"] = plot_df["country_code"].astype(str).map(lambda c: get_flag_emoji(iso2_map.get(c, ""))) + " " + plot_df["country_name"].astype(str)
+            plot_df["Region"] = plot_df["country_code"].astype(str).map(region_map)
+            plot_df["Income Level"] = plot_df["country_code"].astype(str).map(income_map)
 
             fig = px.choropleth(
                 plot_df,
@@ -165,7 +172,8 @@ else:
                 locationmode="ISO-3",
                 color="value",
                 hover_name="country_label",
-                hover_data={"value":le=color_scale,
+                hover_data={"value": ":.2f", "country_code": False, "Region": True, "Income Level": True},
+                color_continuous_scale=color_scale,
                 range_color=[plot_df["value"].min(), plot_df["value"].max()],
                 title=f"{indicator_label(map_indicator)} — {year_range[0]} to {year_range[1]}",
                 labels={"value": indicator_label(map_indicator)},
@@ -228,7 +236,7 @@ else:
                 req_cols = [c for c in available_cols if c not in ["country_code", "country_name", "year"]]
                 
                 if len(req_cols) >= 3:
-                    pivot_df["country_label"] = pivot_df["country_code"].map(lambda c: get_flag_emoji(iso2_map.get(c, ""))) + " " + pivot_df["country_name"]
+                    pivot_df["country_label"] = pivot_df["country_code"].astype(str).map(lambda c: get_flag_emoji(iso2_map.get(c, ""))) + " " + pivot_df["country_name"].astype(str)
                     countries = pivot_df["country_name"].unique()
                     colors = px.colors.qualitative.Plotly
                     color_map = {c: colors[i % len(colors)] for i, c in enumerate(countries)}
@@ -244,7 +252,8 @@ else:
                         animation_frame="year",
                         animation_group="country_name",
                         hover_name="country_label",
-                        hover_data={"ye
+                        hover_data={"year": True},
+                        labels={
                             req_cols[0]: indicator_label(req_cols[0]),
                             req_cols[1]: indicator_label(req_cols[1]),
                             req_cols[2]: indicator_label(req_cols[2]),
