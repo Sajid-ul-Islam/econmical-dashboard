@@ -17,6 +17,17 @@ for k, v in defaults.items():
     if k not in st.session_state:
         st.session_state[k] = v
 
+# ── Pre-warm Data Cache ─────────────────────────────────────────────────────
+if not st.session_state.data_loaded:
+    from utils.data_fetcher import get_country_data_cached
+    get_country_data_cached(
+        st.session_state.selected_countries, 
+        st.session_state.selected_indicators, 
+        st.session_state.year_range[0], 
+        min(st.session_state.year_range[1], 2026)
+    )
+    st.session_state.data_loaded = True
+
 # ── Navigation ──────────────────────────────────────────────────────────────
 dashboard = st.Page("pages/Dashboard.py", title="Dashboard", icon="📈", default=True)
 compare = st.Page("pages/Compare.py", title="Compare", icon="🔍")

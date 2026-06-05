@@ -7,6 +7,8 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
+st.set_page_config(page_title="World Map — EconVision", page_icon="🌍", layout="wide")
+
 from utils.ui import inject_custom_css
 inject_custom_css()
 from utils.ui import render_sidebar
@@ -19,7 +21,6 @@ from components.charts import indicator_label, format_value
 all_countries = get_all_countries()
 all_codes = [c["code"] for c in all_countries]
 country_map = {c["code"]: c["name"] for c in all_countries}
-st.set_page_config(page_title="World Map — EconVision", page_icon="🌍", layout="wide")
 
 fullscreen = st.toggle("🗺️ Fullscreen Map View", value=False)
 if fullscreen:

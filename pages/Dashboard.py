@@ -9,69 +9,12 @@ st.set_page_config(page_title="Dashboard — EconVision", page_icon="📈", layo
 
 from utils.ui import inject_custom_css
 inject_custom_css()
+from utils.ui import render_sidebar
+render_sidebar()
 
 from utils.data_fetcher import get_country_data_cached, get_all_countries, load_country_data
 from utils.forecasting import get_or_create_forecast, detect_anomalies, compute_economic_health_score
 from components.charts import timeline_chart, health_score_gauge, format_value
-
-# ── Load session state ────────────────────────────────────────────────────
-all_countries = get_all_countries()
-country_options = {c["name"]: c["code"] for c in all_countries}
-country_names = list(country_options.keys())
-
-indicator_options = {
-    "GDP (Total)": "gdp",
-    "GDP Per Capita": "gdp_per_capita",
-    "Debt % of GDP": "debt_pct_gdp",
-    "Gold Price (Global)": "gold_price",
-}
-
-with st.sidebar:
-    st.markdown("### ⚙️ Dashboard Options")
-    
-    default_names = [name for name, code in country_options.items() if code in st.session_state.get("selected_countries", ["USA", "CHN", "DEU"])]
-    selected_names = st.multiselect(
-        "Countries",
-        options=country_names,
-        default=default_names[:6],
-        max_selections=8,
-    )
-    st.session_state.selected_countries = [country_options[n] for n in selected_names]
-    
-    default_inds = [k for k, v in indicator_options.items() if v in st.session_state.get("selected_indicators", ["gdp", "gdp_per_capita", "debt_pct_gdp"])]
-    selected_ind_labels = st.multiselect(
-        "Indicators",
-        options=list(indicator_options.keys()),
-        default=default_inds,
-    )
-    st.session_state.selected_indicators = [indicator_options[l] for l in selected_ind_labels]
-    
-    st.session_state.year_range = st.slider(
-        "Year Range",
-        min_value=1990,
-        max_value=2031,
-        value=st.session_state.get("year_range", (2000, 2026)),
-        step=1,
-    )
-
-    st.session_state.sort_order = st.selectbox(
-        "Sort Order (Primary Indicator)",
-        options=["Highest to Lowest", "Lowest to Highest"],
-        index=0 if st.session_state.get("sort_order", "Highest to Lowest") == "Highest to Lowest" else 1,
-    )
-
-    st.session_state.show_predictions = st.toggle(
-        "Show ML Predictions",
-        value=st.session_state.get("show_predictions", True),
-    )
-
-    if st.button("🔄 Refresh Data", use_container_width=True):
-        with st.spinner("Fetching from World Bank & FRED..."):
-            for code in st.session_state.selected_countries:
-                load_country_data(code, {v: k for k, v in country_options.items()}.get(code, code), force=True)
-        st.cache_data.clear()
-        st.success("Data refreshed!")
-        st.rerun()
 
 countries = st.session_state.selected_countries
 indicators = st.session_state.selected_indicators
