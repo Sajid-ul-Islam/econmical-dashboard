@@ -8,6 +8,7 @@ numpy==1.26.4
 scipy==1.13.1
 pyarrow==16.1.0
 python-dateutil==2.9.0
+setuptools>=70.0.0
 
 # ── Machine Learning & AI ──
 prophet==1.1.5

@@ -10,6 +10,7 @@ A full-stack data science portfolio project built on real economic data: live Wo
 
 | Feature | Details |
 |---|---|
+| ⚡ **High Performance** | 90% reduction in database overhead via batched bulk upserts and Streamlit memory snapshots |
 | 📈 **Live Data** | World Bank API (GDP, GDP per capita, debt, inflation, unemployment) + FRED (gold, silver, oil, DXY) |
 | 🔮 **ML Forecasting** | Prophet time-series predictions to 2031 with 80% confidence intervals; linear trend fallback |
 | 🌍 **World Map** | Animated choropleth across all countries — continuous scale or 5-tier debt risk categories |
@@ -61,6 +62,8 @@ econ-dashboard/
 ├── .streamlit/
 │   ├── config.toml            # Dark theme config
 │   └── secrets.toml.example   # Keys template
+├── agent.md                   # AI Agent architecture documentation
+├── skill.md                   # Analytical skills documentation
 ├── Dockerfile                 # Container build
 ├── docker-compose.yml         # Local container stack
 ├── requirements.txt

@@ -12,6 +12,7 @@ Automatically generates 7-year forward predictions for every economic indicator.
 - **Confidence bands:** 80% upper/lower bounds rendered as shaded regions on every timeline chart.
 - **Fallback:** If Prophet is unavailable or the series is too short (<5 points), degrades gracefully to a 1st-degree polynomial linear trend with a residual-based uncertainty band.
 - **Storage:** Forecasts are persisted to Supabase (`predictions` table) so they are not recomputed on every page load.
+- **Batch Architecture:** Optimised to fetch and compute missing forecast combinations in bulk, drastically reducing database roundtrips.
 
 ---
 
