@@ -40,9 +40,37 @@ if df.empty:
 
 predictions_df = st.session_state.get("predictions_df", pd.DataFrame())
 
+# ── Group detection ───────────────────────────────────────────────────────
+_GROUPS = {
+    "NATO":       ["ALB","BEL","BGR","CAN","HRV","CZE","DNK","EST","FIN","FRA","DEU","GRC","HUN","ISL","ITA","LVA","LTU","LUX","MNE","MKD","NLD","NOR","POL","PRT","ROU","SVK","SVN","ESP","SWE","TUR","GBR","USA"],
+    "EU":         ["AUT","BEL","BGR","HRV","CYP","CZE","DNK","EST","FIN","FRA","DEU","GRC","HUN","IRL","ITA","LVA","LTU","LUX","MLT","NLD","POL","PRT","ROU","SVK","SVN","ESP","SWE"],
+    "BRICS":      ["BRA","RUS","IND","CHN","ZAF","EGY","ETH","IRN","ARE","SAU"],
+    "SAARC":      ["AFG","BGD","BTN","IND","MDV","NPL","PAK","LKA"],
+    "G7":         ["CAN","FRA","DEU","ITA","JPN","GBR","USA"],
+    "G20":        ["ARG","AUS","BRA","CAN","CHN","FRA","DEU","IND","IDN","ITA","JPN","KOR","MEX","RUS","SAU","ZAF","TUR","GBR","USA"],
+    "OPEC":       ["DZA","AGO","COG","GNQ","GAB","IRN","IRQ","KWT","LBY","NGA","SAU","ARE","VEN"],
+    "Arab League":["DZA","BHR","COM","DJI","EGY","IRQ","JOR","KWT","LBN","LBY","MRT","MAR","OMN","PSE","QAT","SAU","SOM","SDN","SYR","TUN","ARE","YEM"],
+    "OIC":        ["AFG","ALB","DZA","AGO","BHR","BGD","BEN","BFA","BRN","CMR","TCD","COM","CIV","DJI","EGY","GAB","GMB","GIN","GNB","GUY","IDN","IRN","IRQ","JOR","KAZ","KWT","KGZ","LBN","LBY","MYS","MDV","MLI","MRT","MAR","MOZ","NER","NGA","OMN","PAK","PSE","QAT","SAU","SEN","SLE","SOM","SDN","SUR","SYR","TJK","TGO","TUN","TUR","TKM","UGA","ARE","UZB","YEM"],
+}
+
+def _detect_group(codes: list) -> str | None:
+    if len(codes) < 3:
+        return None
+    code_set = set(codes)
+    for name, members in _GROUPS.items():
+        if code_set.issubset(set(members)):
+            return name
+    return None
+
 # ── Header ────────────────────────────────────────────────────────────────
 st.markdown("## 🔍 Country Comparison")
 st.caption("Bar charts, correlation explorer, and what-if simulator")
+
+# Group detection banner
+detected_group = _detect_group(countries)
+if detected_group:
+    st.info(f"📊 Viewing **{detected_group}** member economies · {len(countries)} countries selected")
+
 st.divider()
 
 tab1, tab2, tab3, tab4 = st.tabs(["📊 Bar Comparison", "🔗 Correlation", "📐 Ranking Table", "🧪 What-If Simulator"])

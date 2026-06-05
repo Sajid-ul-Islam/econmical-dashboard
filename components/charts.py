@@ -4,9 +4,7 @@ Reusable Plotly chart components.
 
 import plotly.graph_objects as go
 import plotly.express as px
-from plotly.subplots import make_subplots
 import pandas as pd
-import numpy as np
 from datetime import datetime
 
 COLORS = [
@@ -19,6 +17,38 @@ BG = "#0A0E1A"
 GRID = "#1E2740"
 TEXT = "#E2E8F0"
 PAPER_BG = "#111827"
+
+# ── Debt risk classification ──────────────────────────────────────────────
+DEBT_COLOR_MAP = {
+    "Critical (>200%)":  "#8b0000",
+    "High (>90%)":       "#d32f2f",
+    "Elevated (60–90%)": "#f57c00",
+    "Moderate (30–60%)": "#388e3c",
+    "Low (<30%)":        "#2ecc71",
+}
+
+def classify_debt(ratio: float) -> str:
+    """Return a debt risk tier label for a given debt-to-GDP ratio."""
+    if ratio > 200:
+        return "Critical (>200%)"
+    elif ratio > 90:
+        return "High (>90%)"
+    elif ratio > 60:
+        return "Elevated (60–90%)"
+    elif ratio > 30:
+        return "Moderate (30–60%)"
+    return "Low (<30%)"
+
+HISTORICAL_EVENTS = [
+    {"year": 1971, "label": "Nixon Shock", "description": "End of Bretton Woods, USD no longer backed by gold."},
+    {"year": 1974, "label": "Petrodollar", "description": "OPEC agrees to price oil in USD, increasing its global demand."},
+    {"year": 1985, "label": "Plaza Accord", "description": "Agreement to devalue the U.S. dollar vs yen and Mark."},
+    {"year": 1997, "label": "Asian Crisis", "description": "Asian Financial Crisis begins in Thailand."},
+    {"year": 2000, "label": "Dot-com Burst", "description": "Collapse of the dot-com technology bubble."},
+    {"year": 2008, "label": "GFC", "description": "Global Financial Crisis, major housing and banking collapse."},
+    {"year": 2011, "label": "EU Debt Crisis", "description": "European sovereign debt crisis."},
+    {"year": 2020, "label": "COVID-19", "description": "Global pandemic leads to widespread economic shutdowns."},
+]
 
 
 def base_layout(title: str = "", height: int = 420) -> dict:
@@ -44,6 +74,9 @@ def indicator_label(indicator: str) -> str:
         "gold_price": "Gold Price (USD/oz)",
         "inflation": "Inflation (%)",
         "unemployment": "Unemployment (%)",
+        "dxy": "US Dollar Index (DXY)",
+        "life_expectancy": "Life Expectancy (Years)",
+        "silver_price": "Silver Price (USD/oz)",
     }
     return labels.get(indicator, indicator.replace("_", " ").title())
 
@@ -63,6 +96,12 @@ def format_value(value: float, indicator: str) -> str:
         return f"{value:.1f}%"
     elif indicator == "gold_price":
         return f"${value:,.0f}/oz"
+    elif indicator == "dxy":
+        return f"{value:.2f}"
+    elif indicator == "silver_price":
+        return f"${value:,.2f}/oz"
+    elif indicator == "life_expectancy":
+        return f"{value:.1f} yrs"
     return f"{value:,.2f}"
 
 
@@ -134,10 +173,7 @@ def timeline_chart(
                     customdata=[format_value(v, indicator) for v in pdf["predicted"]],
                 ))
 
-    # Add vertical line at current year
-    current_year = datetime.now().year
-    fig.add_vline(x=current_year, line_dash="dot", line_color="#666", annotation_text="Now", annotation_font_color="#999")
-
+    add_event_annotations(fig, year_range)
     layout = base_layout(indicator_label(indicator), height=450)
     layout["xaxis"]["title"] = "Year"
     layout["yaxis"]["title"] = indicator_label(indicator)
@@ -176,6 +212,20 @@ def comparison_bar(
     layout = base_layout(f"{indicator_label(indicator)} Comparison — {year}", height=max(300, len(filtered) * 45))
     layout["xaxis"]["title"] = indicator_label(indicator)
     fig.update_layout(**layout)
+
+    # Debt reference lines — Maastricht 60% limit and 90% high-risk threshold
+    if indicator == "debt_pct_gdp":
+        fig.add_vline(
+            x=60, line_dash="dash", line_color="#f57c00",
+            annotation_text="Maastricht 60%", annotation_font_color="#f57c00",
+            annotation_position="top",
+        )
+        fig.add_vline(
+            x=90, line_dash="dash", line_color="#d32f2f",
+            annotation_text="High Risk 90%", annotation_font_color="#d32f2f",
+            annotation_position="top",
+        )
+
     return fig
 
 
@@ -244,6 +294,34 @@ def correlation_heatmap(df: pd.DataFrame, indicator1: str, indicator2: str) -> g
     fig.update_layout(**layout)
     return fig
 
+
+def add_event_annotations(fig: go.Figure, year_range: tuple):
+    """Adds vertical lines and annotations for key historical events and 'Now'."""
+    # Add 'Now' line first
+    now_year = datetime.now().year
+    if year_range[0] <= now_year <= year_range[1]:
+        fig.add_vline(
+            x=now_year, line_dash="dot", line_color="#666",
+            annotation_text="Now", annotation_font_color="#999",
+            annotation_position="top",
+            annotation_hovertext="Current Year"
+        )
+
+    # Add historical events
+    visible_events = [e for e in HISTORICAL_EVENTS if year_range[0] <= e["year"] <= year_range[1]]
+    
+    for i, event in enumerate(visible_events):
+        position = "bottom" if i % 2 == 0 else "top"
+        if event["year"] == now_year:
+            position = "bottom"
+
+        fig.add_vline(
+            x=event["year"], line_width=1, line_dash="dot",
+            line_color="rgba(156, 163, 175, 0.5)", annotation_text=event["label"],
+            annotation_position=position, annotation_font=dict(size=10, color="rgba(156, 163, 175, 0.8)"),
+            annotation_bgcolor="rgba(10, 15, 28, 0.7)",
+            annotation_hovertext=event["description"]
+        )
 
 def _hex_to_rgb(hex_color: str) -> tuple:
     hex_color = hex_color.lstrip("#")

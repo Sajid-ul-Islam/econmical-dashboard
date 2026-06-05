@@ -10,6 +10,7 @@ import streamlit as st
 import requests
 import pandas as pd
 import numpy as np
+import os
 from datetime import datetime, timezone, timedelta
 from utils.database import (
     upsert_economic_data,
@@ -25,10 +26,18 @@ WB_INDICATORS = {
     "debt_pct_gdp": "GC.DOD.TOTL.GD.ZS", # Central gov debt (% of GDP)
     "inflation": "FP.CPI.TOTL.ZG",      # Inflation, consumer prices (annual %)
     "unemployment": "SL.UEM.TOTL.ZS",   # Unemployment, total (% of total labor force)
+    "life_expectancy": "SP.DYN.LE00.IN", # Life expectancy at birth, total (years)
 }
 
 GOLD_INDICATOR = "gold_price"
+SILVER_INDICATOR = "silver_price"
+OIL_INDICATOR = "oil_price"
+DXY_INDICATOR = "dxy"
 STALE_HOURS = 24  # Refresh if older than this
+
+# Path to static debt snapshot CSV
+_HERE = os.path.dirname(os.path.abspath(__file__))
+STATIC_DEBT_CSV = os.path.join(_HERE, "../data/global_debt_2024.csv")
 
 
 def is_stale(country_code: str, indicator: str) -> bool:
@@ -102,6 +111,19 @@ def fetch_gold_price_fred(year_start=1990, year_end=2023) -> list[dict]:
         return _fallback_gold_data()
 
 
+def get_global_debt_snapshot() -> pd.DataFrame:
+    """Returns 173-country debt snapshot from static CSV — instant, no API needed."""
+    try:
+        df = pd.read_csv(STATIC_DEBT_CSV)
+        df["year"] = 2024
+        df["indicator"] = "debt_pct_gdp"
+        df["source"] = "Static snapshot (IMF/WB 2024)"
+        df["fetched_at"] = datetime.now(timezone.utc).isoformat()
+        return df[["country_code", "country_name", "indicator", "year", "value", "source", "fetched_at"]]
+    except Exception:
+        return pd.DataFrame()
+
+
 def _fallback_gold_data() -> list[dict]:
     """Historical gold prices USD/oz — hardcoded fallback."""
     data = {
@@ -112,6 +134,133 @@ def _fallback_gold_data() -> list[dict]:
         2010: 1224.5, 2011: 1571.5, 2012: 1668.9, 2013: 1411.2, 2014: 1266.4,
         2015: 1160.1, 2016: 1250.8, 2017: 1257.0, 2018: 1268.5, 2019: 1393.4,
         2020: 1769.6, 2021: 1798.6, 2022: 1800.9, 2023: 1941.0, 2024: 2300.0,
+    }
+    return [{"year": y, "value": v, "country_name": "World"} for y, v in data.items()]
+
+
+def _fallback_silver_data() -> list[dict]:
+    """Historical silver prices USD/oz — hardcoded fallback."""
+    data = {
+        1990: 4.8, 1991: 4.1, 1992: 3.9, 1993: 4.3, 1994: 5.3,
+        1995: 5.2, 1996: 5.2, 1997: 4.9, 1998: 5.5, 1999: 5.2,
+        2000: 4.9, 2001: 4.4, 2002: 4.6, 2003: 4.9, 2004: 6.7,
+        2005: 7.3, 2006: 11.5, 2007: 13.4, 2008: 14.9, 2009: 14.7,
+        2010: 20.2, 2011: 35.1, 2012: 31.2, 2013: 23.8, 2014: 19.1,
+        2015: 15.7, 2016: 17.1, 2017: 17.0, 2018: 15.7, 2019: 16.2,
+        2020: 20.5, 2021: 25.1, 2022: 21.8, 2023: 23.4, 2024: 28.5,
+    }
+    return [{"year": y, "value": v, "country_name": "World"} for y, v in data.items()]
+
+
+@st.cache_data(ttl=3600)
+def fetch_silver_price_fred(year_start=1990, year_end=2024) -> list[dict]:
+    """Fetch annual silver price from FRED (SLVPRUSD)."""
+    try:
+        api_key = st.secrets.get("fred", {}).get("api_key", "")
+        if not api_key:
+            return _fallback_silver_data()
+        url = (
+            f"https://api.stlouisfed.org/fred/series/observations"
+            f"?series_id=SLVPRUSD&api_key={api_key}"
+            f"&file_type=json&observation_start={year_start}-01-01"
+            f"&observation_end={year_end}-12-31&frequency=a"
+        )
+        r = requests.get(url, timeout=15)
+        r.raise_for_status()
+        data = r.json()
+        rows = []
+        for obs in data.get("observations", []):
+            if obs["value"] != ".":
+                rows.append({"year": int(obs["date"][:4]), "value": float(obs["value"]), "country_name": "World"})
+        return rows if rows else _fallback_silver_data()
+    except Exception:
+        return _fallback_silver_data()
+
+
+@st.cache_data(ttl=3600)
+def fetch_oil_price_fred(year_start=1990, year_end=2023) -> list[dict]:
+    """Fetch annual Brent crude oil price from FRED (POILBREUSDM)."""
+    try:
+        api_key = st.secrets.get("fred", {}).get("api_key", "")
+        if not api_key:
+            return _fallback_oil_data()
+
+        url = (
+            f"https://api.stlouisfed.org/fred/series/observations"
+            f"?series_id=POILBREUSDM&api_key={api_key}"
+            f"&file_type=json&observation_start={year_start}-01-01"
+            f"&observation_end={year_end}-12-31&frequency=a"
+        )
+        r = requests.get(url, timeout=15)
+        r.raise_for_status()
+        data = r.json()
+        rows = []
+        for obs in data.get("observations", []):
+            if obs["value"] != ".":
+                rows.append({
+                    "year": int(obs["date"][:4]),
+                    "value": float(obs["value"]),
+                    "country_name": "World",
+                })
+        return rows
+    except Exception:
+        return _fallback_oil_data()
+
+
+def _fallback_oil_data() -> list[dict]:
+    """Historical Brent Crude prices USD/bbl — hardcoded fallback."""
+    data = {
+        1990: 23.73, 1991: 20.00, 1992: 19.32, 1993: 16.97, 1994: 15.82,
+        1995: 17.02, 1996: 20.67, 1997: 19.09, 1998: 12.72, 1999: 17.97,
+        2000: 28.50, 2001: 24.44, 2002: 25.02, 2003: 28.83, 2004: 38.27,
+        2005: 54.19, 2006: 65.14, 2007: 72.39, 2008: 97.26, 2009: 61.67,
+        2010: 79.50, 2011: 111.26, 2012: 111.67, 2013: 108.66, 2014: 98.95,
+        2015: 52.39, 2016: 43.73, 2017: 54.19, 2018: 71.31, 2019: 64.22,
+        2020: 41.84, 2021: 70.89, 2022: 100.93, 2023: 82.49, 2024: 83.00,
+    }
+    return [{"year": y, "value": v, "country_name": "World"} for y, v in data.items()]
+
+
+@st.cache_data(ttl=3600)
+def fetch_dxy_fred(year_start=1990, year_end=2023) -> list[dict]:
+    """Fetch annual US Dollar Index from FRED (DTWEXBGS)."""
+    try:
+        api_key = st.secrets.get("fred", {}).get("api_key", "")
+        if not api_key:
+            return _fallback_dxy_data()
+
+        url = (
+            f"https://api.stlouisfed.org/fred/series/observations"
+            f"?series_id=DTWEXBGS&api_key={api_key}"
+            f"&file_type=json&observation_start={year_start}-01-01"
+            f"&observation_end={year_end}-12-31&frequency=a"
+        )
+        r = requests.get(url, timeout=15)
+        r.raise_for_status()
+        data = r.json()
+        rows = []
+        for obs in data.get("observations", []):
+            if obs["value"] != ".":
+                rows.append({
+                    "year": int(obs["date"][:4]),
+                    "value": float(obs["value"]),
+                    "country_name": "World",
+                })
+        return rows
+    except Exception:
+        return _fallback_dxy_data()
+
+
+def _fallback_dxy_data() -> list[dict]:
+    """Historical US Dollar Index (DXY) — hardcoded fallback."""
+    data = {
+        1990: 92.0, 1991: 91.0, 1992: 89.0, 1993: 92.0, 1994: 91.0,
+        1995: 86.0, 1996: 88.0, 1997: 94.0, 1998: 100.0, 1999: 102.0,
+        2000: 108.0, 2001: 113.0, 2002: 114.0, 2003: 103.0, 2004: 94.0,
+        2005: 89.0, 2006: 88.0, 2007: 83.0, 2008: 77.0, 2009: 81.0,
+        2010: 80.0, 2011: 76.0, 2012: 80.0, 2013: 81.0, 2014: 83.0,
+        2015: 93.0, 2016: 98.0, 2017: 99.0, 2018: 94.0, 2019: 97.0,
+        2020: 96.0, 2021: 93.0, 2022: 104.0, 2023: 103.0, 2024: 104.5,
     }
     return [{"year": y, "value": v, "country_name": "World"} for y, v in data.items()]
 
@@ -217,6 +366,72 @@ def load_country_data(country_code: str, country_name: str, force: bool = False)
             update_freshness("WLD", GOLD_INDICATOR, "ok")
             fetched_any = True
 
+    # Silver price
+    if not force and not is_stale("WLD", SILVER_INDICATOR):
+        pass
+    else:
+        silver_rows = fetch_silver_price_fred()
+        if silver_rows:
+            rows = [
+                {
+                    "country_code": "WLD",
+                    "country_name": "World",
+                    "indicator": SILVER_INDICATOR,
+                    "year": r["year"],
+                    "value": r["value"],
+                    "source": "FRED / Fallback",
+                    "fetched_at": datetime.now(timezone.utc).isoformat(),
+                }
+                for r in silver_rows
+            ]
+            upsert_economic_data(rows)
+            update_freshness("WLD", SILVER_INDICATOR, "ok")
+            fetched_any = True
+
+    # Oil price
+    if not force and not is_stale("WLD", OIL_INDICATOR):
+        pass
+    else:
+        oil_rows = fetch_oil_price_fred()
+        if oil_rows:
+            rows = [
+                {
+                    "country_code": "WLD",
+                    "country_name": "World",
+                    "indicator": OIL_INDICATOR,
+                    "year": r["year"],
+                    "value": r["value"],
+                    "source": "FRED / Fallback",
+                    "fetched_at": datetime.now(timezone.utc).isoformat(),
+                }
+                for r in oil_rows
+            ]
+            upsert_economic_data(rows)
+            update_freshness("WLD", OIL_INDICATOR, "ok")
+            fetched_any = True
+
+    # DXY Index
+    if not force and not is_stale("WLD", DXY_INDICATOR):
+        pass
+    else:
+        dxy_rows = fetch_dxy_fred()
+        if dxy_rows:
+            rows = [
+                {
+                    "country_code": "WLD",
+                    "country_name": "World",
+                    "indicator": DXY_INDICATOR,
+                    "year": r["year"],
+                    "value": r["value"],
+                    "source": "FRED / Fallback",
+                    "fetched_at": datetime.now(timezone.utc).isoformat(),
+                }
+                for r in dxy_rows
+            ]
+            upsert_economic_data(rows)
+            update_freshness("WLD", DXY_INDICATOR, "ok")
+            fetched_any = True
+
     return fetched_any
 
 
@@ -247,5 +462,23 @@ def get_country_data_cached(
         gold_df = fetch_economic_data(["WLD"], [GOLD_INDICATOR], year_start, year_end)
         if not gold_df.empty:
             df = pd.concat([df, gold_df], ignore_index=True)
+
+    # Also fetch silver if requested
+    if SILVER_INDICATOR in indicators:
+        silver_df = fetch_economic_data(["WLD"], [SILVER_INDICATOR], year_start, year_end)
+        if not silver_df.empty:
+            df = pd.concat([df, silver_df], ignore_index=True)
+
+    # Also fetch oil if requested
+    if OIL_INDICATOR in indicators:
+        oil_df = fetch_economic_data(["WLD"], [OIL_INDICATOR], year_start, year_end)
+        if not oil_df.empty:
+            df = pd.concat([df, oil_df], ignore_index=True)
+
+    # Also fetch DXY if requested
+    if DXY_INDICATOR in indicators:
+        dxy_df = fetch_economic_data(["WLD"], [DXY_INDICATOR], year_start, year_end)
+        if not dxy_df.empty:
+            df = pd.concat([df, dxy_df], ignore_index=True)
 
     return df

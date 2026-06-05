@@ -15,7 +15,7 @@ from utils.ui import render_sidebar
 render_sidebar()
 
 from utils.data_fetcher import get_all_countries, load_country_data, get_country_data_cached
-from components.charts import indicator_label, format_value
+from components.charts import indicator_label, format_value, classify_debt, DEBT_COLOR_MAP
 
 # ── Load all countries for map ────────────────────────────────────────────
 all_countries = get_all_countries()
@@ -58,6 +58,16 @@ with col3:
         index=0,
     )
 
+# Colour mode toggle — only meaningful for debt
+map_mode = "Continuous Scale"
+if map_indicator == "debt_pct_gdp":
+    map_mode = st.radio(
+        "Colour mode",
+        ["Risk Categories", "Continuous Scale"],
+        horizontal=True,
+        help="Risk Categories use a 5-tier classification (Low → Critical). Continuous Scale shows a gradient.",
+    )
+
 # ── Load data for map (use cached session data + auto-load top countries) ─
 @st.cache_data(ttl=3600, show_spinner="Loading world map data...")
 def get_map_data(indicator: str, year_start: int, year_end: int) -> pd.DataFrame:
@@ -67,6 +77,18 @@ def get_map_data(indicator: str, year_start: int, year_end: int) -> pd.DataFrame
     return df
 
 map_df = get_map_data(map_indicator, year_range[0], year_range[1])
+
+# ── Fill map gaps with static debt snapshot when live data is sparse ──────
+if map_indicator == "debt_pct_gdp":
+    from utils.data_fetcher import get_global_debt_snapshot
+    static_df = get_global_debt_snapshot()
+    if not static_df.empty:
+        if map_df.empty:
+            map_df = static_df
+        elif map_df["country_code"].nunique() < 50:
+            map_df = pd.concat([map_df, static_df]).drop_duplicates(
+                subset=["country_code", "year"], keep="first"
+            ).reset_index(drop=True)
 
 if map_df.empty:
     st.info("No map data loaded yet. Go to the Dashboard page first and load some countries, then return here.")
@@ -99,19 +121,52 @@ else:
     if year_df.empty:
         st.warning(f"No data available for the selected range. Try different settings.")
     else:
-        fig = px.choropleth(
-            year_df,
-            locations="country_code",
-            locationmode="ISO-3",
-            color="value",
-            hover_name="country_name",
-            hover_data={"value": ":.2f", "country_code": False},
-            color_continuous_scale=color_scale,
-            range_color=[year_df["value"].min(), year_df["value"].max()],
-            title=f"{indicator_label(map_indicator)} — {year_range[0]} to {year_range[1]}",
-            labels={"value": indicator_label(map_indicator)},
-            animation_frame="year",
-        )
+        # ── Build choropleth ──────────────────────────────────────────────
+        use_risk_cats = (map_indicator == "debt_pct_gdp" and map_mode == "Risk Categories")
+
+        # Use latest year for category map (animation + discrete categories don't mix well)
+        latest_year_available = int(year_df["year"].max())
+        plot_df = year_df[year_df["year"] == latest_year_available].copy() if use_risk_cats else year_df.sort_values(["year", "country_code"]).copy()
+
+        if use_risk_cats:
+            plot_df["debt_category"] = plot_df["value"].apply(classify_debt)
+            # Order categories from low to critical for legend
+            cat_order = list(DEBT_COLOR_MAP.keys())
+            plot_df["debt_category"] = pd.Categorical(plot_df["debt_category"], categories=cat_order, ordered=True)
+
+            fig = px.choropleth(
+                plot_df,
+                locations="country_code",
+                locationmode="ISO-3",
+                color="debt_category",
+                color_discrete_map=DEBT_COLOR_MAP,
+                hover_name="country_name",
+                hover_data={"value": ":.1f", "country_code": False, "debt_category": False},
+                title=f"Debt Risk Categories — {latest_year_available}",
+                labels={"debt_category": "Debt Risk", "value": "Debt % GDP"},
+                category_orders={"debt_category": cat_order},
+            )
+        else:
+            fig = px.choropleth(
+                plot_df,
+                locations="country_code",
+                locationmode="ISO-3",
+                color="value",
+                hover_name="country_name",
+                hover_data={"value": ":.2f", "country_code": False},
+                color_continuous_scale=color_scale,
+                range_color=[plot_df["value"].min(), plot_df["value"].max()],
+                title=f"{indicator_label(map_indicator)} — {year_range[0]} to {year_range[1]}",
+                labels={"value": indicator_label(map_indicator)},
+                animation_frame="year",
+            )
+            fig.update_layout(
+                coloraxis_colorbar=dict(
+                    title=dict(text=indicator_label(map_indicator), font=dict(color="#E2E8F0")),
+                    tickfont=dict(color="#E2E8F0"),
+                    bgcolor="#111827",
+                ),
+            )
 
         fig.update_geos(
             showcoastlines=True, coastlinecolor="#1E2740",
@@ -125,11 +180,6 @@ else:
             height=800 if fullscreen else 560,
             paper_bgcolor="#111827",
             font=dict(color="#E2E8F0", family="monospace"),
-            coloraxis_colorbar=dict(
-                title=dict(text=indicator_label(map_indicator), font=dict(color="#E2E8F0")),
-                tickfont=dict(color="#E2E8F0"),
-                bgcolor="#111827",
-            ),
             margin=dict(l=0, r=0, t=40, b=0),
         )
         
@@ -142,12 +192,11 @@ else:
         st.plotly_chart(fig, use_container_width=True)
 
         if not fullscreen:
-            # Stats
-            latest_map_year = int(year_df["year"].max())
-            metrics_df = year_df[year_df["year"] == latest_map_year]
+            # Stats — use latest year data regardless of mode
+            metrics_df = year_df[year_df["year"] == latest_year_available]
             
             c1, c2, c3, c4 = st.columns(4)
-            c1.metric(f"Countries with data ({latest_map_year})", len(metrics_df))
+            c1.metric(f"Countries with data ({latest_year_available})", len(metrics_df))
             if not metrics_df.empty:
                 highest = metrics_df.sort_values('value', ascending=False).iloc[0]
                 lowest = metrics_df.sort_values('value').iloc[0]
