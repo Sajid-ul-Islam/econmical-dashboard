@@ -12,8 +12,6 @@ import plotly.graph_objects as go
 # Ensure the project root is in sys.path to prevent module resolution errors
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-st.set_page_config(page_title="World Map — EconVision", page_icon="🌍", layout="wide")
-
 try:
     from utils.ui import render_sidebar
     render_sidebar()

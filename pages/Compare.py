@@ -6,8 +6,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-st.set_page_config(page_title="Compare — EconVision", page_icon="🔍", layout="wide")
-
 from utils.ui import inject_custom_css, render_sidebar
 inject_custom_css()
 render_sidebar()

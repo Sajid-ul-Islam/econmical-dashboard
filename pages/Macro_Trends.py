@@ -7,8 +7,6 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-st.set_page_config(page_title="Macro Trends — EconVision", page_icon="📉", layout="wide")
-
 from utils.ui import inject_custom_css, render_sidebar
 inject_custom_css()
 render_sidebar()

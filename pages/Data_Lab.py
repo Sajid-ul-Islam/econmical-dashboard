@@ -11,8 +11,6 @@ from datetime import datetime, timezone
 # Ensure the project root is in sys.path to prevent module resolution errors
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-st.set_page_config(page_title="Data Lab — EconVision", page_icon="🗄️", layout="wide")
-
 try:
     from utils.ui import render_sidebar
     render_sidebar()

@@ -10,8 +10,6 @@ import pandas as pd
 # Ensure the project root is in sys.path to prevent module resolution errors
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-st.set_page_config(page_title="Dashboard — EconVision", page_icon="📈", layout="wide")
-
 try:
     from utils.ui import render_sidebar
     render_sidebar()
@@ -211,8 +209,8 @@ if not gold_df.empty or not global_inflation_df.empty or not global_unemployment
                     ))
             
             layout = base_layout("Gold Price (USD/oz)", height=350)
-            layout["xaxis"]["title"] = "Year"
-            layout["yaxis"]["title"] = "USD / oz"
+            layout.setdefault("xaxis", {})["title"] = "Year"
+            layout.setdefault("yaxis", {})["title"] = "USD / oz"
             fig_gold.update_layout(**layout)
             add_event_annotations(fig_gold, year_range)
 
@@ -259,8 +257,8 @@ if not gold_df.empty or not global_inflation_df.empty or not global_unemployment
                     ))
             
             layout_silver = base_layout("Silver Price (USD/oz)", height=350)
-            layout_silver["xaxis"]["title"] = "Year"
-            layout_silver["yaxis"]["title"] = "USD / oz"
+            layout_silver.setdefault("xaxis", {})["title"] = "Year"
+            layout_silver.setdefault("yaxis", {})["title"] = "USD / oz"
             fig_silver.update_layout(**layout_silver)
             add_event_annotations(fig_silver, year_range)
 
@@ -307,8 +305,8 @@ if not gold_df.empty or not global_inflation_df.empty or not global_unemployment
                     ))
             
             layout_infl = base_layout("Inflation Rate (%)", height=350)
-            layout_infl["xaxis"]["title"] = "Year"
-            layout_infl["yaxis"]["title"] = "Annual %"
+            layout_infl.setdefault("xaxis", {})["title"] = "Year"
+            layout_infl.setdefault("yaxis", {})["title"] = "Annual %"
             fig_infl.update_layout(**layout_infl)
             add_event_annotations(fig_infl, year_range)
 
@@ -355,8 +353,8 @@ if not gold_df.empty or not global_inflation_df.empty or not global_unemployment
                     ))
             
             layout_unemp = base_layout("Unemployment Rate (%)", height=350)
-            layout_unemp["xaxis"]["title"] = "Year"
-            layout_unemp["yaxis"]["title"] = "Total Labor Force (%)"
+            layout_unemp.setdefault("xaxis", {})["title"] = "Year"
+            layout_unemp.setdefault("yaxis", {})["title"] = "Total Labor Force (%)"
             fig_unemp.update_layout(**layout_unemp)
             add_event_annotations(fig_unemp, year_range)
 
@@ -403,8 +401,8 @@ if not gold_df.empty or not global_inflation_df.empty or not global_unemployment
                     ))
             
             layout_oil = base_layout("Oil Price (Brent, USD/bbl)", height=350)
-            layout_oil["xaxis"]["title"] = "Year"
-            layout_oil["yaxis"]["title"] = "USD / bbl"
+            layout_oil.setdefault("xaxis", {})["title"] = "Year"
+            layout_oil.setdefault("yaxis", {})["title"] = "USD / bbl"
             fig_oil.update_layout(**layout_oil)
             add_event_annotations(fig_oil, year_range)
 
@@ -451,8 +449,8 @@ if not gold_df.empty or not global_inflation_df.empty or not global_unemployment
                     ))
             
             layout_dxy = base_layout("US Dollar Index", height=350)
-            layout_dxy["xaxis"]["title"] = "Year"
-            layout_dxy["yaxis"]["title"] = "Index Value"
+            layout_dxy.setdefault("xaxis", {})["title"] = "Year"
+            layout_dxy.setdefault("yaxis", {})["title"] = "Index Value"
             fig_dxy.update_layout(**layout_dxy)
             add_event_annotations(fig_dxy, year_range)
 
