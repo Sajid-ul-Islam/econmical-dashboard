@@ -14,6 +14,7 @@ from datetime import datetime, timezone, timedelta
 from utils.database import (
     upsert_economic_data,
     update_freshness,
+    batch_update_freshness,
     get_freshness,
     fetch_economic_data,
 )
@@ -333,6 +334,9 @@ def load_country_data(country_code: str, country_name: str, force: bool = False)
     Returns True if data was fetched/updated.
     """
     fetched_any = False
+    all_data_rows = []
+    freshness_updates = []
+    now_str = datetime.now(timezone.utc).isoformat()
 
     for indicator, wb_code in WB_INDICATORS.items():
         if not force and not is_stale(country_code, indicator):
@@ -340,7 +344,7 @@ def load_country_data(country_code: str, country_name: str, force: bool = False)
 
         rows_raw = fetch_world_bank(wb_code, country_code)
         if rows_raw:
-            rows = [
+            all_data_rows.extend([
                 {
                     "country_code": country_code,
                     "country_name": country_name,
@@ -348,19 +352,18 @@ def load_country_data(country_code: str, country_name: str, force: bool = False)
                     "year": r["year"],
                     "value": r["value"],
                     "source": "World Bank API",
-                    "fetched_at": datetime.now(timezone.utc).isoformat(),
+                    "fetched_at": now_str,
                 }
                 for r in rows_raw
-            ]
-            upsert_economic_data(rows)
-            update_freshness(country_code, indicator, "ok")
+            ])
+            freshness_updates.append({"country_code": country_code, "indicator": indicator, "last_fetched": now_str, "status": "ok"})
             fetched_any = True
 
     # Gold price — same for all countries, stored under "WLD"
     if force or is_stale("WLD", GOLD_INDICATOR):
         gold_rows = fetch_gold_price_fred()
         if gold_rows:
-            rows = [
+            all_data_rows.extend([
                 {
                     "country_code": "WLD",
                     "country_name": "World",
@@ -368,19 +371,18 @@ def load_country_data(country_code: str, country_name: str, force: bool = False)
                     "year": r["year"],
                     "value": r["value"],
                     "source": "FRED / Fallback",
-                    "fetched_at": datetime.now(timezone.utc).isoformat(),
+                    "fetched_at": now_str,
                 }
                 for r in gold_rows
-            ]
-            upsert_economic_data(rows)
-            update_freshness("WLD", GOLD_INDICATOR, "ok")
+            ])
+            freshness_updates.append({"country_code": "WLD", "indicator": GOLD_INDICATOR, "last_fetched": now_str, "status": "ok"})
             fetched_any = True
 
     # Silver price
     if force or is_stale("WLD", SILVER_INDICATOR):
         silver_rows = fetch_silver_price_fred()
         if silver_rows:
-            rows = [
+            all_data_rows.extend([
                 {
                     "country_code": "WLD",
                     "country_name": "World",
@@ -388,19 +390,18 @@ def load_country_data(country_code: str, country_name: str, force: bool = False)
                     "year": r["year"],
                     "value": r["value"],
                     "source": "FRED / Fallback",
-                    "fetched_at": datetime.now(timezone.utc).isoformat(),
+                    "fetched_at": now_str,
                 }
                 for r in silver_rows
-            ]
-            upsert_economic_data(rows)
-            update_freshness("WLD", SILVER_INDICATOR, "ok")
+            ])
+            freshness_updates.append({"country_code": "WLD", "indicator": SILVER_INDICATOR, "last_fetched": now_str, "status": "ok"})
             fetched_any = True
 
     # Oil price
     if force or is_stale("WLD", OIL_INDICATOR):
         oil_rows = fetch_oil_price_fred()
         if oil_rows:
-            rows = [
+            all_data_rows.extend([
                 {
                     "country_code": "WLD",
                     "country_name": "World",
@@ -408,19 +409,18 @@ def load_country_data(country_code: str, country_name: str, force: bool = False)
                     "year": r["year"],
                     "value": r["value"],
                     "source": "FRED / Fallback",
-                    "fetched_at": datetime.now(timezone.utc).isoformat(),
+                    "fetched_at": now_str,
                 }
                 for r in oil_rows
-            ]
-            upsert_economic_data(rows)
-            update_freshness("WLD", OIL_INDICATOR, "ok")
+            ])
+            freshness_updates.append({"country_code": "WLD", "indicator": OIL_INDICATOR, "last_fetched": now_str, "status": "ok"})
             fetched_any = True
 
     # DXY Index
     if force or is_stale("WLD", DXY_INDICATOR):
         dxy_rows = fetch_dxy_fred()
         if dxy_rows:
-            rows = [
+            all_data_rows.extend([
                 {
                     "country_code": "WLD",
                     "country_name": "World",
@@ -428,17 +428,23 @@ def load_country_data(country_code: str, country_name: str, force: bool = False)
                     "year": r["year"],
                     "value": r["value"],
                     "source": "FRED / Fallback",
-                    "fetched_at": datetime.now(timezone.utc).isoformat(),
+                    "fetched_at": now_str,
                 }
                 for r in dxy_rows
-            ]
-            upsert_economic_data(rows)
-            update_freshness("WLD", DXY_INDICATOR, "ok")
+            ])
+            freshness_updates.append({"country_code": "WLD", "indicator": DXY_INDICATOR, "last_fetched": now_str, "status": "ok"})
             fetched_any = True
+
+    if all_data_rows:
+        upsert_economic_data(all_data_rows)
+        
+    if freshness_updates:
+        batch_update_freshness(freshness_updates)
 
     return fetched_any
 
 
+@st.cache_data(ttl=3600, show_spinner=False)
 def get_country_data_cached(
     country_codes: list[str],
     indicators: list[str],
@@ -451,11 +457,19 @@ def get_country_data_cached(
     countries = get_all_countries()
     country_map = {c["code"]: c["name"] for c in countries}
 
+    # Check global/world indicators
+    global_inds = [GOLD_INDICATOR, SILVER_INDICATOR, OIL_INDICATOR, DXY_INDICATOR]
+    if any(i in indicators for i in global_inds):
+        for gi in global_inds:
+            if gi in indicators and is_stale("WLD", gi):
+                load_country_data("WLD", "World")
+                break
+
     for code in country_codes:
         name = country_map.get(code, code)
         # Quietly refresh in background if stale
         for ind in indicators:
-            if ind != GOLD_INDICATOR and is_stale(code, ind):
+            if ind not in global_inds and is_stale(code, ind):
                 load_country_data(code, name)
                 break
 

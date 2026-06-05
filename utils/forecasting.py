@@ -131,6 +131,48 @@ def get_or_create_forecast(
     return pd.DataFrame()
 
 
+def get_or_create_forecasts_batch(
+    df: pd.DataFrame,
+    country_codes: list[str],
+    indicators: list[str],
+    force_recompute: bool = False,
+) -> pd.DataFrame:
+    """
+    Batch fetches forecasts from DB, and only computes missing ones.
+    Drastically reduces database roundtrips.
+    """
+    all_preds = []
+    new_rows = []
+
+    if not force_recompute:
+        cached = fetch_predictions(country_codes, indicators)
+        if not cached.empty:
+            all_preds.append(cached)
+
+    cached_pairs = set()
+    if all_preds and not all_preds[0].empty:
+        cached_pairs = set(zip(all_preds[0]["country_code"], all_preds[0]["indicator"]))
+
+    for code in country_codes:
+        for indicator in indicators:
+            if not force_recompute and (code, indicator) in cached_pairs:
+                continue
+            cdf = df[(df["country_code"] == code) & (df["indicator"] == indicator)]
+            if cdf.empty:
+                continue
+            forecast = run_prophet_forecast(cdf, code, indicator)
+            if forecast is not None and not forecast.empty:
+                all_preds.append(forecast)
+                new_rows.extend(forecast.to_dict("records"))
+
+    if new_rows:
+        upsert_predictions(new_rows)
+
+    if all_preds:
+        return pd.concat(all_preds, ignore_index=True)
+    return pd.DataFrame()
+
+
 def detect_anomalies(df: pd.DataFrame, z_threshold: float = 2.5) -> pd.DataFrame:
     """
     Flag anomalous data points using z-score on YoY growth rate.

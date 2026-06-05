@@ -24,8 +24,6 @@ country_map = {c["code"]: c["name"] for c in all_countries_list}
 df = st.session_state.get("current_df", pd.DataFrame())
 if df.empty:
     with st.spinner("Loading data..."):
-        for code in countries:
-            load_country_data(code, country_map.get(code, code))
         df = get_country_data_cached(countries, indicators, year_range[0], min(year_range[1], 2026))
         st.session_state["current_df"] = df
 

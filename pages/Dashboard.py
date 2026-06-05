@@ -15,7 +15,7 @@ try:
     render_sidebar()
 
     from utils.data_fetcher import get_country_data_cached, get_all_countries, load_country_data, get_last_updated_str
-    from utils.forecasting import get_or_create_forecast, detect_anomalies, compute_economic_health_score
+    from utils.forecasting import get_or_create_forecast, get_or_create_forecasts_batch, detect_anomalies, compute_economic_health_score
     from components.charts import timeline_chart, health_score_gauge, format_value, base_layout, add_event_annotations, indicator_label
     import plotly.graph_objects as go
     from datetime import datetime
@@ -41,11 +41,6 @@ all_countries = get_all_countries()
 country_map = {c["code"]: c["name"] for c in all_countries}
 
 with st.spinner("Loading economic data..."):
-    for code in countries:
-        name = country_map.get(code, code)
-        load_country_data(code, name)  # no-op if fresh
-        
-    load_country_data("WLD", "World")
 
     df = get_country_data_cached(countries, indicators, year_range[0], min(year_range[1], 2026))
     gold_df = get_country_data_cached(["WLD"], ["gold_price"], year_range[0], min(year_range[1], 2026))
@@ -86,41 +81,38 @@ if not latest_df.empty:
 # ── Build predictions ────────────────────────────────────────────────────
 predictions_dfs = []
 if st.session_state.show_predictions and year_range[1] > 2026:
-    for code in countries:
-        for indicator in indicators:
-            cdf = df[(df["country_code"] == code) & (df["indicator"] == indicator)]
-            if not cdf.empty:
-                pred = get_or_create_forecast(cdf, code, indicator)
-                if not pred.empty:
-                    predictions_dfs.append(pred)
+    # Batch fetch for all main countries
+    main_preds = get_or_create_forecasts_batch(df, countries, indicators)
+    if not main_preds.empty:
+        predictions_dfs.append(main_preds)
 
     if not gold_df.empty:
-        gold_pred = get_or_create_forecast(gold_df, "WLD", "gold_price")
+        gold_pred = get_or_create_forecasts_batch(gold_df, ["WLD"], ["gold_price"])
         if not gold_pred.empty:
             predictions_dfs.append(gold_pred)
 
     if not global_inflation_df.empty:
-        inflation_pred = get_or_create_forecast(global_inflation_df, "WLD", "inflation")
+        inflation_pred = get_or_create_forecasts_batch(global_inflation_df, ["WLD"], ["inflation"])
         if not inflation_pred.empty:
             predictions_dfs.append(inflation_pred)
 
     if not global_unemployment_df.empty:
-        unemp_pred = get_or_create_forecast(global_unemployment_df, "WLD", "unemployment")
+        unemp_pred = get_or_create_forecasts_batch(global_unemployment_df, ["WLD"], ["unemployment"])
         if not unemp_pred.empty:
             predictions_dfs.append(unemp_pred)
 
     if not global_oil_df.empty:
-        oil_pred = get_or_create_forecast(global_oil_df, "WLD", "oil_price")
+        oil_pred = get_or_create_forecasts_batch(global_oil_df, ["WLD"], ["oil_price"])
         if not oil_pred.empty:
             predictions_dfs.append(oil_pred)
 
     if not global_silver_df.empty:
-        silver_pred = get_or_create_forecast(global_silver_df, "WLD", "silver_price")
+        silver_pred = get_or_create_forecasts_batch(global_silver_df, ["WLD"], ["silver_price"])
         if not silver_pred.empty:
             predictions_dfs.append(silver_pred)
 
     if not global_dxy_df.empty:
-        dxy_pred = get_or_create_forecast(global_dxy_df, "WLD", "dxy")
+        dxy_pred = get_or_create_forecasts_batch(global_dxy_df, ["WLD"], ["dxy"])
         if not dxy_pred.empty:
             predictions_dfs.append(dxy_pred)
 

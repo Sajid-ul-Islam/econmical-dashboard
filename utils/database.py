@@ -12,6 +12,7 @@ except ImportError:
     Client = type("Client", (object,), {})  # Dummy class
 from datetime import datetime, timezone
 import pandas as pd
+import time
 
 
 @st.cache_resource
@@ -152,41 +153,72 @@ def upsert_predictions(rows: list[dict]) -> bool:
 
 
 def get_freshness(country_code: str, indicator: str) -> dict | None:
-    try:
-        db = get_supabase()
-        if not db:
+    for attempt in range(3):
+        try:
+            db = get_supabase()
+            if not db:
+                return None
+            result = (
+                db.table("data_freshness")
+                .select("*")
+                .eq("country_code", country_code)
+                .eq("indicator", indicator)
+                .execute()
+            )
+            if result.data:
+                return result.data[0]
             return None
-        result = (
-            db.table("data_freshness")
-            .select("*")
-            .eq("country_code", country_code)
-            .eq("indicator", indicator)
-            .execute()
-        )
-        if result.data:
-            return result.data[0]
-        return None
-    except Exception as e:
-        st.error(f"Freshness read error: {e}")
-        return None
+        except Exception as e:
+            # Retry on transient Windows socket saturation errors
+            if attempt < 2 and ("10035" in str(e) or "WSAEWOULDBLOCK" in str(e)):
+                time.sleep(0.5 * (attempt + 1))
+                continue
+            st.error(f"Freshness read error: {e}")
+            return None
 
 
 def update_freshness(country_code: str, indicator: str, status: str = "ok"):
-    try:
-        db = get_supabase()
-        if not db:
+    for attempt in range(3):
+        try:
+            db = get_supabase()
+            if not db:
+                return
+            db.table("data_freshness").upsert(
+                {
+                    "country_code": country_code,
+                    "indicator": indicator,
+                    "last_fetched": datetime.now(timezone.utc).isoformat(),
+                    "status": status,
+                },
+                on_conflict="country_code,indicator",
+            ).execute()
             return
-        db.table("data_freshness").upsert(
-            {
-                "country_code": country_code,
-                "indicator": indicator,
-                "last_fetched": datetime.now(timezone.utc).isoformat(),
-                "status": status,
-            },
-            on_conflict="country_code,indicator",
-        ).execute()
-    except Exception as e:
-        st.warning(f"Freshness update error: {e}")
+        except Exception as e:
+            if attempt < 2 and ("10035" in str(e) or "WSAEWOULDBLOCK" in str(e)):
+                time.sleep(0.5 * (attempt + 1))
+                continue
+            st.warning(f"Freshness update error: {e}")
+            return
+        
+def batch_update_freshness(records: list[dict]):
+    if not records:
+        return
+    for attempt in range(3):
+        try:
+            db = get_supabase()
+            if not db:
+                return
+            db.table("data_freshness").upsert(
+                records,
+                on_conflict="country_code,indicator",
+            ).execute()
+            return
+        except Exception as e:
+            if attempt < 2 and ("10035" in str(e) or "WSAEWOULDBLOCK" in str(e)):
+                time.sleep(0.5 * (attempt + 1))
+                continue
+            st.warning(f"Batch freshness update error: {e}")
+            return
 
 
 def log_query(query: str, response: str):

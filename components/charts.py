@@ -53,6 +53,11 @@ def base_layout(title: str = "", height: int = 420) -> dict:
         margin=dict(l=60, r=20, t=50, b=40),
         hovermode="x unified",
         template="streamlit",
+        hoverlabel=dict(
+            bgcolor="rgba(17, 24, 39, 0.95)",
+            bordercolor="rgba(0, 212, 255, 0.3)",
+            font=dict(color="#E2E8F0", family="Inter, sans-serif", size=13),
+        ),
     )
 
 
@@ -168,8 +173,8 @@ def timeline_chart(
 
     add_event_annotations(fig, year_range)
     layout = base_layout(indicator_label(indicator), height=450)
-    layout["xaxis"]["title"] = "Year"
-    layout["yaxis"]["title"] = indicator_label(indicator)
+    layout.setdefault("xaxis", {})["title"] = "Year"
+    layout.setdefault("yaxis", {})["title"] = indicator_label(indicator)
     fig.update_layout(**layout)
     return fig
 
@@ -203,7 +208,7 @@ def comparison_bar(
     ))
 
     layout = base_layout(f"{indicator_label(indicator)} Comparison — {year}", height=max(300, len(filtered) * 45))
-    layout["xaxis"]["title"] = indicator_label(indicator)
+    layout.setdefault("xaxis", {})["title"] = indicator_label(indicator)
     fig.update_layout(**layout)
 
     # Debt reference lines — Maastricht 60% limit and 90% high-risk threshold
@@ -278,8 +283,8 @@ def correlation_heatmap(df: pd.DataFrame, indicator1: str, indicator2: str) -> g
         ))
 
     layout = base_layout(f"{indicator_label(indicator1)} vs {indicator_label(indicator2)}", height=420)
-    layout["xaxis"]["title"] = indicator_label(indicator1)
-    layout["yaxis"]["title"] = indicator_label(indicator2)
+    layout.setdefault("xaxis", {})["title"] = indicator_label(indicator1)
+    layout.setdefault("yaxis", {})["title"] = indicator_label(indicator2)
     fig.update_layout(**layout)
     return fig
 

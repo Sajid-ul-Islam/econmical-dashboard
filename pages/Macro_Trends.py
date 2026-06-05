@@ -121,6 +121,11 @@ with tab1:
         margin=dict(l=60, r=60, t=60, b=40),
         hovermode="x unified",
         template="streamlit",
+        hoverlabel=dict(
+            bgcolor="rgba(17, 24, 39, 0.95)",
+            bordercolor="rgba(0, 212, 255, 0.3)",
+            font=dict(color="#E2E8F0", family="Inter, sans-serif", size=13),
+        ),
     )
     fig.update_yaxes(title_text="Annual Inflation (%)", secondary_y=False)
     fig.update_yaxes(title_text=f"Purchasing Power (${base_year}=100)", secondary_y=True)
@@ -211,6 +216,11 @@ with tab2:
         margin=dict(l=60, r=60, t=60, b=40),
         hovermode="x unified",
         template="streamlit",
+        hoverlabel=dict(
+            bgcolor="rgba(17, 24, 39, 0.95)",
+            bordercolor="rgba(0, 212, 255, 0.3)",
+            font=dict(color="#E2E8F0", family="Inter, sans-serif", size=13),
+        ),
     )
     fig2.update_yaxes(title_text="Price (USD/oz)", secondary_y=False)
     if show_ratio:

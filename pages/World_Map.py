@@ -58,7 +58,7 @@ with col2:
     color_scale = st.selectbox(
         "Color Scale",
         ["Viridis", "Plasma", "RdYlGn", "Blues", "Reds", "Turbo"],
-        index=2,
+        index=5,
     )
 with col3:
     projection_style = st.selectbox(
@@ -177,29 +177,35 @@ else:
                 labels={"value": indicator_label(map_indicator)},
                 animation_frame="year",
             )
-            fig.update_layout(
-                # The streamlit template will handle colors
-            )
 
         # Refine country borders for a cleaner look
-        fig.update_traces(marker_line_width=0.5, marker_line_color="rgba(128, 128, 128, 0.4)")
+        fig.update_traces(marker_line_width=0.5, marker_line_color="rgba(255, 255, 255, 0.15)")
 
         fig.update_geos(
             showcoastlines=True,
-            coastlinecolor="rgba(128, 128, 128, 0.2)",
-            coastlinewidth=0.5,
             showland=True,
-            landcolor="rgba(128, 128, 128, 0.05)",
-            showocean=False,
+            coastlinecolor="rgba(0, 212, 255, 0.2)",
+            coastlinewidth=1,
+            landcolor="#111827",
+            showocean=True,
+            oceancolor="#0A0F1C",
             showlakes=False,
             showframe=False,
             projection_type=projection_style,
             resolution=50,
+            bgcolor="rgba(0,0,0,0)",
         )
         fig.update_layout(
             height=800 if fullscreen else 560,
             margin=dict(l=0, r=0, t=40, b=0),
-            template="streamlit",
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            font=dict(color="#E2E8F0"),
+            hoverlabel=dict(
+                bgcolor="rgba(17, 24, 39, 0.95)",
+                bordercolor="rgba(0, 212, 255, 0.3)",
+                font=dict(color="#E2E8F0", family="Inter, sans-serif", size=13),
+            ),
         )
 
         st.caption(f"Last updated: {get_last_updated_str(plot_df)}")
@@ -282,6 +288,11 @@ else:
                         height=600,
                         margin=dict(l=0, r=0, t=20, b=0),
                         template="streamlit",
+                        hoverlabel=dict(
+                            bgcolor="rgba(17, 24, 39, 0.95)",
+                            bordercolor="rgba(0, 212, 255, 0.3)",
+                            font=dict(color="#E2E8F0", family="Inter, sans-serif", size=13),
+                        ),
                     )
                     st.plotly_chart(fig_3d, use_container_width=True)
                 else:
