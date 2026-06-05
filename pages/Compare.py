@@ -6,12 +6,11 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-from utils.ui import inject_custom_css, render_sidebar
-inject_custom_css()
+from utils.ui import render_sidebar
 render_sidebar()
 
-from utils.data_fetcher import get_country_data_cached, get_all_countries, load_country_data
-from components.charts import comparison_bar, correlation_heatmap, timeline_chart, format_value, indicator_label, COLORS
+from utils.data_fetcher import get_country_data_cached, get_all_countries
+from components.charts import comparison_bar, correlation_heatmap, format_value, indicator_label
 
 # ── Load ──────────────────────────────────────────────────────────────────
 countries = st.session_state.get("selected_countries", ["USA", "CHN", "DEU"])
@@ -231,7 +230,7 @@ with tab4:
             proj_debt = [max(0, base_debt + debt_change * i) for i in range(1, years_forward + 1)]
 
             import plotly.graph_objects as go
-            from components.charts import base_layout, PAPER_BG, BG
+            from components.charts import base_layout
             from utils.forecasting import get_or_create_forecast
 
             ml_pred = get_or_create_forecast(base_df, sim_country, "gdp")
@@ -261,7 +260,8 @@ with tab4:
                 ))
             
             layout = base_layout(f"{cname} — GDP {'What-If vs ' if show_scenario else ''}ML Baseline")
-            layout["yaxis"]["title"] = "GDP (USD)"
+            layout.setdefault("xaxis", {})["title"] = "Year"
+            layout.setdefault("yaxis", {})["title"] = "GDP (USD)"
             fig.update_layout(**layout)
             st.plotly_chart(fig, use_container_width=True)
 

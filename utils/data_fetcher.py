@@ -13,7 +13,6 @@ import os
 from datetime import datetime, timezone, timedelta
 from utils.database import (
     upsert_economic_data,
-    update_freshness,
     batch_update_freshness,
     get_freshness,
     fetch_economic_data,

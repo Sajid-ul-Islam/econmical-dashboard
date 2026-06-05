@@ -16,7 +16,7 @@ try:
     from utils.ui import render_sidebar
     render_sidebar()
 
-    from utils.data_fetcher import get_all_countries, load_country_data, get_country_data_cached, get_last_updated_str
+    from utils.data_fetcher import get_all_countries, load_country_data, get_last_updated_str
     from components.charts import indicator_label, format_value, classify_debt, DEBT_COLOR_MAP
 except ImportError as e:
     st.error(f"🚨 **Import Error Detected:** `{e}`")

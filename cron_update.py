@@ -5,9 +5,7 @@ Works without an active Streamlit runtime by monkey-patching st.cache_data.
 """
 
 import os
-import sys
 import logging
-import types
 
 # ── Patch Streamlit before any imports touch it ───────────────────────────
 # st.cache_data and st.secrets are not available outside a Streamlit process.

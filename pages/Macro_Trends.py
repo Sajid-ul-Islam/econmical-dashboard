@@ -7,8 +7,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from utils.ui import inject_custom_css, render_sidebar
-inject_custom_css()
+from utils.ui import render_sidebar
 render_sidebar()
 
 # ── Constants ─────────────────────────────────────────────────────────────# US CPI inflation by year (annual %, BLS data)

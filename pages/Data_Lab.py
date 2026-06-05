@@ -15,12 +15,11 @@ try:
     from utils.ui import render_sidebar
     render_sidebar()
 
-    from utils.database import get_supabase, get_all_countries_in_db
+    from utils.database import get_supabase
     from utils.data_fetcher import (
-        get_all_countries, get_country_data_cached,
-        load_country_data, WB_INDICATORS, GOLD_INDICATOR
+        get_all_countries,
+        load_country_data, WB_INDICATORS
     )
-    from utils.forecasting import detect_anomalies
     from components.charts import format_value
     from utils.agent import ask_agent, SUGGESTED_QUESTIONS
 except ImportError as e:
