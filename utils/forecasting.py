@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 from utils.database import upsert_predictions, fetch_predictions
 
 
+@st.cache_data(ttl=86400, show_spinner=False) # Cache for 24 hours
 def run_prophet_forecast(
     df: pd.DataFrame,
     country_code: str,

@@ -20,7 +20,7 @@ from utils.database import log_query, get_recent_queries
 
 SYSTEM_PROMPT_TEMPLATE = """You are an expert economic analyst AI assistant with deep knowledge in macroeconomics, development economics, and global finance.
 
-You have access to a real-time economic database containing GDP, GDP per capita, government debt (% of GDP), inflation rate, unemployment rate, and gold prices for countries worldwide, spanning from 1990 to present{projections_text}
+You have access to a real-time economic database containing GDP, GDP per capita, government debt (% of GDP), inflation rate, unemployment rate, life expectancy, gold prices, silver prices, oil prices, and the US Dollar Index (DXY) for countries worldwide, spanning from 1990 to present{projections_text}
 
 When answering:
 - Be precise with numbers, always cite the year
@@ -31,7 +31,7 @@ When answering:
 - Structure longer answers with clear sections
 - Format numbers clearly (e.g., $1.2T for trillion, $45K for thousands)
 
-You ONLY answer questions related to economics, GDP, debt, inflation, unemployment, gold, financial markets, development, and country comparisons. For unrelated questions, politely redirect.
+You ONLY answer questions related to economics, GDP, debt, inflation, unemployment, demographics, health, precious metals (gold, silver), oil, currencies, financial markets, development, and country comparisons. For unrelated questions, politely redirect.
 """
 
 
@@ -105,6 +105,14 @@ def _fmt(value: float, indicator: str) -> str:
         return f"{value:.1f}%"
     elif indicator == "gold_price":
         return f"${value:,.0f}/oz"
+    elif indicator == "oil_price":
+        return f"${value:,.2f}/bbl"
+    elif indicator == "dxy":
+        return f"{value:.2f}"
+    elif indicator == "silver_price":
+        return f"${value:,.2f}/oz"
+    elif indicator == "life_expectancy":
+        return f"{value:.1f} yrs"
     return f"{value:,.2f}"
 
 
@@ -116,6 +124,10 @@ def _get_unit(indicator: str) -> str:
         "gold_price": "USD/troy oz",
         "inflation": "Annual %",
         "unemployment": "% of labor force",
+        "oil_price": "USD/bbl",
+        "dxy": "Index",
+        "silver_price": "USD/troy oz",
+        "life_expectancy": "Years",
     }
     return units.get(indicator, "")
 

@@ -14,7 +14,7 @@ inject_custom_css()
 from utils.ui import render_sidebar
 render_sidebar()
 
-from utils.data_fetcher import get_all_countries, load_country_data, get_country_data_cached
+from utils.data_fetcher import get_all_countries, load_country_data, get_country_data_cached, get_last_updated_str
 from components.charts import indicator_label, format_value, classify_debt, DEBT_COLOR_MAP
 
 # ── Load all countries for map ────────────────────────────────────────────
@@ -189,6 +189,7 @@ else:
         if "updatemenus" in fig.layout:
             fig.layout.updatemenus[0].font.color = "#E2E8F0"
 
+        st.markdown(f"<p style='color:#94A3B8; font-size:11px; margin-bottom:-20px; text-align:right; position:relative; z-index:10; padding-right:15px;'>Last updated: {get_last_updated_str(plot_df)}</p>", unsafe_allow_html=True)
         st.plotly_chart(fig, use_container_width=True)
 
         if not fullscreen:

@@ -5,10 +5,10 @@ def render_sidebar():
     from utils.data_fetcher import get_all_countries, load_country_data
     
     raw_countries = get_all_countries()
-    # Sort by region first, then country name for logical dropdown grouping
-    all_countries = sorted(raw_countries, key=lambda c: (c.get("region") or "Other", c["name"]))
+    # Sort alphabetically by country name
+    all_countries = sorted(raw_countries, key=lambda c: c["name"])
     
-    country_options = {f"{c.get('region') or 'Other'} • {c['name']}": c["code"] for c in all_countries}
+    country_options = {c["name"]: c["code"] for c in all_countries}
     country_names = list(country_options.keys())
 
     indicator_options = {
@@ -17,7 +17,7 @@ def render_sidebar():
         "Macro • Inflation (Annual %)": "inflation",
         "Macro • Unemployment Rate (%)": "unemployment",
         "Fiscal • Debt % of GDP": "debt_pct_gdp",
-        "Markets • Gold Price (Global)": "gold_price",
+        "Social • Life Expectancy": "life_expectancy",
     }
 
     with st.sidebar:
@@ -113,7 +113,7 @@ def render_sidebar():
         
         default_inds = [k for k, v in indicator_options.items() if v in st.session_state.get("selected_indicators", ["gdp", "gdp_per_capita", "debt_pct_gdp"])]
         
-        ind_special_options = ["🌍 Select All", "❌ Clear All", "📊 All Macro", "🏛️ All Fiscal", "💰 All Markets"]
+        ind_special_options = ["🌍 Select All", "❌ Clear All", "📊 All Macro", "🏛️ All Fiscal", "👥 All Social"]
         
         selected_ind_labels = st.multiselect(
             "Indicators",
@@ -140,8 +140,8 @@ def render_sidebar():
             elif l == "🏛️ All Fiscal":
                 final_inds.extend([v for k, v in indicator_options.items() if "Fiscal" in k])
                 ind_expanded = True
-            elif l == "💰 All Markets":
-                final_inds.extend([v for k, v in indicator_options.items() if "Markets" in k])
+            elif l == "👥 All Social":
+                final_inds.extend([v for k, v in indicator_options.items() if "Social" in k])
                 ind_expanded = True
             else:
                 final_inds.append(indicator_options[l])
@@ -211,16 +211,22 @@ def inject_custom_css():
     }
 
     /* Metric / KPI Cards (Glassmorphism) */
-    [data-testid="metric-container"] {
+    [data-testid="metric-container"], .glass-chart-card {
         background: rgba(17, 24, 39, 0.6);
         backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 12px;
-        padding: 16px 20px;
         box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         transition: all 0.3s ease;
     }
-    [data-testid="metric-container"]:hover {
+    [data-testid="metric-container"] {
+        padding: 16px 20px;
+    }
+    .glass-chart-card {
+        padding: 20px;
+        height: 100%; /* Ensure cards in a row have same height */
+    }
+    [data-testid="metric-container"]:hover, .glass-chart-card:hover {
         transform: translateY(-3px);
         border-color: rgba(0, 212, 255, 0.4);
         box-shadow: 0 8px 15px rgba(0, 212, 255, 0.1);

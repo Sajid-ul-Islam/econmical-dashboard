@@ -40,6 +40,18 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 STATIC_DEBT_CSV = os.path.join(_HERE, "../data/global_debt_2024.csv")
 
 
+def get_last_updated_str(df_sub: pd.DataFrame) -> str:
+    """Helper to extract and format the latest fetched_at timestamp."""
+    if "fetched_at" in df_sub.columns and not df_sub.empty:
+        val = df_sub["fetched_at"].dropna().max()
+        if pd.notna(val):
+            try:
+                return pd.to_datetime(val).strftime('%Y-%m-%d %H:%M UTC')
+            except Exception:
+                pass
+    return "Calculated Proxy / Unknown"
+
+
 def is_stale(country_code: str, indicator: str) -> bool:
     """Check if data needs refresh."""
     fresh = get_freshness(country_code, indicator)
