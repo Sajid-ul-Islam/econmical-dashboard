@@ -13,11 +13,6 @@ COLORS = [
     "#95E1D3", "#F38181", "#AA96DA", "#FCBAD3",
 ]
 
-BG = "#0A0E1A"
-GRID = "#1E2740"
-TEXT = "#E2E8F0"
-PAPER_BG = "#111827"
-
 # ── Debt risk classification ──────────────────────────────────────────────
 DEBT_COLOR_MAP = {
     "Critical (>200%)":  "#8b0000",
@@ -53,16 +48,11 @@ HISTORICAL_EVENTS = [
 
 def base_layout(title: str = "", height: int = 420) -> dict:
     return dict(
-        title=dict(text=title, font=dict(color=TEXT, size=16, family="monospace"), x=0.02),
+        title=dict(text=title, font=dict(size=16, family="monospace"), x=0.02),
         height=height,
-        paper_bgcolor=PAPER_BG,
-        plot_bgcolor=BG,
-        font=dict(color=TEXT, family="monospace"),
-        xaxis=dict(gridcolor=GRID, zerolinecolor=GRID),
-        yaxis=dict(gridcolor=GRID, zerolinecolor=GRID),
-        legend=dict(bgcolor="rgba(0,0,0,0.3)", bordercolor=GRID, font=dict(color=TEXT)),
         margin=dict(l=60, r=20, t=50, b=40),
         hovermode="x unified",
+        template="streamlit",
     )
 
 
@@ -236,24 +226,20 @@ def health_score_gauge(score: float, country_name: str) -> go.Figure:
     fig = go.Figure(go.Indicator(
         mode="gauge+number",
         value=score,
-        title={"text": f"{country_name}", "font": {"color": TEXT, "size": 13}},
+        title={"text": f"{country_name}", "font": {"size": 13}},
         gauge={
-            "axis": {"range": [0, 100], "tickcolor": TEXT},
+            "axis": {"range": [0, 100]},
             "bar": {"color": color},
-            "bgcolor": BG,
-            "bordercolor": GRID,
             "steps": [
                 {"range": [0, 40], "color": "rgba(255,107,107,0.15)"},
                 {"range": [40, 65], "color": "rgba(255,230,109,0.15)"},
                 {"range": [65, 100], "color": "rgba(78,205,196,0.15)"},
             ],
         },
-        number={"font": {"color": TEXT, "size": 28}},
+        number={"font": {"size": 28}},
     ))
     fig.update_layout(
         height=200,
-        paper_bgcolor=PAPER_BG,
-        font=dict(color=TEXT),
         margin=dict(l=20, r=20, t=40, b=10),
     )
     return fig
@@ -301,8 +287,8 @@ def add_event_annotations(fig: go.Figure, year_range: tuple):
     now_year = datetime.now().year
     if year_range[0] <= now_year <= year_range[1]:
         fig.add_vline(
-            x=now_year, line_dash="dot", line_color="#666",
-            annotation_text="Now", annotation_font_color="#999",
+            x=now_year, line_dash="dot", line_color="gray",
+            annotation_text="Now", annotation_font_color="gray",
             annotation_position="top",
             annotation_hovertext="Current Year"
         )
@@ -317,9 +303,9 @@ def add_event_annotations(fig: go.Figure, year_range: tuple):
 
         fig.add_vline(
             x=event["year"], line_width=1, line_dash="dot",
-            line_color="rgba(156, 163, 175, 0.5)", annotation_text=event["label"],
-            annotation_position=position, annotation_font=dict(size=10, color="rgba(156, 163, 175, 0.8)"),
-            annotation_bgcolor="rgba(10, 15, 28, 0.7)",
+            line_color="rgba(128, 128, 128, 0.5)", annotation_text=event["label"],
+            annotation_position=position, annotation_font=dict(size=10, color="rgba(128, 128, 128, 0.8)"),
+            annotation_bgcolor="rgba(240, 240, 240, 0.5)",
             annotation_hovertext=event["description"]
         )
 

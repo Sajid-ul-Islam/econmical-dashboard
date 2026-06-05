@@ -15,8 +15,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 st.set_page_config(page_title="World Map — EconVision", page_icon="🌍", layout="wide")
 
 try:
-    from utils.ui import inject_custom_css, render_sidebar
-    inject_custom_css()
+    from utils.ui import render_sidebar
     render_sidebar()
 
     from utils.data_fetcher import get_all_countries, load_country_data, get_country_data_cached, get_last_updated_str
@@ -33,12 +32,6 @@ country_map = {c["code"]: c["name"] for c in all_countries}
 
 fullscreen = st.toggle("🗺️ Fullscreen Map View", value=False)
 if fullscreen:
-    st.markdown("""
-    <style>
-    [data-testid="stHeader"] {display: none;}
-    .block-container {padding-top: 1.5rem !important; padding-bottom: 1.5rem !important;}
-    </style>
-    """, unsafe_allow_html=True)
 else:
     st.markdown("## 🌍 World Map")
     st.caption("Choropleth view of economic indicators across all available countries")
@@ -170,35 +163,24 @@ else:
                 animation_frame="year",
             )
             fig.update_layout(
-                coloraxis_colorbar=dict(
-                    title=dict(text=indicator_label(map_indicator), font=dict(color="#E2E8F0")),
-                    tickfont=dict(color="#E2E8F0"),
-                    bgcolor="#111827",
-                ),
+                # The streamlit template will handle colors
             )
 
         fig.update_geos(
-            showcoastlines=True, coastlinecolor="#1E2740",
-            showland=True, landcolor="#0A0E1A",
-            showocean=True, oceancolor="#060A14",
-            showlakes=True, lakecolor="#060A14",
+            showcoastlines=True,
+            showland=True,
+            showocean=True,
+            showlakes=True,
             showframe=False,
             projection_type=projection_style,
         )
         fig.update_layout(
             height=800 if fullscreen else 560,
-            paper_bgcolor="#111827",
-            font=dict(color="#E2E8F0", family="monospace"),
             margin=dict(l=0, r=0, t=40, b=0),
+            template="streamlit",
         )
-        
-        # Style the animation controls if they exist
-        if "sliders" in fig.layout:
-            fig.layout.sliders[0].font.color = "#E2E8F0"
-        if "updatemenus" in fig.layout:
-            fig.layout.updatemenus[0].font.color = "#E2E8F0"
 
-        st.markdown(f"<p style='color:#94A3B8; font-size:11px; margin-bottom:-20px; text-align:right; position:relative; z-index:10; padding-right:15px;'>Last updated: {get_last_updated_str(plot_df)}</p>", unsafe_allow_html=True)
+        st.caption(f"Last updated: {get_last_updated_str(plot_df)}")
         st.plotly_chart(fig, use_container_width=True)
 
         if not fullscreen:
@@ -275,24 +257,9 @@ else:
                     )
                     fig_3d.update_layout(
                         height=600,
-                        paper_bgcolor="#111827",
-                        plot_bgcolor="#0A0E1A",
-                        font=dict(color="#E2E8F0", family="monospace"),
                         margin=dict(l=0, r=0, t=20, b=0),
-                        scene=dict(
-                            xaxis=dict(gridcolor="#1E2740", backgroundcolor="#0A0E1A"),
-                            yaxis=dict(gridcolor="#1E2740", backgroundcolor="#0A0E1A"),
-                            zaxis=dict(gridcolor="#1E2740", backgroundcolor="#0A0E1A"),
-                        )
+                        template="streamlit",
                     )
-                    # Style the generated animation slider and play buttons to match the dark theme
-                    if "sliders" in fig_3d.layout:
-                        fig_3d.layout.sliders[0].font.color = "#E2E8F0"
-                    if "updatemenus" in fig_3d.layout:
-                        for um in fig_3d.layout.updatemenus:
-                            um.font.color = "#E2E8F0"
-                            um.bgcolor = "#1E2740"
-                            um.bordercolor = "#0A0E1A"
                     st.plotly_chart(fig_3d, use_container_width=True)
                 else:
                     st.info("Load at least 3 indicators in the sidebar to see the 3D scatter plot.")

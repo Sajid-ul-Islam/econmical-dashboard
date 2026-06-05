@@ -9,8 +9,7 @@ from plotly.subplots import make_subplots
 
 st.set_page_config(page_title="Macro Trends — EconVision", page_icon="📉", layout="wide")
 
-from utils.ui import inject_custom_css, render_sidebar
-inject_custom_css()
+from utils.ui import render_sidebar
 render_sidebar()
 
 # ── Constants ─────────────────────────────────────────────────────────────
@@ -59,11 +58,6 @@ SILVER_PRICES = {
     2020: 20.5, 2021: 25.1, 2022: 21.8, 2023: 23.4, 2024: 28.5,
     2025: 33.0,
 }
-
-BG = "#0A0E1A"
-PAPER_BG = "#111827"
-GRID = "#1E2740"
-TEXT = "#E2E8F0"
 
 # ── Header ────────────────────────────────────────────────────────────────
 st.markdown("## 📉 Macro Trends")
@@ -125,17 +119,13 @@ with tab1:
     final_pp = purchasing_power[-1]
     fig.update_layout(
         height=480,
-        paper_bgcolor=PAPER_BG,
-        plot_bgcolor=BG,
-        font=dict(color=TEXT, family="monospace"),
-        title=dict(text=f"USD Purchasing Power · ${base_year}=100 → ${final_pp:.1f} by {years[-1]}", font=dict(color=TEXT, size=15)),
-        legend=dict(bgcolor="rgba(0,0,0,0.3)", bordercolor=GRID, font=dict(color=TEXT)),
-        xaxis=dict(gridcolor=GRID, zerolinecolor=GRID),
+        title=dict(text=f"USD Purchasing Power · ${base_year}=100 → ${final_pp:.1f} by {years[-1]}", font=dict(size=15)),
         margin=dict(l=60, r=60, t=60, b=40),
         hovermode="x unified",
+        template="streamlit",
     )
-    fig.update_yaxes(title_text="Annual Inflation (%)", gridcolor=GRID, secondary_y=False)
-    fig.update_yaxes(title_text=f"Purchasing Power (${base_year}=100)", gridcolor=GRID, secondary_y=True)
+    fig.update_yaxes(title_text="Annual Inflation (%)", secondary_y=False)
+    fig.update_yaxes(title_text=f"Purchasing Power (${base_year}=100)", secondary_y=True)
 
     st.plotly_chart(fig, use_container_width=True)
 
@@ -222,18 +212,14 @@ with tab2:
 
     fig2.update_layout(
         height=500,
-        paper_bgcolor=PAPER_BG,
-        plot_bgcolor=BG,
-        font=dict(color=TEXT, family="monospace"),
-        title=dict(text="Gold vs Silver Price History (USD/oz)", font=dict(color=TEXT, size=15)),
-        legend=dict(bgcolor="rgba(0,0,0,0.3)", bordercolor=GRID, font=dict(color=TEXT)),
-        xaxis=dict(gridcolor=GRID, zerolinecolor=GRID),
+        title=dict(text="Gold vs Silver Price History (USD/oz)", font=dict(size=15)),
         margin=dict(l=60, r=60, t=60, b=40),
         hovermode="x unified",
+        template="streamlit",
     )
-    fig2.update_yaxes(title_text="Price (USD/oz)", gridcolor=GRID, secondary_y=False)
+    fig2.update_yaxes(title_text="Price (USD/oz)", secondary_y=False)
     if show_ratio:
-        fig2.update_yaxes(title_text="Gold/Silver Ratio (×)", gridcolor=GRID, secondary_y=True)
+        fig2.update_yaxes(title_text="Gold/Silver Ratio (×)", secondary_y=True)
 
     st.plotly_chart(fig2, use_container_width=True)
 

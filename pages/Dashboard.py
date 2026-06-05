@@ -13,8 +13,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 st.set_page_config(page_title="Dashboard — EconVision", page_icon="📈", layout="wide")
 
 try:
-    from utils.ui import inject_custom_css, render_sidebar
-    inject_custom_css()
+    from utils.ui import render_sidebar
     render_sidebar()
 
     from utils.data_fetcher import get_country_data_cached, get_all_countries, load_country_data, get_last_updated_str
@@ -176,9 +175,8 @@ if not gold_df.empty or not global_inflation_df.empty or not global_unemployment
     
     if not gold_df.empty:
         with global_chart_cols[g_col_idx % 2]:
-            st.markdown("<div class='glass-chart-card'>", unsafe_allow_html=True)
             st.markdown("#### 🟡 Global Gold Price")
-            st.markdown(f"<p style='color:#94A3B8; font-size:11px; margin-top:-10px; margin-bottom:15px;'>Last updated: {get_last_updated_str(gold_df)}</p>", unsafe_allow_html=True)
+            st.caption(f"Last updated: {get_last_updated_str(gold_df)}")
             fig_gold = go.Figure()
             
             fig_gold.add_trace(go.Scatter(
@@ -221,14 +219,12 @@ if not gold_df.empty or not global_inflation_df.empty or not global_unemployment
             st.plotly_chart(fig_gold, use_container_width=True)
             if st.button("🔍 Expand Gold Price", key="expand_btn_gold_global", use_container_width=True):
                 open_expanded_chart(fig_gold, gold_df, predictions_df[predictions_df['indicator'] == 'gold_price'], 'gold_price')
-            st.markdown("</div>", unsafe_allow_html=True)
         g_col_idx += 1
 
     if not global_silver_df.empty:
         with global_chart_cols[g_col_idx % 2]:
-            st.markdown("<div class='glass-chart-card'>", unsafe_allow_html=True)
             st.markdown("#### 🥈 Global Silver Price")
-            st.markdown(f"<p style='color:#94A3B8; font-size:11px; margin-top:-10px; margin-bottom:15px;'>Last updated: {get_last_updated_str(global_silver_df)}</p>", unsafe_allow_html=True)
+            st.caption(f"Last updated: {get_last_updated_str(global_silver_df)}")
             fig_silver = go.Figure()
             
             fig_silver.add_trace(go.Scatter(
@@ -271,14 +267,12 @@ if not gold_df.empty or not global_inflation_df.empty or not global_unemployment
             st.plotly_chart(fig_silver, use_container_width=True)
             if st.button("🔍 Expand Silver Price", key="expand_btn_silver_global", use_container_width=True):
                 open_expanded_chart(fig_silver, global_silver_df, predictions_df[predictions_df['indicator'] == 'silver_price'], 'silver_price')
-            st.markdown("</div>", unsafe_allow_html=True)
         g_col_idx += 1
 
     if not global_inflation_df.empty:
         with global_chart_cols[g_col_idx % 2]:
-            st.markdown("<div class='glass-chart-card'>", unsafe_allow_html=True)
             st.markdown("#### 🎈 Global Inflation Rate")
-            st.markdown(f"<p style='color:#94A3B8; font-size:11px; margin-top:-10px; margin-bottom:15px;'>Last updated: {get_last_updated_str(global_inflation_df)}</p>", unsafe_allow_html=True)
+            st.caption(f"Last updated: {get_last_updated_str(global_inflation_df)}")
             fig_infl = go.Figure()
             
             fig_infl.add_trace(go.Scatter(
@@ -321,14 +315,12 @@ if not gold_df.empty or not global_inflation_df.empty or not global_unemployment
             st.plotly_chart(fig_infl, use_container_width=True)
             if st.button("🔍 Expand Inflation Rate", key="expand_btn_infl_global", use_container_width=True):
                 open_expanded_chart(fig_infl, global_inflation_df, predictions_df[predictions_df['indicator'] == 'inflation'], 'inflation')
-            st.markdown("</div>", unsafe_allow_html=True)
         g_col_idx += 1
 
     if not global_unemployment_df.empty:
         with global_chart_cols[g_col_idx % 2]:
-            st.markdown("<div class='glass-chart-card'>", unsafe_allow_html=True)
             st.markdown("#### 👥 Global Unemployment")
-            st.markdown(f"<p style='color:#94A3B8; font-size:11px; margin-top:-10px; margin-bottom:15px;'>Last updated: {get_last_updated_str(global_unemployment_df)}</p>", unsafe_allow_html=True)
+            st.caption(f"Last updated: {get_last_updated_str(global_unemployment_df)}")
             fig_unemp = go.Figure()
             
             fig_unemp.add_trace(go.Scatter(
@@ -371,14 +363,12 @@ if not gold_df.empty or not global_inflation_df.empty or not global_unemployment
             st.plotly_chart(fig_unemp, use_container_width=True)
             if st.button("🔍 Expand Unemployment", key="expand_btn_unemp_global", use_container_width=True):
                 open_expanded_chart(fig_unemp, global_unemployment_df, predictions_df[predictions_df['indicator'] == 'unemployment'], 'unemployment')
-            st.markdown("</div>", unsafe_allow_html=True)
         g_col_idx += 1
 
     if not global_oil_df.empty:
         with global_chart_cols[g_col_idx % 2]:
-            st.markdown("<div class='glass-chart-card'>", unsafe_allow_html=True)
             st.markdown("#### 🛢️ Global Oil Price")
-            st.markdown(f"<p style='color:#94A3B8; font-size:11px; margin-top:-10px; margin-bottom:15px;'>Last updated: {get_last_updated_str(global_oil_df)}</p>", unsafe_allow_html=True)
+            st.caption(f"Last updated: {get_last_updated_str(global_oil_df)}")
             fig_oil = go.Figure()
             
             fig_oil.add_trace(go.Scatter(
@@ -421,14 +411,12 @@ if not gold_df.empty or not global_inflation_df.empty or not global_unemployment
             st.plotly_chart(fig_oil, use_container_width=True)
             if st.button("🔍 Expand Oil Price", key="expand_btn_oil_global", use_container_width=True):
                 open_expanded_chart(fig_oil, global_oil_df, predictions_df[predictions_df['indicator'] == 'oil_price'], 'oil_price')
-            st.markdown("</div>", unsafe_allow_html=True)
         g_col_idx += 1
 
     if not global_dxy_df.empty:
         with global_chart_cols[g_col_idx % 2]:
-            st.markdown("<div class='glass-chart-card'>", unsafe_allow_html=True)
             st.markdown("#### 💵 US Dollar (DXY)")
-            st.markdown(f"<p style='color:#94A3B8; font-size:11px; margin-top:-10px; margin-bottom:15px;'>Last updated: {get_last_updated_str(global_dxy_df)}</p>", unsafe_allow_html=True)
+            st.caption(f"Last updated: {get_last_updated_str(global_dxy_df)}")
             fig_dxy = go.Figure()
             
             fig_dxy.add_trace(go.Scatter(
@@ -471,7 +459,6 @@ if not gold_df.empty or not global_inflation_df.empty or not global_unemployment
             st.plotly_chart(fig_dxy, use_container_width=True)
             if st.button("🔍 Expand US Dollar (DXY)", key="expand_btn_dxy_global", use_container_width=True):
                 open_expanded_chart(fig_dxy, global_dxy_df, predictions_df[predictions_df['indicator'] == 'dxy'], 'dxy')
-            st.markdown("</div>", unsafe_allow_html=True)
         g_col_idx += 1
 
     st.divider()
@@ -530,10 +517,8 @@ st.markdown("#### Time Series")
 chart_cols = st.columns(2)
 for i, indicator in enumerate(indicators):
     with chart_cols[i % 2]:
-        st.markdown("<div class='glass-chart-card'>", unsafe_allow_html=True)
         ind_df = df[df["indicator"] == indicator]
         if ind_df.empty:
-            st.markdown("</div>", unsafe_allow_html=True)
             continue
         pred_df = predictions_df[predictions_df["country_code"].isin(countries)] if not predictions_df.empty else pd.DataFrame()
         ind_df_plot = ind_df[ind_df["country_code"].isin(countries)]
@@ -546,7 +531,6 @@ for i, indicator in enumerate(indicators):
         
         if st.button(f"🔍 Expand {indicator_label(indicator)}", key=f"expand_btn_{indicator}", use_container_width=True):
             open_expanded_chart(fig, ind_df_plot, pred_df, indicator)
-        st.markdown("</div>", unsafe_allow_html=True)
 
 # ── Anomaly Flags ─────────────────────────────────────────────────────────
 st.divider()

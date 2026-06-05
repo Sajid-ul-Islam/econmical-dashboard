@@ -14,8 +14,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 st.set_page_config(page_title="Data Lab — EconVision", page_icon="🗄️", layout="wide")
 
 try:
-    from utils.ui import inject_custom_css, render_sidebar
-    inject_custom_css()
+    from utils.ui import render_sidebar
     render_sidebar()
 
     from utils.database import get_supabase, get_all_countries_in_db
