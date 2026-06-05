@@ -188,6 +188,7 @@ with tab4:
         gdp_growth_adj = st.slider("Annual GDP Growth (%)", -5.0, 15.0, 3.0, 0.1)
         debt_change = st.slider("Debt Change per Year (pp)", -10.0, 10.0, 0.0, 0.5)
         years_forward = st.slider("Years to Project", 5, 20, 10)
+        show_scenario = st.toggle("Show What-If Scenario", value=True)
 
     with col2:
         # Get latest GDP for this country
@@ -227,19 +228,22 @@ with tab4:
                 mode="lines+markers", marker=dict(size=4),
             ))
             # ML Baseline Forecast
-        show_preds = st.session_state.get("show_predictions", True)
-        if show_preds and not ml_pred.empty:
+            show_preds = st.session_state.get("show_predictions", True)
+            if show_preds and not ml_pred.empty:
                 ml_pred_plot = ml_pred[ml_pred["year"].isin(proj_years)]
                 fig.add_trace(go.Scatter(
                     x=ml_pred_plot["year"], y=ml_pred_plot["predicted"],
                     name="ML Baseline (Prophet)", line=dict(color="#FFE66D", width=2, dash="dot"),
                 ))
-            # Projected GDP
-            fig.add_trace(go.Scatter(
-                x=proj_years, y=proj_gdp,
-                name="What-If Scenario", line=dict(color="#4ECDC4", width=2.5, dash="dash"),
-            ))
-            layout = base_layout(f"{cname} — GDP What-If vs ML Baseline")
+            
+            if show_scenario:
+                # Projected GDP
+                fig.add_trace(go.Scatter(
+                    x=proj_years, y=proj_gdp,
+                    name="What-If Scenario", line=dict(color="#4ECDC4", width=2.5, dash="dash"),
+                ))
+            
+            layout = base_layout(f"{cname} — GDP {'What-If vs ' if show_scenario else ''}ML Baseline")
             layout["yaxis"]["title"] = "GDP (USD)"
             fig.update_layout(**layout)
             st.plotly_chart(fig, use_container_width=True)

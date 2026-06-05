@@ -23,13 +23,67 @@ def render_sidebar():
         st.markdown("### ⚙️ Global Options")
         
         default_names = [name for name, code in country_options.items() if code in st.session_state.get("selected_countries", ["USA", "CHN", "DEU"])]
+        
+        special_options = [
+            "🌍 Select All", 
+            "🌍 All African", "🌍 All Asian", "🌍 All European", "🌍 All American",
+            "🌍 All North American", "🌍 All South American", "🌍 All Oceanian",
+            "🏛️ All NATO", "🏛️ All EU", "🏛️ All BRICS", "🏛️ All SAARC",
+            "🏛️ All OIC", "🏛️ All Arab League", "🏛️ All OPEC"
+        ]
+        
+        GROUPS = {
+            "🌍 All North American": ["CAN", "USA", "MEX", "GTM", "BLZ", "HND", "SLV", "NIC", "CRI", "PAN", "CUB", "DOM", "HTI", "JAM", "TTO", "BRB"],
+            "🌍 All South American": ["ARG", "BOL", "BRA", "CHL", "COL", "ECU", "GUY", "PRY", "PER", "SUR", "URY", "VEN"],
+            "🌍 All Oceanian": ["AUS", "NZL", "FJI", "PNG", "SLB", "VUT", "WSM", "KIR", "TON", "FSM", "MHL", "PLW", "NRU", "TUV"],
+            "🏛️ All NATO": ["ALB", "BEL", "BGR", "CAN", "HRV", "CZE", "DNK", "EST", "FIN", "FRA", "DEU", "GRC", "HUN", "ISL", "ITA", "LVA", "LTU", "LUX", "MNE", "MKD", "NLD", "NOR", "POL", "PRT", "ROU", "SVK", "SVN", "ESP", "SWE", "TUR", "GBR", "USA"],
+            "🏛️ All EU": ["AUT", "BEL", "BGR", "HRV", "CYP", "CZE", "DNK", "EST", "FIN", "FRA", "DEU", "GRC", "HUN", "IRL", "ITA", "LVA", "LTU", "LUX", "MLT", "NLD", "POL", "PRT", "ROU", "SVK", "SVN", "ESP", "SWE"],
+            "🏛️ All BRICS": ["BRA", "RUS", "IND", "CHN", "ZAF", "EGY", "ETH", "IRN", "ARE", "SAU"],
+            "🏛️ All SAARC": ["AFG", "BGD", "BTN", "IND", "MDV", "NPL", "PAK", "LKA"],
+            "🏛️ All OIC": ["AFG", "ALB", "DZA", "AGO", "BHR", "BGD", "BEN", "BFA", "BRN", "CMR", "TCD", "COM", "CIV", "DJI", "EGY", "GAB", "GMB", "GIN", "GNB", "GUY", "IDN", "IRN", "IRQ", "JOR", "KAZ", "KWT", "KGZ", "LBN", "LBY", "MYS", "MDV", "MLI", "MRT", "MAR", "MOZ", "NER", "NGA", "OMN", "PAK", "PSE", "QAT", "SAU", "SEN", "SLE", "SOM", "SDN", "SUR", "SYR", "TJK", "TGO", "TUN", "TUR", "TKM", "UGA", "ARE", "UZB", "YEM"],
+            "🏛️ All Arab League": ["DZA", "BHR", "COM", "DJI", "EGY", "IRQ", "JOR", "KWT", "LBN", "LBY", "MRT", "MAR", "OMN", "PSE", "QAT", "SAU", "SOM", "SDN", "SYR", "TUN", "ARE", "YEM"],
+            "🏛️ All OPEC": ["DZA", "AGO", "COG", "GNQ", "GAB", "IRN", "IRQ", "KWT", "LBY", "NGA", "SAU", "ARE", "VEN"]
+        }
+        
         selected_names = st.multiselect(
             "Countries",
-            options=country_names,
-            default=default_names[:6],
-            max_selections=8,
+            options=special_options + country_names,
+            default=default_names,
         )
-        st.session_state.selected_countries = [country_options[n] for n in selected_names]
+        
+        final_codes = []
+        expanded = False
+        valid_codes = [c["code"] for c in all_countries]
+        
+        for n in selected_names:
+            if n in GROUPS:
+                final_codes.extend([c for c in GROUPS[n] if c in valid_codes])
+                expanded = True
+            elif n == "🌍 Select All":
+                final_codes.extend(valid_codes)
+                expanded = True
+            elif n == "🌍 All African":
+                final_codes.extend([c["code"] for c in all_countries if "Africa" in c.get("region", "")])
+                expanded = True
+            elif n == "🌍 All Asian":
+                final_codes.extend([c["code"] for c in all_countries if "Asia" in c.get("region", "")])
+                expanded = True
+            elif n == "🌍 All European":
+                final_codes.extend([c["code"] for c in all_countries if "Europe" in c.get("region", "")])
+                expanded = True
+            elif n == "🌍 All American":
+                final_codes.extend([c["code"] for c in all_countries if "America" in c.get("region", "")])
+                expanded = True
+            else:
+                final_codes.append(country_options[n])
+                
+        final_codes = list(dict.fromkeys(final_codes))
+        
+        if expanded:
+            st.session_state.selected_countries = final_codes
+            st.rerun()
+        else:
+            st.session_state.selected_countries = final_codes
         
         default_inds = [k for k, v in indicator_options.items() if v in st.session_state.get("selected_indicators", ["gdp", "gdp_per_capita", "debt_pct_gdp"])]
         selected_ind_labels = st.multiselect(

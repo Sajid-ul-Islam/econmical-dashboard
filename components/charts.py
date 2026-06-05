@@ -143,11 +143,12 @@ def comparison_bar(
     df: pd.DataFrame,
     indicator: str,
     year: int,
+    ascending: bool = True,
 ) -> go.Figure:
     """Side-by-side bar for country comparison at a given year."""
     filtered = df[
         (df["indicator"] == indicator) & (df["year"] == year)
-    ].sort_values("value", ascending=True)
+    ].sort_values("value", ascending=ascending)
 
     if filtered.empty:
         fig = go.Figure()
