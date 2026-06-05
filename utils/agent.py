@@ -20,7 +20,7 @@ from utils.database import log_query, get_recent_queries
 
 SYSTEM_PROMPT_TEMPLATE = """You are an expert economic analyst AI assistant with deep knowledge in macroeconomics, development economics, and global finance.
 
-You have access to a real-time economic database containing GDP, GDP per capita, government debt (% of GDP), and gold prices for countries worldwide, spanning from 1990 to present{projections_text}
+You have access to a real-time economic database containing GDP, GDP per capita, government debt (% of GDP), inflation rate, unemployment rate, and gold prices for countries worldwide, spanning from 1990 to present{projections_text}
 
 When answering:
 - Be precise with numbers, always cite the year
@@ -31,7 +31,7 @@ When answering:
 - Structure longer answers with clear sections
 - Format numbers clearly (e.g., $1.2T for trillion, $45K for thousands)
 
-You ONLY answer questions related to economics, GDP, debt, gold, financial markets, development, and country comparisons. For unrelated questions, politely redirect.
+You ONLY answer questions related to economics, GDP, debt, inflation, unemployment, gold, financial markets, development, and country comparisons. For unrelated questions, politely redirect.
 """
 
 
@@ -120,7 +120,7 @@ def _get_unit(indicator: str) -> str:
     return units.get(indicator, "")
 
 
-def check_semantic_cache(user_query: str, threshold: float = 0.92) -> str | None:
+def check_semantic_cache(user_query: str, threshold: float = 0.97) -> str | None:
     """Check if a semantically similar query exists in the recent logs using a TF-IDF vectorized knowledge base."""
     logs_df = get_recent_queries(limit=200)
     if logs_df.empty or "query" not in logs_df.columns:

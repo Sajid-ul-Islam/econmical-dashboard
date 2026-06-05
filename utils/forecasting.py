@@ -151,7 +151,8 @@ def detect_anomalies(df: pd.DataFrame, z_threshold: float = 2.5) -> pd.DataFrame
 def compute_economic_health_score(country_df: pd.DataFrame, latest_year: int) -> dict:
     """
     Composite economic health score (0-100) from latest year data.
-    Weights: GDP growth (30%), per capita GDP (30%), debt ratio (25%, inverted), stability (15%)
+    Weights: GDP per capita (30%), debt ratio (25%, inverted),
+             inflation (25%, inverted), unemployment (20%, inverted)
     """
     scores = {}
     latest = country_df[country_df["year"] == latest_year]
@@ -160,21 +161,34 @@ def compute_economic_health_score(country_df: pd.DataFrame, latest_year: int) ->
         row = latest[latest["indicator"] == indicator]
         return float(row["value"].iloc[0]) if not row.empty else None
 
-    gdp = safe_get("gdp")
     gdp_pc = safe_get("gdp_per_capita")
     debt = safe_get("debt_pct_gdp")
+    inflation = safe_get("inflation")
+    unemployment = safe_get("unemployment")
 
     # Normalize per capita GDP (log scale, 0-100)
     if gdp_pc:
-        # log scale: 500 = 0, 80000 = 100
         import math
         pc_score = min(100, max(0, (math.log(max(gdp_pc, 500)) - math.log(500)) / (math.log(80000) - math.log(500)) * 100))
         scores["gdp_per_capita_score"] = round(pc_score, 1)
 
-    # Debt score (inverted: lower debt = higher score)
-    if debt:
-        debt_score = max(0, 100 - debt)
-        scores["debt_score"] = round(min(100, debt_score), 1)
+    # Debt score (inverted: lower debt = higher score; 150%+ → 0, 0% → 100)
+    if debt is not None:
+        debt_score = max(0, min(100, 100 - (debt / 150) * 100))
+        scores["debt_score"] = round(debt_score, 1)
+
+    # Inflation score (inverted: ~2% target is ideal; >20% → 0, 0% → 85, 2% → 100)
+    if inflation is not None:
+        if inflation <= 2:
+            infl_score = 85 + (inflation / 2) * 15  # reward near-target
+        else:
+            infl_score = max(0, 100 - (inflation / 20) * 100)
+        scores["inflation_score"] = round(min(100, infl_score), 1)
+
+    # Unemployment score (inverted: 0% → 100, 20%+ → 0)
+    if unemployment is not None:
+        unemp_score = max(0, min(100, 100 - (unemployment / 20) * 100))
+        scores["unemployment_score"] = round(unemp_score, 1)
 
     # Overall composite
     values = list(scores.values())

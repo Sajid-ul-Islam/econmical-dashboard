@@ -79,10 +79,13 @@ if map_df.empty:
             "POL","SWE","BEL","ARG","NOR","AUT","UAE","NGA","ZAF","EGY",
             "BGD","PAK","VNM","THA","PHL","MYS","COL","CHL","FIN","DNK",
         ]
-        with st.spinner("Loading 40 countries..."):
-            for code in TOP_40:
-                name = country_map.get(code, code)
-                load_country_data(code, name)
+        progress = st.progress(0, text="Loading countries…")
+        total = len(TOP_40)
+        for i, code in enumerate(TOP_40):
+            name = country_map.get(code, code)
+            progress.progress((i + 1) / total, text=f"Loading {name} ({i + 1}/{total})…")
+            load_country_data(code, name)
+        progress.empty()
         st.cache_data.clear()
         st.rerun()
 else:

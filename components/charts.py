@@ -7,6 +7,7 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 import pandas as pd
 import numpy as np
+from datetime import datetime
 
 COLORS = [
     "#00D4FF", "#FF6B6B", "#4ECDC4", "#FFE66D",
@@ -134,7 +135,8 @@ def timeline_chart(
                 ))
 
     # Add vertical line at current year
-    fig.add_vline(x=2026, line_dash="dot", line_color="#666", annotation_text="Now", annotation_font_color="#999")
+    current_year = datetime.now().year
+    fig.add_vline(x=current_year, line_dash="dot", line_color="#666", annotation_text="Now", annotation_font_color="#999")
 
     layout = base_layout(indicator_label(indicator), height=450)
     layout["xaxis"]["title"] = "Year"
@@ -208,28 +210,33 @@ def health_score_gauge(score: float, country_name: str) -> go.Figure:
 
 
 def correlation_heatmap(df: pd.DataFrame, indicator1: str, indicator2: str) -> go.Figure:
-    """Correlation scatter between two indicators across countries."""
+    """Correlation scatter between two indicators across countries, colored by country."""
     countries = df["country_code"].unique()
-    x_vals, y_vals, labels = [], [], []
+    color_map = {c: COLORS[i % len(COLORS)] for i, c in enumerate(countries)}
+
+    fig = go.Figure()
 
     for country in countries:
         cdf = df[df["country_code"] == country]
+        cname = cdf["country_name"].iloc[0] if "country_name" in cdf.columns else country
         ind1 = cdf[cdf["indicator"] == indicator1][["year", "value"]].rename(columns={"value": "v1"})
         ind2 = cdf[cdf["indicator"] == indicator2][["year", "value"]].rename(columns={"value": "v2"})
         merged = pd.merge(ind1, ind2, on="year")
-        if not merged.empty:
-            x_vals.extend(merged["v1"].tolist())
-            y_vals.extend(merged["v2"].tolist())
-            cname = cdf["country_name"].iloc[0] if "country_name" in cdf.columns else country
-            labels.extend([f"{cname} {int(r['year'])}" for _, r in merged.iterrows()])
+        if merged.empty:
+            continue
 
-    fig = go.Figure(go.Scatter(
-        x=x_vals, y=y_vals,
-        mode="markers",
-        marker=dict(color="#00D4FF", size=5, opacity=0.6),
-        text=labels,
-        hovertemplate="%{text}<extra></extra>",
-    ))
+        labels = [f"{cname} {int(r['year'])}" for _, r in merged.iterrows()]
+        fig.add_trace(go.Scatter(
+            x=merged["v1"],
+            y=merged["v2"],
+            mode="markers",
+            name=cname,
+            marker=dict(color=color_map[country], size=6, opacity=0.75),
+            text=labels,
+            hovertemplate="%{text}<br>"
+                          f"{indicator_label(indicator1)}: %{{x}}<br>"
+                          f"{indicator_label(indicator2)}: %{{y}}<extra></extra>",
+        ))
 
     layout = base_layout(f"{indicator_label(indicator1)} vs {indicator_label(indicator2)}", height=420)
     layout["xaxis"]["title"] = indicator_label(indicator1)
