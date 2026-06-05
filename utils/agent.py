@@ -18,9 +18,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 from utils.database import log_query, get_recent_queries
 
 
-SYSTEM_PROMPT = """You are an expert economic analyst AI assistant with deep knowledge in macroeconomics, development economics, and global finance.
+SYSTEM_PROMPT_TEMPLATE = """You are an expert economic analyst AI assistant with deep knowledge in macroeconomics, development economics, and global finance.
 
-You have access to a real-time economic database containing GDP, GDP per capita, government debt (% of GDP), and gold prices for countries worldwide, spanning from 1990 to present with ML-based projections to 2030.
+You have access to a real-time economic database containing GDP, GDP per capita, government debt (% of GDP), and gold prices for countries worldwide, spanning from 1990 to present{projections_text}
 
 When answering:
 - Be precise with numbers, always cite the year
@@ -171,10 +171,11 @@ def ask_agent(
     data_context = build_data_context(df, predictions_df, selected_countries, selected_indicators)
 
     # Dynamic system prompt based on predictions visibility
-    current_system_prompt = SYSTEM_PROMPT
     if predictions_df.empty:
-        current_system_prompt = current_system_prompt.replace(" with ML-based projections to 2030", "")
-        current_system_prompt += "\n- NOTE: ML predictions are currently hidden by the user. Do not forecast or mention future projections."
+        projections_text = ".\n\n- NOTE: ML predictions are currently hidden by the user. Do not forecast or mention future projections."
+    else:
+        projections_text = " with ML-based projections to 2030."
+    current_system_prompt = SYSTEM_PROMPT_TEMPLATE.format(projections_text=projections_text)
 
     # Build messages with history
     messages = []
@@ -184,7 +185,7 @@ def ask_agent(
     # Add context + current query
     messages.append({
         "role": "user",
-        "content": f"Here is the current economic data context:\n\n{data_context}\n\nUser question: {user_query}"
+        "content": f"<economic_data>\n{data_context}\n</economic_data>\n\nUser question: {user_query}"
     })
 
     errors = []

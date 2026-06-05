@@ -34,4 +34,4 @@ The agent is governed by a strict system prompt that enforces:
 
 ## 📂 Relevant Files
 - `utils/agent.py`: Core routing, prompt building, and API calls.
-- `pages/AI_Agent.py`: The Streamlit chat UI.
+- `pages/Data_Lab.py`: The Streamlit chat UI (located in the "AI Agent" tab).

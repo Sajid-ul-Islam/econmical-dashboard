@@ -30,3 +30,8 @@ Allows users to manually adjust growth trajectories to test economic hypotheses 
 Acts as an automated auditor for the database to ensure data integrity.
 - **How it works:** Compares the cached data inside the Supabase database against a fresh, live payload from the World Bank API.
 - **Drift Detection:** Flags any historical data point that has changed by >1% (which often happens when the World Bank retroactively revises historical GDP figures).
+
+## 6. 🎲 3D Multivariate Animation
+Enables dynamic visual comparison of three different economic indicators simultaneously over time.
+- **How it works:** Plots historical pathways of selected countries in a 3-dimensional space, drawing chronological lines and animating a marker to represent time progression.
+- **Use Case:** Reveals complex macroeconomic relationships, such as how debt scales relative to GDP and GDP per capita over decades, allowing users to spot divergence in national economic strategies.

@@ -2,6 +2,8 @@
 
 A full-stack data science showcase project featuring real economic data, ML forecasting, AI agent, and multi-country comparisons. Built for Streamlit Cloud deployment.
 
+**Live App:** [global-economics.streamlit.app](https://global-economics.streamlit.app)
+
 ## Features
 
 | Feature | Details |
@@ -13,9 +15,16 @@ A full-stack data science showcase project featuring real economic data, ML fore
 | 🧪 **What-If Simulator** | Adjust growth/debt scenarios and project outcomes |
 | 🚨 **Anomaly Detection** | Z-score based flagging of unusual economic changes |
 | 🏆 **Health Scores** | Composite economic wellness index per country |
-| 🤖 **AI Agent** | Claude-powered chat with in-context RAG over live data |
-| 🗄️ **Data Lab** | Provenance, freshness tracking, cross-source verification |
+| 🤖 **AI Agent** | Claude-powered chat with in-context RAG over live data (Integrated in Data Lab) |
+| 🗄️ **Data Lab** | Provenance, freshness tracking, cross-source verification, AI Agent |
 | ⬇️ **Export** | CSV/JSON download of all data and predictions |
+
+---
+
+## Screenshots
+
+![3D Multivariate Animation](https://placehold.co/800x400/111827/E2E8F0?text=3D+Multivariate+Animation+Screenshot)
+*3D Multivariate Animation of Economic Indicators over time.*
 
 ---
 
