@@ -9,7 +9,6 @@ Sources:
 import streamlit as st
 import requests
 import pandas as pd
-import numpy as np
 import os
 from datetime import datetime, timezone, timedelta
 from utils.database import (
@@ -290,6 +289,7 @@ def get_all_countries() -> list[dict]:
             if c.get("region", {}).get("id") not in ["NA", ""] and c.get("capitalCity"):
                 countries.append({
                     "code": c["id"],
+                    "iso2": c.get("iso2Code", ""),
                     "name": c["name"],
                     "region": c.get("region", {}).get("value", ""),
                     "income_level": c.get("incomeLevel", {}).get("value", ""),
@@ -301,28 +301,28 @@ def get_all_countries() -> list[dict]:
 
 def _fallback_countries():
     return [
-        {"code": "USA", "name": "United States", "region": "North America", "income_level": "High income"},
-        {"code": "CHN", "name": "China", "region": "East Asia & Pacific", "income_level": "Upper middle income"},
-        {"code": "DEU", "name": "Germany", "region": "Europe & Central Asia", "income_level": "High income"},
-        {"code": "JPN", "name": "Japan", "region": "East Asia & Pacific", "income_level": "High income"},
-        {"code": "GBR", "name": "United Kingdom", "region": "Europe & Central Asia", "income_level": "High income"},
-        {"code": "FRA", "name": "France", "region": "Europe & Central Asia", "income_level": "High income"},
-        {"code": "IND", "name": "India", "region": "South Asia", "income_level": "Lower middle income"},
-        {"code": "BRA", "name": "Brazil", "region": "Latin America & Caribbean", "income_level": "Upper middle income"},
-        {"code": "BGD", "name": "Bangladesh", "region": "South Asia", "income_level": "Lower middle income"},
-        {"code": "PAK", "name": "Pakistan", "region": "South Asia", "income_level": "Lower middle income"},
-        {"code": "IDN", "name": "Indonesia", "region": "East Asia & Pacific", "income_level": "Upper middle income"},
-        {"code": "NGA", "name": "Nigeria", "region": "Sub-Saharan Africa", "income_level": "Lower middle income"},
-        {"code": "ZAF", "name": "South Africa", "region": "Sub-Saharan Africa", "income_level": "Upper middle income"},
-        {"code": "TUR", "name": "Turkey", "region": "Europe & Central Asia", "income_level": "Upper middle income"},
-        {"code": "SAU", "name": "Saudi Arabia", "region": "Middle East & North Africa", "income_level": "High income"},
-        {"code": "ARG", "name": "Argentina", "region": "Latin America & Caribbean", "income_level": "Upper middle income"},
-        {"code": "MEX", "name": "Mexico", "region": "Latin America & Caribbean", "income_level": "Upper middle income"},
-        {"code": "KOR", "name": "South Korea", "region": "East Asia & Pacific", "income_level": "High income"},
-        {"code": "CAN", "name": "Canada", "region": "North America", "income_level": "High income"},
-        {"code": "AUS", "name": "Australia", "region": "East Asia & Pacific", "income_level": "High income"},
-        {"code": "RUS", "name": "Russia", "region": "Europe & Central Asia", "income_level": "Upper middle income"},
-        {"code": "EGY", "name": "Egypt", "region": "Middle East & North Africa", "income_level": "Lower middle income"},
+        {"code": "USA", "iso2": "US", "name": "United States", "region": "North America", "income_level": "High income"},
+        {"code": "CHN", "iso2": "CN", "name": "China", "region": "East Asia & Pacific", "income_level": "Upper middle income"},
+        {"code": "DEU", "iso2": "DE", "name": "Germany", "region": "Europe & Central Asia", "income_level": "High income"},
+        {"code": "JPN", "iso2": "JP", "name": "Japan", "region": "East Asia & Pacific", "income_level": "High income"},
+        {"code": "GBR", "iso2": "GB", "name": "United Kingdom", "region": "Europe & Central Asia", "income_level": "High income"},
+        {"code": "FRA", "iso2": "FR", "name": "France", "region": "Europe & Central Asia", "income_level": "High income"},
+        {"code": "IND", "iso2": "IN", "name": "India", "region": "South Asia", "income_level": "Lower middle income"},
+        {"code": "BRA", "iso2": "BR", "name": "Brazil", "region": "Latin America & Caribbean", "income_level": "Upper middle income"},
+        {"code": "BGD", "iso2": "BD", "name": "Bangladesh", "region": "South Asia", "income_level": "Lower middle income"},
+        {"code": "PAK", "iso2": "PK", "name": "Pakistan", "region": "South Asia", "income_level": "Lower middle income"},
+        {"code": "IDN", "iso2": "ID", "name": "Indonesia", "region": "East Asia & Pacific", "income_level": "Upper middle income"},
+        {"code": "NGA", "iso2": "NG", "name": "Nigeria", "region": "Sub-Saharan Africa", "income_level": "Lower middle income"},
+        {"code": "ZAF", "iso2": "ZA", "name": "South Africa", "region": "Sub-Saharan Africa", "income_level": "Upper middle income"},
+        {"code": "TUR", "iso2": "TR", "name": "Turkey", "region": "Europe & Central Asia", "income_level": "Upper middle income"},
+        {"code": "SAU", "iso2": "SA", "name": "Saudi Arabia", "region": "Middle East & North Africa", "income_level": "High income"},
+        {"code": "ARG", "iso2": "AR", "name": "Argentina", "region": "Latin America & Caribbean", "income_level": "Upper middle income"},
+        {"code": "MEX", "iso2": "MX", "name": "Mexico", "region": "Latin America & Caribbean", "income_level": "Upper middle income"},
+        {"code": "KOR", "iso2": "KR", "name": "South Korea", "region": "East Asia & Pacific", "income_level": "High income"},
+        {"code": "CAN", "iso2": "CA", "name": "Canada", "region": "North America", "income_level": "High income"},
+        {"code": "AUS", "iso2": "AU", "name": "Australia", "region": "East Asia & Pacific", "income_level": "High income"},
+        {"code": "RUS", "iso2": "RU", "name": "Russia", "region": "Europe & Central Asia", "income_level": "Upper middle income"},
+        {"code": "EGY", "iso2": "EG", "name": "Egypt", "region": "Middle East & North Africa", "income_level": "Lower middle income"},
     ]
 
 
@@ -357,9 +357,7 @@ def load_country_data(country_code: str, country_name: str, force: bool = False)
             fetched_any = True
 
     # Gold price — same for all countries, stored under "WLD"
-    if not force and not is_stale("WLD", GOLD_INDICATOR):
-        pass
-    else:
+    if force or is_stale("WLD", GOLD_INDICATOR):
         gold_rows = fetch_gold_price_fred()
         if gold_rows:
             rows = [
@@ -379,9 +377,7 @@ def load_country_data(country_code: str, country_name: str, force: bool = False)
             fetched_any = True
 
     # Silver price
-    if not force and not is_stale("WLD", SILVER_INDICATOR):
-        pass
-    else:
+    if force or is_stale("WLD", SILVER_INDICATOR):
         silver_rows = fetch_silver_price_fred()
         if silver_rows:
             rows = [
@@ -401,9 +397,7 @@ def load_country_data(country_code: str, country_name: str, force: bool = False)
             fetched_any = True
 
     # Oil price
-    if not force and not is_stale("WLD", OIL_INDICATOR):
-        pass
-    else:
+    if force or is_stale("WLD", OIL_INDICATOR):
         oil_rows = fetch_oil_price_fred()
         if oil_rows:
             rows = [
@@ -423,9 +417,7 @@ def load_country_data(country_code: str, country_name: str, force: bool = False)
             fetched_any = True
 
     # DXY Index
-    if not force and not is_stale("WLD", DXY_INDICATOR):
-        pass
-    else:
+    if force or is_stale("WLD", DXY_INDICATOR):
         dxy_rows = fetch_dxy_fred()
         if dxy_rows:
             rows = [

@@ -67,6 +67,7 @@ def indicator_label(indicator: str) -> str:
         "dxy": "US Dollar Index (DXY)",
         "life_expectancy": "Life Expectancy (Years)",
         "silver_price": "Silver Price (USD/oz)",
+        "oil_price": "Oil Price (USD/bbl)",
     }
     return labels.get(indicator, indicator.replace("_", " ").title())
 
@@ -86,6 +87,8 @@ def format_value(value: float, indicator: str) -> str:
         return f"{value:.1f}%"
     elif indicator == "gold_price":
         return f"${value:,.0f}/oz"
+    elif indicator == "oil_price":
+        return f"${value:,.2f}/bbl"
     elif indicator == "dxy":
         return f"{value:.2f}"
     elif indicator == "silver_price":

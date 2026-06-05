@@ -30,9 +30,16 @@ all_countries = get_all_countries()
 all_codes = [c["code"] for c in all_countries]
 country_map = {c["code"]: c["name"] for c in all_countries}
 
+# Map ISO-2 codes mathematically to Unicode flag emojis
+def get_flag_emoji(iso2: str) -> str:
+    if not isinstance(iso2, str) or len(iso2) != 2:
+        return "🏳️"
+    return chr(ord(iso2[0].upper()) + 127397) + chr(ord(iso2[1].upper()) + 127397)
+
+iso2_map = {c["code"]: c.get("iso2", "") for c in all_countries}
+
 fullscreen = st.toggle("🗺️ Fullscreen Map View", value=False)
-if fullscreen:
-else:
+if not fullscreen:
     st.markdown("## 🌍 World Map")
     st.caption("Choropleth view of economic indicators across all available countries")
     st.divider()
@@ -100,7 +107,7 @@ if map_df.empty:
         TOP_40 = [
             "USA","CHN","DEU","JPN","GBR","FRA","IND","ITA","BRA","CAN",
             "RUS","KOR","AUS","ESP","MEX","IDN","NLD","SAU","TUR","CHE",
-            "POL","SWE","BEL","ARG","NOR","AUT","UAE","NGA","ZAF","EGY",
+            "POL","SWE","BEL","ARG","NOR","AUT","ARE","NGA","ZAF","EGY",
             "BGD","PAK","VNM","THA","PHL","MYS","COL","CHL","FIN","DNK",
         ]
         progress = st.progress(0, text="Loading countries…")
@@ -136,27 +143,29 @@ else:
             cat_order = list(DEBT_COLOR_MAP.keys())
             plot_df["debt_category"] = pd.Categorical(plot_df["debt_category"], categories=cat_order, ordered=True)
 
+            plot_df["country_label"] = plot_df["country_code"].map(lambda c: get_flag_emoji(iso2_map.get(c, ""))) + " " + plot_df["country_name"]
+
             fig = px.choropleth(
                 plot_df,
                 locations="country_code",
                 locationmode="ISO-3",
                 color="debt_category",
                 color_discrete_map=DEBT_COLOR_MAP,
-                hover_name="country_name",
-                hover_data={"value": ":.1f", "country_code": False, "debt_category": False},
+                hover_name="country_ ":.1f", "country_code": False, "debt_category": False},
                 title=f"Debt Risk Categories — {latest_year_available}",
                 labels={"debt_category": "Debt Risk", "value": "Debt % GDP"},
                 category_orders={"debt_category": cat_order},
             )
         else:
+            plot_df["country_label"] = plot_df["country_code"].map(lambda c: get_flag_emoji(iso2_map.get(c, ""))) + " " + plot_df["country_name"]
+
             fig = px.choropleth(
                 plot_df,
                 locations="country_code",
                 locationmode="ISO-3",
                 color="value",
-                hover_name="country_name",
-                hover_data={"value": ":.2f", "country_code": False},
-                color_continuous_scale=color_scale,
+                hover_name="country_label",
+                hover_data={"value":le=color_scale,
                 range_color=[plot_df["value"].min(), plot_df["value"].max()],
                 title=f"{indicator_label(map_indicator)} — {year_range[0]} to {year_range[1]}",
                 labels={"value": indicator_label(map_indicator)},
@@ -166,13 +175,20 @@ else:
                 # The streamlit template will handle colors
             )
 
+        # Refine country borders for a cleaner look
+        fig.update_traces(marker_line_width=0.5, marker_line_color="rgba(128, 128, 128, 0.4)")
+
         fig.update_geos(
             showcoastlines=True,
+            coastlinecolor="rgba(128, 128, 128, 0.2)",
+            coastlinewidth=0.5,
             showland=True,
-            showocean=True,
-            showlakes=True,
+            landcolor="rgba(128, 128, 128, 0.05)",
+            showocean=False,
+            showlakes=False,
             showframe=False,
             projection_type=projection_style,
+            resolution=50,
         )
         fig.update_layout(
             height=800 if fullscreen else 560,
@@ -212,6 +228,7 @@ else:
                 req_cols = [c for c in available_cols if c not in ["country_code", "country_name", "year"]]
                 
                 if len(req_cols) >= 3:
+                    pivot_df["country_label"] = pivot_df["country_code"].map(lambda c: get_flag_emoji(iso2_map.get(c, ""))) + " " + pivot_df["country_name"]
                     countries = pivot_df["country_name"].unique()
                     colors = px.colors.qualitative.Plotly
                     color_map = {c: colors[i % len(colors)] for i, c in enumerate(countries)}
@@ -226,9 +243,8 @@ else:
                         text="country_name",
                         animation_frame="year",
                         animation_group="country_name",
-                        hover_name="country_name",
-                        hover_data={"year": True},
-                        labels={
+                        hover_name="country_label",
+                        hover_data={"ye
                             req_cols[0]: indicator_label(req_cols[0]),
                             req_cols[1]: indicator_label(req_cols[1]),
                             req_cols[2]: indicator_label(req_cols[2]),

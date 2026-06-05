@@ -63,7 +63,7 @@ def build_data_context(
                 continue
 
             latest = idf[idf["year"] == idf["year"].max()]
-            oldest_5 = idf.tail(5)
+            recent_5 = idf.tail(5)  # most recent 5 years
 
             unit = _get_unit(indicator)
             if not latest.empty:
@@ -72,8 +72,8 @@ def build_data_context(
                 lines.append(f"  {indicator}: {_fmt(val, indicator)} {unit} ({year})")
 
             # 5-year trend
-            if len(oldest_5) >= 2:
-                trend_data = [f"{int(r['year'])}: {_fmt(r['value'], indicator)}" for _, r in oldest_5.iterrows()]
+            if len(recent_5) >= 2:
+                trend_data = [f"{int(r['year'])}: {_fmt(r['value'], indicator)}" for _, r in recent_5.iterrows()]
                 lines.append(f"  Recent trend: {' → '.join(trend_data)}")
 
             # Prediction
@@ -217,7 +217,7 @@ def ask_agent(
                 log_query(user_query, answer)
                 return answer, "Claude 3.5 Sonnet (Anthropic)"
             except Exception as e:
-                errors.append(f"Anthropic error: {str(e)}")
+                errors.append(f"Anthropic error: {type(e).__name__}")
         else:
             if "anthropic_warning_shown" not in st.session_state:
                 st.warning("⚠️ Anthropic library is missing! Skipping Claude 3.5 Sonnet.", icon="⚠️")
@@ -239,7 +239,7 @@ def ask_agent(
             log_query(user_query, answer)
             return answer, "Llama 3.3 70B (Groq)"
         except Exception as e:
-            errors.append(f"Groq error: {str(e)}")
+            errors.append(f"Groq error: {type(e).__name__}")
 
     # 3. Try Gemini (1.5 Flash)
     if gemini_key:
@@ -251,13 +251,13 @@ def ask_agent(
                 combined_chat += f"{m['role'].capitalize()}: {m['content']}\n\n"
             
             payload = {"contents": [{"parts": [{"text": combined_chat}]}]}
-            r = requests.post(url, json=payload)
+            r = requests.post(url, json=payload, timeout=15)
             r.raise_for_status()
             answer = r.json()["candidates"][0]["content"]["parts"][0]["text"]
             log_query(user_query, answer)
             return answer, "Gemini 1.5 Flash (Google)"
         except Exception as e:
-            errors.append(f"Gemini error: {str(e)}")
+            errors.append(f"Gemini error: {type(e).__name__}")
 
     # 4. Try OpenRouter (Llama 3 8B Instruct Free)
     if openrouter_key:
@@ -273,7 +273,7 @@ def ask_agent(
             log_query(user_query, answer)
             return answer, "Llama 3.1 8B (OpenRouter)"
         except Exception as e:
-            errors.append(f"OpenRouter error: {str(e)}")
+            errors.append(f"OpenRouter error: {type(e).__name__}")
 
     if errors:
         return "⚠️ All configured AI providers failed. Details:\n\n" + "\n".join(errors), "Error"

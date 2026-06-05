@@ -12,7 +12,6 @@ except ImportError:
     Client = type("Client", (object,), {})  # Dummy class
 from datetime import datetime, timezone
 import pandas as pd
-import json
 
 
 @st.cache_resource
@@ -216,6 +215,7 @@ def get_recent_queries(limit: int = 100) -> pd.DataFrame:
 
 
 def get_all_countries_in_db() -> list[dict]:
+    """Return distinct country codes and names stored in the database."""
     try:
         db = get_supabase()
         if not db:
@@ -223,11 +223,15 @@ def get_all_countries_in_db() -> list[dict]:
         result = (
             db.table("economic_data")
             .select("country_code, country_name")
+            .order("country_name")
             .execute()
         )
         if result.data:
-            df = pd.DataFrame(result.data).drop_duplicates()
-            return df.to_dict("records")
+            # Deduplicate in Python — Supabase JS client doesn't expose DISTINCT
+            seen = {}
+            for row in result.data:
+                seen[row["country_code"]] = row["country_name"]
+            return [{"country_code": k, "country_name": v} for k, v in seen.items()]
         return []
     except Exception as e:
         st.error(f"Country list read error: {e}")

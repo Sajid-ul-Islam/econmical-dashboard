@@ -9,11 +9,11 @@ from plotly.subplots import make_subplots
 
 st.set_page_config(page_title="Macro Trends — EconVision", page_icon="📉", layout="wide")
 
-from utils.ui import render_sidebar
+from utils.ui import inject_custom_css, render_sidebar
+inject_custom_css()
 render_sidebar()
 
-# ── Constants ─────────────────────────────────────────────────────────────
-# US CPI inflation by year (annual %, BLS data)
+# ── Constants ─────────────────────────────────────────────────────────────# US CPI inflation by year (annual %, BLS data)
 US_INFLATION = {
     1970: 5.8,  1971: 4.3,  1972: 3.3,  1973: 6.2,  1974: 11.1,
     1975: 9.1,  1976: 5.8,  1977: 6.5,  1978: 7.6,  1979: 11.3,
@@ -157,10 +157,7 @@ with tab2:
 
     show_ratio = st.toggle("Show Gold/Silver Ratio", value=True)
 
-    if show_ratio:
-        fig2 = make_subplots(specs=[[{"secondary_y": True}]])
-    else:
-        fig2 = make_subplots(specs=[[{"secondary_y": True}]])
+    fig2 = make_subplots(specs=[[{"secondary_y": True}]])
 
     # Gold area
     fig2.add_trace(

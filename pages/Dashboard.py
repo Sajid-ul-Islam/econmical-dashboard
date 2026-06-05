@@ -523,7 +523,7 @@ for i, indicator in enumerate(indicators):
         pred_df = predictions_df[predictions_df["country_code"].isin(countries)] if not predictions_df.empty else pd.DataFrame()
         ind_df_plot = ind_df[ind_df["country_code"].isin(countries)]
         
-        st.markdown(f"<p style='color:#94A3B8; font-size:11px; margin-bottom:-20px; text-align:right; position:relative; z-index:10; padding-right:15px;'>Last updated: {get_last_updated_str(ind_df_plot)}</p>", unsafe_allow_html=True)
+        st.caption(f"Last updated: {get_last_updated_str(ind_df_plot)}")
         
         fig = timeline_chart(ind_df_plot, pred_df, indicator, year_range)
         

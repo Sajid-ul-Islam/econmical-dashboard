@@ -8,15 +8,8 @@ import numpy as np
 
 st.set_page_config(page_title="Compare — EconVision", page_icon="🔍", layout="wide")
 
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap');
-html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; }
-h1,h2,h3 { font-family: 'Space Mono', monospace; }
-</style>
-""", unsafe_allow_html=True)
-
-from utils.ui import render_sidebar
+from utils.ui import inject_custom_css, render_sidebar
+inject_custom_css()
 render_sidebar()
 
 from utils.data_fetcher import get_country_data_cached, get_all_countries, load_country_data
