@@ -112,12 +112,45 @@ def render_sidebar():
         st.session_state.selected_countries = final_codes
         
         default_inds = [k for k, v in indicator_options.items() if v in st.session_state.get("selected_indicators", ["gdp", "gdp_per_capita", "debt_pct_gdp"])]
+        
+        ind_special_options = ["🌍 Select All", "❌ Clear All", "📊 All Macro", "🏛️ All Fiscal", "💰 All Markets"]
+        
         selected_ind_labels = st.multiselect(
             "Indicators",
-            options=list(indicator_options.keys()),
+            options=ind_special_options + list(indicator_options.keys()),
             default=default_inds,
         )
-        st.session_state.selected_indicators = [indicator_options[l] for l in selected_ind_labels]
+        
+        final_inds = []
+        ind_expanded = False
+        valid_inds = list(indicator_options.values())
+        
+        for l in selected_ind_labels:
+            if l == "🌍 Select All":
+                final_inds = valid_inds
+                ind_expanded = True
+                break
+            elif l == "❌ Clear All":
+                final_inds = []
+                ind_expanded = True
+                break
+            elif l == "📊 All Macro":
+                final_inds.extend([v for k, v in indicator_options.items() if "Macro" in k])
+                ind_expanded = True
+            elif l == "🏛️ All Fiscal":
+                final_inds.extend([v for k, v in indicator_options.items() if "Fiscal" in k])
+                ind_expanded = True
+            elif l == "💰 All Markets":
+                final_inds.extend([v for k, v in indicator_options.items() if "Markets" in k])
+                ind_expanded = True
+            else:
+                final_inds.append(indicator_options[l])
+                
+        final_inds = list(dict.fromkeys(final_inds))
+        st.session_state.selected_indicators = final_inds
+        
+        if ind_expanded:
+            st.rerun()
         
         st.session_state.year_range = st.slider(
             "Year Range",

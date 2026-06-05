@@ -63,6 +63,8 @@ with st.expander("💡 Suggested Questions", expanded=len(st.session_state.chat_
                         st.session_state.chat_history[:-1],
                     )
                 st.session_state.chat_history.append({"role": "assistant", "content": response, "model": model})
+                if model and "Claude" not in model and "Cache" not in model and "Error" not in model:
+                    st.toast("⚠️ Claude API unavailable. Used fallback model.", icon="⚠️")
                 st.rerun()
 
 # ── Chat history ──────────────────────────────────────────────────────────
@@ -70,7 +72,10 @@ for msg in st.session_state.chat_history:
     with st.chat_message(msg["role"], avatar="🧑" if msg["role"] == "user" else "📊"):
         st.markdown(msg["content"])
         if msg.get("model"):
-            st.caption(f"⚡ Answered by: {msg['model']}")
+            if "Claude" not in msg["model"] and "Cache" not in msg["model"] and "Error" not in msg["model"]:
+                st.caption(f"⚠️ **Fallback Model Used:** {msg['model']}")
+            else:
+                st.caption(f"⚡ Answered by: {msg['model']}")
 
 # ── Input ─────────────────────────────────────────────────────────────────
 if prompt := st.chat_input("Ask about the economic data... (e.g. 'Which country has the highest debt?')"):
@@ -91,7 +96,11 @@ if prompt := st.chat_input("Ask about the economic data... (e.g. 'Which country 
             )
         st.markdown(response)
         if model:
-            st.caption(f"⚡ Answered by: {model}")
+            if "Claude" not in model and "Cache" not in model and "Error" not in model:
+                st.caption(f"⚠️ **Fallback Model Used:** {model}")
+                st.toast("⚠️ Claude API unavailable. Used fallback model.", icon="⚠️")
+            else:
+                st.caption(f"⚡ Answered by: {model}")
 
     st.session_state.chat_history.append({"role": "assistant", "content": response, "model": model})
     st.rerun()

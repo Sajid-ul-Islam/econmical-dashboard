@@ -216,7 +216,7 @@ def ask_agent(
         try:
             headers = {"Authorization": f"Bearer {groq_key}", "Content-Type": "application/json"}
             payload = {
-                "model": "llama3-70b-8192",
+                "model": "llama-3.3-70b-versatile",
                 "messages": [{"role": "system", "content": current_system_prompt}] + messages,
                 "max_tokens": 1500
             }
@@ -224,14 +224,14 @@ def ask_agent(
             r.raise_for_status()
             answer = r.json()["choices"][0]["message"]["content"]
             log_query(user_query, answer)
-            return answer, "Llama 3 70B (Groq)"
+            return answer, "Llama 3.3 70B (Groq)"
         except Exception as e:
             errors.append(f"Groq error: {str(e)}")
 
     # 3. Try Gemini (1.5 Flash)
     if gemini_key:
         try:
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={gemini_key}"
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={gemini_key}"
             # Combine history into a single string for Gemini to avoid strict alternating role constraints
             combined_chat = f"System: {current_system_prompt}\n\n"
             for m in messages:
@@ -251,14 +251,14 @@ def ask_agent(
         try:
             headers = {"Authorization": f"Bearer {openrouter_key}", "Content-Type": "application/json"}
             payload = {
-                "model": "meta-llama/llama-3-8b-instruct:free",
+                "model": "meta-llama/llama-3.1-8b-instruct:free",
                 "messages": [{"role": "system", "content": current_system_prompt}] + messages,
             }
             r = requests.post("https://openrouter.ai/api/v1/chat/completions", json=payload, headers=headers)
             r.raise_for_status()
             answer = r.json()["choices"][0]["message"]["content"]
             log_query(user_query, answer)
-            return answer, "Llama 3 8B (OpenRouter)"
+            return answer, "Llama 3.1 8B (OpenRouter)"
         except Exception as e:
             errors.append(f"OpenRouter error: {str(e)}")
 

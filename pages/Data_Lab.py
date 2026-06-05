@@ -47,7 +47,7 @@ with tab1:
             "Countries",
             options=countries,
             default=countries[:2],
-            format_option=lambda c: country_map.get(c, c),
+            format_func=lambda c: country_map.get(c, c),
             key="raw_countries",
         )
     with col_f2:
@@ -56,7 +56,7 @@ with tab1:
             "Indicators",
             options=indicators,
             default=indicators[:2],
-            format_option=indicator_label,
+            format_func=indicator_label,
             key="raw_indicators",
         )
     with col_f3:
@@ -142,7 +142,7 @@ with tab2:
     refresh_codes = st.multiselect(
         "Select countries to force-refresh",
         options=countries,
-        format_option=lambda c: country_map.get(c, c),
+        format_func=lambda c: country_map.get(c, c),
         key="refresh_select",
     )
     if st.button("🔄 Force Refresh Selected", use_container_width=False):
