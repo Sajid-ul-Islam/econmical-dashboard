@@ -23,6 +23,8 @@ WB_INDICATORS = {
     "gdp": "NY.GDP.MKTP.CD",           # GDP (current USD)
     "gdp_per_capita": "NY.GDP.PCAP.CD", # GDP per capita (current USD)
     "debt_pct_gdp": "GC.DOD.TOTL.GD.ZS", # Central gov debt (% of GDP)
+    "inflation": "FP.CPI.TOTL.ZG",      # Inflation, consumer prices (annual %)
+    "unemployment": "SL.UEM.TOTL.ZS",   # Unemployment, total (% of total labor force)
 }
 
 GOLD_INDICATOR = "gold_price"

@@ -4,15 +4,20 @@ def render_sidebar():
     """Renders the global sidebar options across all pages."""
     from utils.data_fetcher import get_all_countries, load_country_data
     
-    all_countries = get_all_countries()
-    country_options = {c["name"]: c["code"] for c in all_countries}
+    raw_countries = get_all_countries()
+    # Sort by region first, then country name for logical dropdown grouping
+    all_countries = sorted(raw_countries, key=lambda c: (c.get("region") or "Other", c["name"]))
+    
+    country_options = {f"{c.get('region') or 'Other'} • {c['name']}": c["code"] for c in all_countries}
     country_names = list(country_options.keys())
 
     indicator_options = {
-        "GDP (Total)": "gdp",
-        "GDP Per Capita": "gdp_per_capita",
-        "Debt % of GDP": "debt_pct_gdp",
-        "Gold Price (Global)": "gold_price",
+        "Macro • GDP (Total)": "gdp",
+        "Macro • GDP Per Capita": "gdp_per_capita",
+        "Macro • Inflation (Annual %)": "inflation",
+        "Macro • Unemployment Rate (%)": "unemployment",
+        "Fiscal • Debt % of GDP": "debt_pct_gdp",
+        "Markets • Gold Price (Global)": "gold_price",
     }
 
     with st.sidebar:
@@ -22,15 +27,13 @@ def render_sidebar():
         
         st.markdown("### ⚙️ Global Options")
         
-        default_names = [name for name, code in country_options.items() if code in st.session_state.get("selected_countries", ["USA", "CHN", "DEU"])]
-        
-        special_options = [
-            "🌍 Select All", 
-            "🌍 All African", "🌍 All Asian", "🌍 All European", "🌍 All American",
-            "🌍 All North American", "🌍 All South American", "🌍 All Oceanian",
-            "🏛️ All NATO", "🏛️ All EU", "🏛️ All BRICS", "🏛️ All SAARC",
-            "🏛️ All OIC", "🏛️ All Arab League", "🏛️ All OPEC"
-        ]
+        if "filter_mode" not in st.session_state:
+            st.session_state.filter_mode = "Individual Countries"
+        if "sel_individual" not in st.session_state:
+            st.session_state.sel_individual = st.session_state.get("selected_countries", ["USA", "CHN", "DEU"])
+        for key in ["sel_region", "sel_org", "sel_income"]:
+            if key not in st.session_state:
+                st.session_state[key] = []
         
         GROUPS = {
             "🌍 All North American": ["CAN", "USA", "MEX", "GTM", "BLZ", "HND", "SLV", "NIC", "CRI", "PAN", "CUB", "DOM", "HTI", "JAM", "TTO", "BRB"],
@@ -42,48 +45,71 @@ def render_sidebar():
             "🏛️ All SAARC": ["AFG", "BGD", "BTN", "IND", "MDV", "NPL", "PAK", "LKA"],
             "🏛️ All OIC": ["AFG", "ALB", "DZA", "AGO", "BHR", "BGD", "BEN", "BFA", "BRN", "CMR", "TCD", "COM", "CIV", "DJI", "EGY", "GAB", "GMB", "GIN", "GNB", "GUY", "IDN", "IRN", "IRQ", "JOR", "KAZ", "KWT", "KGZ", "LBN", "LBY", "MYS", "MDV", "MLI", "MRT", "MAR", "MOZ", "NER", "NGA", "OMN", "PAK", "PSE", "QAT", "SAU", "SEN", "SLE", "SOM", "SDN", "SUR", "SYR", "TJK", "TGO", "TUN", "TUR", "TKM", "UGA", "ARE", "UZB", "YEM"],
             "🏛️ All Arab League": ["DZA", "BHR", "COM", "DJI", "EGY", "IRQ", "JOR", "KWT", "LBN", "LBY", "MRT", "MAR", "OMN", "PSE", "QAT", "SAU", "SOM", "SDN", "SYR", "TUN", "ARE", "YEM"],
-            "🏛️ All OPEC": ["DZA", "AGO", "COG", "GNQ", "GAB", "IRN", "IRQ", "KWT", "LBY", "NGA", "SAU", "ARE", "VEN"]
+            "🏛️ All OPEC": ["DZA", "AGO", "COG", "GNQ", "GAB", "IRN", "IRQ", "KWT", "LBY", "NGA", "SAU", "ARE", "VEN"],
+            "🏛️ All G7": ["CAN", "FRA", "DEU", "ITA", "JPN", "GBR", "USA"],
+            "🏛️ All G20": ["ARG", "AUS", "BRA", "CAN", "CHN", "FRA", "DEU", "IND", "IDN", "ITA", "JPN", "KOR", "MEX", "RUS", "SAU", "ZAF", "TUR", "GBR", "USA"]
         }
         
-        selected_names = st.multiselect(
-            "Countries",
-            options=special_options + country_names,
-            default=default_names,
-        )
+        filter_modes = ["Individual Countries", "By Region", "By Organization", "By Income Level"]
+        current_mode_index = filter_modes.index(st.session_state.filter_mode) if st.session_state.filter_mode in filter_modes else 0
+        filter_mode = st.selectbox("Filter By:", filter_modes, index=current_mode_index)
+        st.session_state.filter_mode = filter_mode
         
         final_codes = []
-        expanded = False
         valid_codes = [c["code"] for c in all_countries]
         
-        for n in selected_names:
-            if n in GROUPS:
-                final_codes.extend([c for c in GROUPS[n] if c in valid_codes])
-                expanded = True
-            elif n == "🌍 Select All":
-                final_codes.extend(valid_codes)
-                expanded = True
-            elif n == "🌍 All African":
-                final_codes.extend([c["code"] for c in all_countries if "Africa" in c.get("region", "")])
-                expanded = True
-            elif n == "🌍 All Asian":
-                final_codes.extend([c["code"] for c in all_countries if "Asia" in c.get("region", "")])
-                expanded = True
-            elif n == "🌍 All European":
-                final_codes.extend([c["code"] for c in all_countries if "Europe" in c.get("region", "")])
-                expanded = True
-            elif n == "🌍 All American":
-                final_codes.extend([c["code"] for c in all_countries if "America" in c.get("region", "")])
-                expanded = True
-            else:
-                final_codes.append(country_options[n])
+        if filter_mode == "Individual Countries":
+            default_names = [name for name, code in country_options.items() if code in st.session_state.sel_individual]
+            selected_names = st.multiselect(
+                "Select Countries",
+                options=["🌍 Select All", "❌ Clear All"] + country_names,
+                default=default_names,
+            )
+            expanded = False
+            temp_codes = []
+            for n in selected_names:
+                if n == "🌍 Select All":
+                    temp_codes = valid_codes
+                    expanded = True
+                    break
+                elif n == "❌ Clear All":
+                    temp_codes = []
+                    expanded = True
+                    break
+                else:
+                    temp_codes.append(country_options[n])
+                    
+            st.session_state.sel_individual = temp_codes
+            if expanded:
+                st.rerun()
+            final_codes = temp_codes
+
+        elif filter_mode == "By Region":
+            regions = ["Africa", "Asia", "Europe", "North America", "South America", "Oceania"]
+            selected_regions = st.multiselect("Select Regions", options=regions, default=st.session_state.sel_region)
+            st.session_state.sel_region = selected_regions
+            for r in selected_regions:
+                if r in ["North America", "South America", "Oceania"]:
+                    final_codes.extend([c for c in GROUPS[f"🌍 All {r}"] if c in valid_codes])
+                else:
+                    final_codes.extend([c["code"] for c in all_countries if r in c.get("region", "")])
+
+        elif filter_mode == "By Organization":
+            orgs = ["NATO", "EU", "BRICS", "SAARC", "OIC", "Arab League", "OPEC", "G7", "G20"]
+            selected_orgs = st.multiselect("Select Organizations", options=orgs, default=st.session_state.sel_org)
+            st.session_state.sel_org = selected_orgs
+            for o in selected_orgs:
+                final_codes.extend([c for c in GROUPS[f"🏛️ All {o}"] if c in valid_codes])
+
+        elif filter_mode == "By Income Level":
+            incomes = ["High income", "Upper middle income", "Lower middle income", "Low income"]
+            selected_incomes = st.multiselect("Select Income Levels", options=incomes, default=st.session_state.sel_income)
+            st.session_state.sel_income = selected_incomes
+            for i in selected_incomes:
+                final_codes.extend([c["code"] for c in all_countries if c.get("income_level") == i])
                 
         final_codes = list(dict.fromkeys(final_codes))
-        
-        if expanded:
-            st.session_state.selected_countries = final_codes
-            st.rerun()
-        else:
-            st.session_state.selected_countries = final_codes
+        st.session_state.selected_countries = final_codes
         
         default_inds = [k for k, v in indicator_options.items() if v in st.session_state.get("selected_indicators", ["gdp", "gdp_per_capita", "debt_pct_gdp"])]
         selected_ind_labels = st.multiselect(

@@ -24,5 +24,5 @@ ai_agent = st.Page("pages/AI_Agent.py", title="AI Agent", icon="🤖")
 data_lab = st.Page("pages/Data_Lab.py", title="Data Lab", icon="🗄️")
 world_map = st.Page("pages/World_Map.py", title="World Map", icon="🌍")
 
-pg = st.navigation([dashboard, compare, ai_agent, data_lab, world_map])
+pg = st.navigation([dashboard, world_map, compare, ai_agent, data_lab])
 pg.run()

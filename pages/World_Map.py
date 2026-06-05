@@ -90,6 +90,10 @@ else:
     # Filter to selected year and deduplicate
     year_df = map_df[map_df["year"] == map_year].drop_duplicates(subset=["country_code"])
 
+    selected_codes = st.session_state.get("selected_countries", [])
+    if selected_codes:
+        year_df = year_df[year_df["country_code"].isin(selected_codes)]
+
     if year_df.empty:
         st.warning(f"No data available for {map_year}. Try a different year.")
     else:

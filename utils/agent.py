@@ -101,6 +101,8 @@ def _fmt(value: float, indicator: str) -> str:
         return f"${value:,.0f}"
     elif indicator == "debt_pct_gdp":
         return f"{value:.1f}%"
+    elif indicator in ["inflation", "unemployment"]:
+        return f"{value:.1f}%"
     elif indicator == "gold_price":
         return f"${value:,.0f}/oz"
     return f"{value:,.2f}"
@@ -112,6 +114,8 @@ def _get_unit(indicator: str) -> str:
         "gdp_per_capita": "USD/person",
         "debt_pct_gdp": "% of GDP",
         "gold_price": "USD/troy oz",
+        "inflation": "Annual %",
+        "unemployment": "% of labor force",
     }
     return units.get(indicator, "")
 

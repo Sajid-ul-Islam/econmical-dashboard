@@ -41,6 +41,8 @@ def indicator_label(indicator: str) -> str:
         "gdp_per_capita": "GDP Per Capita (USD)",
         "debt_pct_gdp": "Debt (% of GDP)",
         "gold_price": "Gold Price (USD/oz)",
+        "inflation": "Inflation (%)",
+        "unemployment": "Unemployment (%)",
     }
     return labels.get(indicator, indicator.replace("_", " ").title())
 
@@ -55,6 +57,8 @@ def format_value(value: float, indicator: str) -> str:
     elif indicator == "gdp_per_capita":
         return f"${value:,.0f}"
     elif indicator == "debt_pct_gdp":
+        return f"{value:.1f}%"
+    elif indicator in ["inflation", "unemployment"]:
         return f"{value:.1f}%"
     elif indicator == "gold_price":
         return f"${value:,.0f}/oz"
