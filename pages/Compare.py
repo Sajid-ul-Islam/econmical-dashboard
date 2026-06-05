@@ -231,10 +231,10 @@ with tab4:
 
             import plotly.graph_objects as go
             from components.charts import base_layout
-            from utils.forecasting import get_or_create_forecast
+            from utils.forecasting import get_or_create_forecasts_batch
 
-            ml_pred = get_or_create_forecast(base_df, sim_country, "gdp")
-            ml_debt_pred = get_or_create_forecast(base_debt_df, sim_country, "debt_pct_gdp") if not base_debt_df.empty else pd.DataFrame()
+            ml_pred = get_or_create_forecasts_batch(base_df, [sim_country], ["gdp"])
+            ml_debt_pred = get_or_create_forecasts_batch(base_debt_df, [sim_country], ["debt_pct_gdp"]) if not base_debt_df.empty else pd.DataFrame()
 
             fig = go.Figure()
             # Historical GDP
