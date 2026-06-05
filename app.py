@@ -20,9 +20,8 @@ for k, v in defaults.items():
 # ── Navigation ──────────────────────────────────────────────────────────────
 dashboard = st.Page("pages/Dashboard.py", title="Dashboard", icon="📈", default=True)
 compare = st.Page("pages/Compare.py", title="Compare", icon="🔍")
-ai_agent = st.Page("pages/AI_Agent.py", title="AI Agent", icon="🤖")
 data_lab = st.Page("pages/Data_Lab.py", title="Data Lab", icon="🗄️")
 world_map = st.Page("pages/World_Map.py", title="World Map", icon="🌍")
 
-pg = st.navigation([dashboard, world_map, compare, ai_agent, data_lab])
+pg = st.navigation([dashboard, world_map, compare, data_lab])
 pg.run()

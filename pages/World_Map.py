@@ -150,3 +150,88 @@ else:
                 c2.metric("Highest", f"{highest['country_name']} ({format_value(highest['value'], map_indicator)})")
                 c3.metric("Lowest", f"{lowest['country_name']} ({format_value(lowest['value'], map_indicator)})")
                 c4.metric("Global avg", format_value(metrics_df["value"].mean(), map_indicator))
+
+            st.divider()
+            st.markdown("### 🎲 3D Indicator Comparison")
+            st.caption("Multivariate view of economic indicators over time for selected countries")
+            
+            current_df = st.session_state.get("current_df", pd.DataFrame())
+            if not current_df.empty:
+                pivot_df = current_df.pivot_table(
+                    index=["country_code", "country_name", "year"],
+                    columns="indicator",
+                    values="value"
+                ).reset_index()
+                
+                available_cols = pivot_df.columns.tolist()
+                req_cols = [c for c in available_cols if c not in ["country_code", "country_name", "year"]]
+                
+                if len(req_cols) >= 3:
+                    countries = pivot_df["country_name"].unique()
+                    colors = px.colors.qualitative.Plotly
+                    color_map = {c: colors[i % len(colors)] for i, c in enumerate(countries)}
+                    
+                    fig_3d = px.scatter_3d(
+                        pivot_df.sort_values("year"),
+                        x=req_cols[0],
+                        y=req_cols[1],
+                        z=req_cols[2],
+                        color="country_name",
+                        color_discrete_map=color_map,
+                        text="country_name",
+                        animation_frame="year",
+                        animation_group="country_name",
+                        hover_name="country_name",
+                        hover_data={"year": True},
+                        labels={
+                            req_cols[0]: indicator_label(req_cols[0]),
+                            req_cols[1]: indicator_label(req_cols[1]),
+                            req_cols[2]: indicator_label(req_cols[2]),
+                        },
+                    )
+                    
+                    # Add chronological lines connecting points for each country's historical path
+                    for country in countries:
+                        cdf = pivot_df[pivot_df["country_name"] == country].sort_values("year")
+                        fig_3d.add_trace(go.Scatter3d(
+                            x=cdf[req_cols[0]],
+                            y=cdf[req_cols[1]],
+                            z=cdf[req_cols[2]],
+                            mode="lines",
+                            line=dict(color=color_map[country], width=2),
+                            name=f"{country} Path",
+                            showlegend=False,
+                            hoverinfo="skip"
+                        ))
+
+                    fig_3d.update_traces(
+                        marker=dict(size=6, opacity=0.9),
+                        textposition="top center",
+                        textfont=dict(size=10, color="#E2E8F0"),
+                        selector=dict(type="scatter3d", mode="markers+text")
+                    )
+                    fig_3d.update_layout(
+                        height=600,
+                        paper_bgcolor="#111827",
+                        plot_bgcolor="#0A0E1A",
+                        font=dict(color="#E2E8F0", family="monospace"),
+                        margin=dict(l=0, r=0, t=20, b=0),
+                        scene=dict(
+                            xaxis=dict(gridcolor="#1E2740", backgroundcolor="#0A0E1A"),
+                            yaxis=dict(gridcolor="#1E2740", backgroundcolor="#0A0E1A"),
+                            zaxis=dict(gridcolor="#1E2740", backgroundcolor="#0A0E1A"),
+                        )
+                    )
+                    # Style the generated animation slider and play buttons to match the dark theme
+                    if "sliders" in fig_3d.layout:
+                        fig_3d.layout.sliders[0].font.color = "#E2E8F0"
+                    if "updatemenus" in fig_3d.layout:
+                        for um in fig_3d.layout.updatemenus:
+                            um.font.color = "#E2E8F0"
+                            um.bgcolor = "#1E2740"
+                            um.bordercolor = "#0A0E1A"
+                    st.plotly_chart(fig_3d, use_container_width=True)
+                else:
+                    st.info("Load at least 3 indicators in the sidebar to see the 3D scatter plot.")
+            else:
+                st.info("No data loaded. Use the Dashboard to load countries and indicators.")
