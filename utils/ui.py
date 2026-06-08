@@ -18,6 +18,7 @@ def render_sidebar():
         "Macro • Unemployment Rate (%)": "unemployment",
         "Fiscal • Debt % of GDP": "debt_pct_gdp",
         "Social • Life Expectancy": "life_expectancy",
+        "Social • Population": "population",
     }
 
     with st.sidebar:
@@ -64,7 +65,9 @@ def render_sidebar():
             "🏛️ All Arab League": ["DZA", "BHR", "COM", "DJI", "EGY", "IRQ", "JOR", "KWT", "LBN", "LBY", "MRT", "MAR", "OMN", "PSE", "QAT", "SAU", "SOM", "SDN", "SYR", "TUN", "ARE", "YEM"],
             "🏛️ All OPEC": ["DZA", "AGO", "COG", "GNQ", "GAB", "IRN", "IRQ", "KWT", "LBY", "NGA", "SAU", "ARE", "VEN"],
             "🏛️ All G7": ["CAN", "FRA", "DEU", "ITA", "JPN", "GBR", "USA"],
-            "🏛️ All G20": ["ARG", "AUS", "BRA", "CAN", "CHN", "FRA", "DEU", "IND", "IDN", "ITA", "JPN", "KOR", "MEX", "RUS", "SAU", "ZAF", "TUR", "GBR", "USA"]
+            "🏛️ All G20": ["ARG", "AUS", "BRA", "CAN", "CHN", "FRA", "DEU", "IND", "IDN", "ITA", "JPN", "KOR", "MEX", "RUS", "SAU", "ZAF", "TUR", "GBR", "USA"],
+            "🏛️ All Nuclear Armed": ["USA", "RUS", "GBR", "FRA", "CHN", "IND", "PAK", "ISR", "PRK"],
+            "🏛️ All Top Oil Producers": ["USA", "SAU", "RUS", "CAN", "CHN", "IRQ", "ARE", "BRA", "IRN", "KWT", "NOR", "MEX", "VEN", "NGA"]
         }
         
         filter_modes = ["Individual Countries", "By Region", "By Organization", "By Income Level"]
@@ -112,7 +115,7 @@ def render_sidebar():
                     final_codes.extend([c["code"] for c in all_countries if r in c.get("region", "")])
 
         elif filter_mode == "By Organization":
-            orgs = ["NATO", "EU", "BRICS", "SAARC", "OIC", "Arab League", "OPEC", "G7", "G20"]
+            orgs = ["NATO", "EU", "BRICS", "SAARC", "OIC", "Arab League", "OPEC", "G7", "G20", "Nuclear Armed", "Top Oil Producers"]
             selected_orgs = st.multiselect("Select Organizations", options=orgs, default=st.session_state.sel_org)
             st.session_state.sel_org = selected_orgs
             for o in selected_orgs:

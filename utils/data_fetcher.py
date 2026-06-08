@@ -27,6 +27,7 @@ WB_INDICATORS = {
     "inflation": "FP.CPI.TOTL.ZG",      # Inflation, consumer prices (annual %)
     "unemployment": "SL.UEM.TOTL.ZS",   # Unemployment, total (% of total labor force)
     "life_expectancy": "SP.DYN.LE00.IN", # Life expectancy at birth, total (years)
+    "population": "SP.POP.TOTL",        # Population, total
 }
 
 GOLD_INDICATOR = "gold_price"
@@ -52,8 +53,32 @@ def get_last_updated_str(df_sub: pd.DataFrame) -> str:
     return "Calculated Proxy / Unknown"
 
 
+_local_snapshot_keys = None
+
+def has_local_snapshot_data(country_code: str, indicator: str) -> bool:
+    global _local_snapshot_keys
+    if _local_snapshot_keys is None:
+        _local_snapshot_keys = set()
+        from utils.database import LOCAL_SNAPSHOT_CSV
+        if os.path.exists(LOCAL_SNAPSHOT_CSV):
+            try:
+                import csv
+                with open(LOCAL_SNAPSHOT_CSV, "r", encoding="utf-8") as f:
+                    reader = csv.DictReader(f)
+                    for row in reader:
+                        if row.get("country_code") and row.get("indicator"):
+                            _local_snapshot_keys.add((row["country_code"], row["indicator"]))
+            except Exception as e:
+                print(f"Error loading local snapshot keys: {e}")
+    return (country_code, indicator) in _local_snapshot_keys
+
+
 def is_stale(country_code: str, indicator: str) -> bool:
     """Check if data needs refresh."""
+    # If the country and indicator are in the local snapshot CSV, they are not stale
+    if has_local_snapshot_data(country_code, indicator):
+        return False
+
     fresh = get_freshness(country_code, indicator)
     if not fresh:
         return True
@@ -301,6 +326,33 @@ def get_all_countries() -> list[dict]:
 
 
 def _fallback_countries():
+    from utils.database import LOCAL_SNAPSHOT_CSV
+    if os.path.exists(LOCAL_SNAPSHOT_CSV):
+        try:
+            import csv
+            countries_map = {}
+            with open(LOCAL_SNAPSHOT_CSV, "r", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    code = row.get("country_code")
+                    name = row.get("country_name")
+                    if code and name and code != "WLD":
+                        countries_map[code] = name
+            if countries_map:
+                res = [
+                    {
+                        "code": code,
+                        "iso2": code[:2],
+                        "name": name,
+                        "region": "Global Snapshot",
+                        "income_level": "Unknown",
+                    }
+                    for code, name in countries_map.items()
+                ]
+                return sorted(res, key=lambda x: x["name"])
+        except Exception:
+            pass
+
     return [
         {"code": "USA", "iso2": "US", "name": "United States", "region": "North America", "income_level": "High income"},
         {"code": "CHN", "iso2": "CN", "name": "China", "region": "East Asia & Pacific", "income_level": "Upper middle income"},

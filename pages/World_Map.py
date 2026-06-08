@@ -50,7 +50,7 @@ col1, col2, col3 = st.columns([1.5, 1.2, 1.2])
 with col1:
     map_indicator = st.selectbox(
         "Indicator",
-        options=["gdp", "gdp_per_capita", "debt_pct_gdp"],
+        options=["gdp", "gdp_per_capita", "debt_pct_gdp", "inflation", "unemployment", "life_expectancy", "population"],
         format_func=indicator_label,
         key="map_indicator",
     )

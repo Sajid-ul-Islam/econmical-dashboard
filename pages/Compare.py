@@ -75,7 +75,18 @@ with tab1:
         )
     with col_b:
         available_years = sorted(df["year"].unique(), reverse=True)
-        bar_year = st.selectbox("Year", options=available_years[:20], key="bar_year")
+        
+        # Default to the most recent year where ALL selected countries have data
+        best_year = available_years[0] if available_years else 2024
+        if not df.empty and bar_indicator:
+            ind_df = df[(df["country_code"].isin(countries)) & (df["indicator"] == bar_indicator)]
+            year_counts = ind_df.groupby("year")["country_code"].nunique()
+            complete_years = year_counts[year_counts == len(countries)].index.tolist()
+            if complete_years:
+                best_year = max(complete_years)
+        default_idx = available_years.index(best_year) if best_year in available_years else 0
+        
+        bar_year = st.selectbox("Year", options=available_years[:20], index=default_idx, key="bar_year")
 
     if not df.empty and bar_indicator:
         bar_ascending = st.session_state.get("sort_order", "Highest to Lowest") == "Highest to Lowest"
@@ -144,7 +155,17 @@ with tab2:
 with tab3:
     rank_indicator = st.selectbox("Rank by", options=indicators, format_func=indicator_label, key="rank_ind")
     available_years = sorted(df["year"].unique(), reverse=True)
-    rank_year = st.selectbox("Year", options=available_years[:20], key="rank_year")
+    
+    best_year_rank = available_years[0] if available_years else 2024
+    if not df.empty and rank_indicator:
+        ind_df_rank = df[(df["country_code"].isin(countries)) & (df["indicator"] == rank_indicator)]
+        year_counts_rank = ind_df_rank.groupby("year")["country_code"].nunique()
+        complete_years_rank = year_counts_rank[year_counts_rank == len(countries)].index.tolist()
+        if complete_years_rank:
+            best_year_rank = max(complete_years_rank)
+    default_idx_rank = available_years.index(best_year_rank) if best_year_rank in available_years else 0
+    
+    rank_year = st.selectbox("Year", options=available_years[:20], index=default_idx_rank, key="rank_year")
 
     rank_ascending = st.session_state.get("sort_order", "Highest to Lowest") == "Lowest to Highest"
     rank_df = df[

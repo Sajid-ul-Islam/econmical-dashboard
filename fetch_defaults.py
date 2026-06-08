@@ -38,10 +38,10 @@ for code in countries:
 
 print("Batch pre-computing forecasts for all countries...")
 # Load the data we just saved locally to compute the forecasts
-df = fetch_economic_data(countries, ["gdp", "gdp_per_capita", "debt_pct_gdp", "inflation", "unemployment", "life_expectancy"], 1990, 2026)
+df = fetch_economic_data(countries, ["gdp", "gdp_per_capita", "debt_pct_gdp", "inflation", "unemployment", "life_expectancy", "population"], 1990, 2026)
 if not df.empty:
     print(f"Loaded {len(df)} rows from snapshot. Generating forecasts...")
-    get_or_create_forecasts_batch(df, countries, ["gdp", "gdp_per_capita", "debt_pct_gdp", "inflation", "unemployment", "life_expectancy"])
+    get_or_create_forecasts_batch(df, countries, ["gdp", "gdp_per_capita", "debt_pct_gdp", "inflation", "unemployment", "life_expectancy", "population"])
 else:
     print("Error: Historical data is empty, cannot generate forecasts.")
 

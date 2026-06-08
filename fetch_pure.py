@@ -54,6 +54,7 @@ indicators = {
     "inflation": "FP.CPI.TOTL.ZG",
     "unemployment": "SL.UEM.TOTL.ZS",
     "life_expectancy": "SP.DYN.LE00.IN",
+    "population": "SP.POP.TOTL",
 }
 
 os.makedirs("data", exist_ok=True)

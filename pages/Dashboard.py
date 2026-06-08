@@ -69,8 +69,8 @@ if global_unemployment_df.empty:
 # ── Apply sorting based on latest values ─────────────────────────────────
 if not df.empty and indicators:
     kpi_indicator = indicators[0]
-    latest_year = int(df["year"].max())
-    latest_df = df[(df["indicator"] == kpi_indicator) & (df["year"] == latest_year)]
+    kpi_df = df[df["indicator"] == kpi_indicator]
+    latest_df = kpi_df.sort_values("year").groupby("country_code", as_index=False).tail(1)
     if not latest_df.empty:
         ascending = st.session_state.sort_order == "Lowest to Highest"
         sorted_codes = latest_df.sort_values("value", ascending=ascending)["country_code"].tolist()
@@ -224,12 +224,13 @@ if df.empty:
 
 # ── KPI Cards ─────────────────────────────────────────────────────────────
 st.markdown("#### Latest Values")
-latest_year = int(df["year"].max())
 kpi_indicator = indicators[0]
 
-latest_df = df[(df["indicator"] == kpi_indicator) & (df["year"] == latest_year)]
+kpi_df = df[df["indicator"] == kpi_indicator]
+latest_df = kpi_df.sort_values("year").groupby("country_code", as_index=False).tail(1)
 
 if not latest_df.empty:
+    global_max_year = int(kpi_df["year"].max()) if not kpi_df.empty else 2026
     cols_per_row = 6
     for r in range(0, len(countries), cols_per_row):
         chunk = countries[r:r+cols_per_row]
@@ -239,19 +240,22 @@ if not latest_df.empty:
             if row.empty:
                 continue
             val = row["value"].iloc[0]
+            c_year = int(row["year"].iloc[0])
             cname = row["country_name"].iloc[0] if "country_name" in row.columns else code
 
             # YoY delta
-            prev = df[(df["country_code"] == code) & (df["indicator"] == kpi_indicator) & (df["year"] == latest_year - 1)]
+            prev = df[(df["country_code"] == code) & (df["indicator"] == kpi_indicator) & (df["year"] == c_year - 1)]
             delta = None
             if not prev.empty:
                 prev_val = prev["value"].iloc[0]
                 if prev_val and prev_val != 0:
                     delta = f"{((val - prev_val) / abs(prev_val)) * 100:+.1f}% YoY"
 
+            year_display = f"{c_year}" if c_year >= global_max_year else f"{c_year} ⏳"
+
             with cols[i]:
                 st.metric(
-                    label=f"{cname[:18]} ({latest_year})",
+                    label=f"{cname[:18]} ({year_display})",
                     value=format_value(val, kpi_indicator),
                     delta=delta,
                 )
@@ -270,7 +274,8 @@ for r in range(0, len(countries), cols_per_row):
         if cdf.empty:
             continue
         cname = cdf["country_name"].iloc[0] if "country_name" in cdf.columns else code
-        scores = compute_economic_health_score(cdf, latest_year)
+        c_latest_year = int(cdf["year"].max())
+        scores = compute_economic_health_score(cdf, c_latest_year)
         with score_cols[i]:
             fig = health_score_gauge(scores.get("composite", 50), cname)
             st.plotly_chart(fig, use_container_width=True)

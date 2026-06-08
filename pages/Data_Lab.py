@@ -82,8 +82,8 @@ with tab1:
         
         # Apply same sorting logic as Dashboard
         kpi_indicator = indicators[0] if indicators else filter_indicators[0]
-        latest_year = int(df["year"].max()) if not df.empty else 2026
-        latest_df = df[(df["indicator"] == kpi_indicator) & (df["year"] == latest_year)]
+        kpi_df = df[df["indicator"] == kpi_indicator]
+        latest_df = kpi_df.sort_values("year").groupby("country_code", as_index=False).tail(1)
         if not latest_df.empty:
             raw_ascending = st.session_state.get("sort_order", "Highest to Lowest") == "Lowest to Highest"
             sorted_codes = latest_df.sort_values("value", ascending=raw_ascending)["country_code"].tolist()

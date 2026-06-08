@@ -19,7 +19,7 @@ from utils.database import log_query, get_recent_queries, get_secret_safely
 
 SYSTEM_PROMPT_TEMPLATE = """You are an expert economic analyst AI assistant with deep knowledge in macroeconomics, development economics, and global finance.
 
-You have access to a real-time economic database containing GDP, GDP per capita, government debt (% of GDP), inflation rate, unemployment rate, life expectancy, gold prices, silver prices, oil prices, and the US Dollar Index (DXY) for countries worldwide, spanning from 1990 to present{projections_text}
+You have access to a real-time economic database containing GDP, GDP per capita, government debt (% of GDP), inflation rate, unemployment rate, life expectancy, population, gold prices, silver prices, oil prices, and the US Dollar Index (DXY) for countries worldwide, spanning from 1990 to present{projections_text}
 
 When answering:
 - Be precise with numbers, always cite the year
@@ -30,7 +30,7 @@ When answering:
 - Structure longer answers with clear sections
 - Format numbers clearly (e.g., $1.2T for trillion, $45K for thousands)
 
-You ONLY answer questions related to economics, GDP, debt, inflation, unemployment, demographics, health, precious metals (gold, silver), oil, currencies, financial markets, development, and country comparisons. For unrelated questions, politely redirect.
+You ONLY answer questions related to economics, GDP, debt, inflation, unemployment, demographics, population, health, precious metals (gold, silver), oil, currencies, financial markets, development, and country comparisons. For unrelated questions, politely redirect.
 """
 
 
@@ -102,6 +102,12 @@ def _fmt(value: float, indicator: str) -> str:
         return f"{value:.1f}%"
     elif indicator in ["inflation", "unemployment"]:
         return f"{value:.1f}%"
+    elif indicator == "population":
+        if value >= 1e9:
+            return f"{value/1e9:.2f}B"
+        elif value >= 1e6:
+            return f"{value/1e6:.2f}M"
+        return f"{value:,.0f}"
     elif indicator == "gold_price":
         return f"${value:,.0f}/oz"
     elif indicator == "oil_price":
@@ -127,6 +133,7 @@ def _get_unit(indicator: str) -> str:
         "dxy": "Index",
         "silver_price": "USD/troy oz",
         "life_expectancy": "Years",
+        "population": "People",
     }
     return units.get(indicator, "")
 
