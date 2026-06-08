@@ -16,7 +16,10 @@ if "SECRETS_TOML" in os.environ and not os.path.exists(".streamlit/secrets.toml"
 
 # ── Session state defaults ──────────────────────────────────────────────────
 defaults = {
-    "selected_countries": ["USA", "CHN", "DEU", "BGD"],
+    "selected_countries": [
+        "USA", "GBR", "CHN", "ISR", "JPN", "DEU", "BGD", "IND", "PAK", "AFG", 
+        "SYR", "MYS", "SAU", "ARE", "TUR", "QAT", "EGY", "IDN", "FRA", "RUS", "KOR"
+    ],
     "selected_indicators": ["gdp", "gdp_per_capita", "debt_pct_gdp"],
     "year_range": (2000, 2026),
     "chat_history": [],
