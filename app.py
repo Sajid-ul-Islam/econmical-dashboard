@@ -25,19 +25,8 @@ if "SECRETS_TOML" in os.environ and not os.path.exists(".streamlit/secrets.toml"
 # ── Session state defaults ──────────────────────────────────────────────────
 defaults = {
     "selected_countries": [
-        "USA", "CAN", "BLZ", "HTI",  # North America
-        "BRA", "ARG", "SUR", "GUY",  # South America
-        "DEU", "GBR", "MNE", "ISL",  # Europe
-        "CHN", "JPN", "MDV", "BTN",  # Asia
-        "NGA", "ZAF", "COM", "DJI",  # Africa
-        "AUS", "NZL", "TUV", "NRU",  # Oceania
-        "IDN", "SAU", "GMB", "SOM",  # Top & Bottom Muslim
-        "RUS", "IND", "EGY", "ETH", "IRN", "ARE", # BRICS additions
-        "AFG", "BGD", "NPL", "PAK", "LKA",        # SAARC additions
-        "DZA", "AGO", "COG", "GNQ", "GAB", "IRQ", "KWT", "LBY", "VEN", # OPEC additions
-        "ALB", "BEL", "BGR", "HRV", "CZE", "DNK", "EST", "FIN", "FRA", "GRC", # NATO additions
-        "HUN", "ITA", "LVA", "LTU", "LUX", "MKD", "NLD", "NOR", "POL", "PRT",
-        "ROU", "SVK", "SVN", "ESP", "SWE", "TUR"
+        "USA", "RUS", "GBR", "FRA", "CHN", 
+        "IND", "PAK", "ISR", "PRK", "IRN"
     ],
     "selected_indicators": ["gdp", "gdp_per_capita", "debt_pct_gdp"],
     "year_range": (2000, 2026),
@@ -60,10 +49,11 @@ if not st.session_state.data_loaded:
     st.session_state.data_loaded = True
 
 # ── Navigation ──────────────────────────────────────────────────────────────
-dashboard = st.Page("pages/Dashboard.py", title="Dashboard", icon="📈", default=True)
+global_overview = st.Page("pages/Global_Overview.py", title="Global Overview", icon="🌍", default=True)
+dashboard = st.Page("pages/Dashboard.py", title="Dashboard", icon="📈")
 compare = st.Page("pages/Compare.py", title="Compare", icon="🔍")
 data_lab = st.Page("pages/Data_Lab.py", title="Data Lab", icon="🗄️")
-world_map = st.Page("pages/World_Map.py", title="World Map", icon="🌍")
+world_map = st.Page("pages/World_Map.py", title="World Map", icon="🗺️")
 
-pg = st.navigation([dashboard, world_map, compare, data_lab])
+pg = st.navigation([global_overview, dashboard, world_map, compare, data_lab])
 pg.run()

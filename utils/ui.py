@@ -29,29 +29,21 @@ def render_sidebar():
         st.markdown("### ⚙️ Global Options")
         
         if "filter_mode" not in st.session_state:
-            st.session_state.filter_mode = "Individual Countries"
+            st.session_state.filter_mode = "By Organization"
         if "sel_individual" not in st.session_state:
             st.session_state.sel_individual = st.session_state.get(
                 "selected_countries",
                 [
-                    "USA", "CAN", "BLZ", "HTI",
-                    "BRA", "ARG", "SUR", "GUY",
-                    "DEU", "GBR", "MNE", "ISL",
-                    "CHN", "JPN", "MDV", "BTN",
-                    "NGA", "ZAF", "COM", "DJI",
-                    "AUS", "NZL", "TUV", "NRU",
-                    "IDN", "SAU", "GMB", "SOM",
-                    "RUS", "IND", "EGY", "ETH", "IRN", "ARE",
-                    "AFG", "BGD", "NPL", "PAK", "LKA",
-                    "DZA", "AGO", "COG", "GNQ", "GAB", "IRQ", "KWT", "LBY", "VEN",
-                    "ALB", "BEL", "BGR", "HRV", "CZE", "DNK", "EST", "FIN", "FRA", "GRC",
-                    "HUN", "ITA", "LVA", "LTU", "LUX", "MKD", "NLD", "NOR", "POL", "PRT",
-                    "ROU", "SVK", "SVN", "ESP", "SWE", "TUR"
+                    "USA", "RUS", "GBR", "FRA", "CHN", 
+                    "IND", "PAK", "ISR", "PRK", "IRN"
                 ]
             )
         for key in ["sel_region", "sel_org", "sel_income"]:
             if key not in st.session_state:
-                st.session_state[key] = []
+                if key == "sel_org":
+                    st.session_state[key] = ["Nuclear Armed"]
+                else:
+                    st.session_state[key] = []
         
         GROUPS = {
             "🌍 All North American": ["CAN", "USA", "MEX", "GTM", "BLZ", "HND", "SLV", "NIC", "CRI", "PAN", "CUB", "DOM", "HTI", "JAM", "TTO", "BRB"],
@@ -66,8 +58,9 @@ def render_sidebar():
             "🏛️ All OPEC": ["DZA", "AGO", "COG", "GNQ", "GAB", "IRN", "IRQ", "KWT", "LBY", "NGA", "SAU", "ARE", "VEN"],
             "🏛️ All G7": ["CAN", "FRA", "DEU", "ITA", "JPN", "GBR", "USA"],
             "🏛️ All G20": ["ARG", "AUS", "BRA", "CAN", "CHN", "FRA", "DEU", "IND", "IDN", "ITA", "JPN", "KOR", "MEX", "RUS", "SAU", "ZAF", "TUR", "GBR", "USA"],
-            "🏛️ All Nuclear Armed": ["USA", "RUS", "GBR", "FRA", "CHN", "IND", "PAK", "ISR", "PRK"],
-            "🏛️ All Top Oil Producers": ["USA", "SAU", "RUS", "CAN", "CHN", "IRQ", "ARE", "BRA", "IRN", "KWT", "NOR", "MEX", "VEN", "NGA"]
+            "🏛️ All Nuclear Armed": ["USA", "RUS", "GBR", "FRA", "CHN", "IND", "PAK", "ISR", "PRK", "IRN"],
+            "🏛️ All Top Oil Producers": ["USA", "SAU", "RUS", "CAN", "CHN", "IRQ", "ARE", "BRA", "IRN", "KWT", "NOR", "MEX", "VEN", "NGA"],
+            "🏛️ All Top Populated": ["CHN", "IND", "USA", "IDN", "PAK", "NGA", "BRA", "BGD", "RUS", "MEX", "ETH", "JPN", "PHL", "EGY", "COD", "VNM", "TUR", "IRN", "DEU", "THA"]
         }
         
         filter_modes = ["Individual Countries", "By Region", "By Organization", "By Income Level"]
@@ -115,7 +108,7 @@ def render_sidebar():
                     final_codes.extend([c["code"] for c in all_countries if r in c.get("region", "")])
 
         elif filter_mode == "By Organization":
-            orgs = ["NATO", "EU", "BRICS", "SAARC", "OIC", "Arab League", "OPEC", "G7", "G20", "Nuclear Armed", "Top Oil Producers"]
+            orgs = ["NATO", "EU", "BRICS", "SAARC", "OIC", "Arab League", "OPEC", "G7", "G20", "Nuclear Armed", "Top Oil Producers", "Top Populated"]
             selected_orgs = st.multiselect("Select Organizations", options=orgs, default=st.session_state.sel_org)
             st.session_state.sel_org = selected_orgs
             for o in selected_orgs:

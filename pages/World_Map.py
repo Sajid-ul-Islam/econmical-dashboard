@@ -164,13 +164,14 @@ else:
             plot_df["Region"] = plot_df["country_code"].astype(str).map(region_map)
             plot_df["Income Level"] = plot_df["country_code"].astype(str).map(income_map)
 
+            value_format = ":,.0f" if map_indicator == "population" else ":.2f"
             fig = px.choropleth(
                 plot_df,
                 locations="country_code",
                 locationmode="ISO-3",
                 color="value",
                 hover_name="country_label",
-                hover_data={"value": ":.2f", "country_code": False, "Region": True, "Income Level": True},
+                hover_data={"value": value_format, "country_code": False, "Region": True, "Income Level": True},
                 color_continuous_scale=color_scale,
                 range_color=[plot_df["value"].min(), plot_df["value"].max()],
                 title=f"{indicator_label(map_indicator)} — {year_range[0]} to {year_range[1]}",
