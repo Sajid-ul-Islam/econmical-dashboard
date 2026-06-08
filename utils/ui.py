@@ -32,7 +32,7 @@ def render_sidebar():
         if "sel_individual" not in st.session_state:
             st.session_state.sel_individual = st.session_state.get(
                 "selected_countries", 
-                ["USA", "GBR", "CHN", "ISR", "JPN", "DEU", "BGD", "IND", "PAK", "AFG", "SYR", "MYS", "SAU", "ARE", "TUR", "QAT", "EGY", "IDN", "FRA", "RUS", "KOR"]
+                ["USA", "CHN", "DEU", "BGD"]
             )
         for key in ["sel_region", "sel_org", "sel_income"]:
             if key not in st.session_state:

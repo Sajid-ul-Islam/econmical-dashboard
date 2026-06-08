@@ -1,0 +1,37 @@
+import os
+import sys
+
+# Ensure the root directory is in sys.path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+# Import cron_update to patch Streamlit before any other imports
+import cron_update
+
+from utils.data_fetcher import load_country_data, get_all_countries
+from utils.forecasting import get_or_create_forecasts_batch
+from utils.database import fetch_economic_data
+
+# The 21 countries
+countries = [
+    "USA", "GBR", "CHN", "ISR", "JPN", "DEU", "BGD", "IND", "PAK", "AFG", 
+    "SYR", "MYS", "SAU", "ARE", "TUR", "QAT", "EGY", "IDN", "FRA", "RUS", "KOR"
+]
+
+all_countries = {c["code"]: c["name"] for c in get_all_countries()}
+
+print("Fetching historical data for 21 default countries...")
+for code in countries:
+    name = all_countries.get(code, code)
+    print(f"Loading {name} ({code})...")
+    load_country_data(code, name, force=True)
+
+print("Batch pre-computing forecasts for all countries...")
+# Load the data we just saved locally to compute the forecasts
+df = fetch_economic_data(countries, ["gdp", "gdp_per_capita", "debt_pct_gdp", "inflation", "unemployment", "life_expectancy"], 1990, 2026)
+if not df.empty:
+    print(f"Loaded {len(df)} rows from snapshot. Generating forecasts...")
+    get_or_create_forecasts_batch(df, countries, ["gdp", "gdp_per_capita", "debt_pct_gdp", "inflation", "unemployment", "life_expectancy"])
+else:
+    print("Error: Historical data is empty, cannot generate forecasts.")
+
+print("Done! Defaults successfully fetched and cached to data/ folder.")

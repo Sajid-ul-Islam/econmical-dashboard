@@ -22,8 +22,23 @@ def get_supabase() -> Client | None:
             st.error("🚨 Supabase library is missing! Database features will be disabled.", icon="🚨")
             st.session_state.supabase_warning_shown = True
         return None
-    url = st.secrets["supabase"]["url"]
-    key = st.secrets["supabase"]["key"]
+
+    try:
+        url = st.secrets["supabase"]["url"]
+        key = st.secrets["supabase"]["key"]
+    except KeyError:
+        import os
+        if "SECRETS_TOML" in os.environ:
+            import tomllib
+            parsed = tomllib.loads(os.environ["SECRETS_TOML"])
+            url = parsed.get("supabase", {}).get("url")
+            key = parsed.get("supabase", {}).get("key")
+        else:
+            return None
+            
+    if not url or not key:
+        return None
+
     return create_client(url, key)
 
 
@@ -77,8 +92,67 @@ CREATE TABLE IF NOT EXISTS query_log (
 """
 
 
+LOCAL_SNAPSHOT_CSV = "data/economic_data_snapshot.csv"
+LOCAL_PREDICTIONS_CSV = "data/predictions_snapshot.csv"
+
+def save_to_local_snapshot(rows: list[dict]):
+    try:
+        import os
+        os.makedirs("data", exist_ok=True)
+        new_df = pd.DataFrame(rows)
+        if new_df.empty:
+            return
+        
+        # Ensure correct column order
+        cols = ["country_code", "country_name", "indicator", "year", "value", "source", "fetched_at"]
+        for c in cols:
+            if c not in new_df.columns:
+                new_df[c] = None
+        new_df = new_df[cols]
+
+        if os.path.exists(LOCAL_SNAPSHOT_CSV):
+            try:
+                old_df = pd.read_csv(LOCAL_SNAPSHOT_CSV)
+                combined = pd.concat([old_df, new_df], ignore_index=True)
+                combined = combined.drop_duplicates(subset=["country_code", "indicator", "year"], keep="last")
+                combined.to_csv(LOCAL_SNAPSHOT_CSV, index=False)
+            except Exception:
+                new_df.to_csv(LOCAL_SNAPSHOT_CSV, index=False)
+        else:
+            new_df.to_csv(LOCAL_SNAPSHOT_CSV, index=False)
+    except Exception as e:
+        print(f"Error saving to local snapshot: {e}")
+
+def save_predictions_to_local_snapshot(rows: list[dict]):
+    try:
+        import os
+        os.makedirs("data", exist_ok=True)
+        new_df = pd.DataFrame(rows)
+        if new_df.empty:
+            return
+        
+        cols = ["country_code", "indicator", "year", "predicted", "lower_bound", "upper_bound", "model", "created_at"]
+        for c in cols:
+            if c not in new_df.columns:
+                new_df[c] = None
+        new_df = new_df[cols]
+
+        if os.path.exists(LOCAL_PREDICTIONS_CSV):
+            try:
+                old_df = pd.read_csv(LOCAL_PREDICTIONS_CSV)
+                combined = pd.concat([old_df, new_df], ignore_index=True)
+                combined = combined.drop_duplicates(subset=["country_code", "indicator", "year", "model"], keep="last")
+                combined.to_csv(LOCAL_PREDICTIONS_CSV, index=False)
+            except Exception:
+                new_df.to_csv(LOCAL_PREDICTIONS_CSV, index=False)
+        else:
+            new_df.to_csv(LOCAL_PREDICTIONS_CSV, index=False)
+    except Exception as e:
+        print(f"Error saving predictions to local snapshot: {e}")
+
 def upsert_economic_data(rows: list[dict]) -> bool:
     """Insert or update economic data rows."""
+    save_to_local_snapshot(rows)
     try:
         db = get_supabase()
         if not db:
@@ -89,56 +163,87 @@ def upsert_economic_data(rows: list[dict]) -> bool:
         st.error(f"DB write error: {e}")
         return False
 
-
 def fetch_economic_data(
     country_codes: list[str] | None = None,
     indicators: list[str] | None = None,
     year_start: int = 1990,
     year_end: int = 2024,
 ) -> pd.DataFrame:
-    """Fetch economic data from Supabase."""
+    """Fetch economic data from Supabase, fall back to local snapshot if offline/empty."""
+    df = pd.DataFrame()
     try:
         db = get_supabase()
-        if not db:
-            return pd.DataFrame()
-        q = db.table("economic_data").select("*")
-        if country_codes:
-            q = q.in_("country_code", country_codes)
-        if indicators:
-            q = q.in_("indicator", indicators)
-        q = q.gte("year", year_start).lte("year", year_end)
-        result = q.execute()
-        if result.data:
-            return pd.DataFrame(result.data)
-        return pd.DataFrame()
+        if db:
+            q = db.table("economic_data").select("*")
+            if country_codes:
+                q = q.in_("country_code", country_codes)
+            if indicators:
+                q = q.in_("indicator", indicators)
+            q = q.gte("year", year_start).lte("year", year_end)
+            result = q.execute()
+            if result.data:
+                df = pd.DataFrame(result.data)
     except Exception as e:
-        st.error(f"DB read error: {e}")
-        return pd.DataFrame()
+        print(f"DB read error, falling back to local snapshot: {e}")
 
+    # Fallback to local snapshot
+    if df.empty:
+        import os
+        if os.path.exists(LOCAL_SNAPSHOT_CSV):
+            try:
+                local_df = pd.read_csv(LOCAL_SNAPSHOT_CSV)
+                if not local_df.empty:
+                    mask = (local_df["year"] >= year_start) & (local_df["year"] <= year_end)
+                    if country_codes:
+                        mask = mask & (local_df["country_code"].isin(country_codes))
+                    if indicators:
+                        mask = mask & (local_df["indicator"].isin(indicators))
+                    df = local_df[mask].copy()
+            except Exception as e:
+                print(f"Error reading local snapshot: {e}")
+                
+    return df
 
 def fetch_predictions(
     country_codes: list[str] | None = None,
     indicators: list[str] | None = None,
 ) -> pd.DataFrame:
+    """Fetch predictions from Supabase, fall back to local snapshot if offline/empty."""
+    df = pd.DataFrame()
     try:
         db = get_supabase()
-        if not db:
-            return pd.DataFrame()
-        q = db.table("predictions").select("*")
-        if country_codes:
-            q = q.in_("country_code", country_codes)
-        if indicators:
-            q = q.in_("indicator", indicators)
-        result = q.execute()
-        if result.data:
-            return pd.DataFrame(result.data)
-        return pd.DataFrame()
+        if db:
+            q = db.table("predictions").select("*")
+            if country_codes:
+                q = q.in_("country_code", country_codes)
+            if indicators:
+                q = q.in_("indicator", indicators)
+            result = q.execute()
+            if result.data:
+                df = pd.DataFrame(result.data)
     except Exception as e:
-        st.error(f"Prediction read error: {e}")
-        return pd.DataFrame()
+        print(f"Prediction read error, falling back to local snapshot: {e}")
 
+    # Fallback to local snapshot
+    if df.empty:
+        import os
+        if os.path.exists(LOCAL_PREDICTIONS_CSV):
+            try:
+                local_df = pd.read_csv(LOCAL_PREDICTIONS_CSV)
+                if not local_df.empty:
+                    mask = pd.Series(True, index=local_df.index)
+                    if country_codes:
+                        mask = mask & (local_df["country_code"].isin(country_codes))
+                    if indicators:
+                        mask = mask & (local_df["indicator"].isin(indicators))
+                    df = local_df[mask].copy()
+            except Exception as e:
+                print(f"Error reading predictions local snapshot: {e}")
+    return df
 
 def upsert_predictions(rows: list[dict]) -> bool:
+    """Insert or update predictions, backing up locally."""
+    save_predictions_to_local_snapshot(rows)
     try:
         db = get_supabase()
         if not db:

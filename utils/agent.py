@@ -172,7 +172,16 @@ def ask_agent(
     if cached_response:
         return cached_response, "⚡ Semantic Cache (Vectorized KB)"
 
-    secrets = st.secrets.get("anthropic", {})
+    try:
+        secrets = st.secrets["anthropic"]
+    except KeyError:
+        import os
+        if "SECRETS_TOML" in os.environ:
+            import tomllib
+            secrets = tomllib.loads(os.environ["SECRETS_TOML"]).get("anthropic", {})
+        else:
+            secrets = {}
+
     anthropic_key = secrets.get("api_key", "")
     groq_key = secrets.get("groq_key", "")
     gemini_key = secrets.get("gemini_key", "")
