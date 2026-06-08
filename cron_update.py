@@ -65,8 +65,13 @@ def run_update():
     if not codes_to_update:
         logging.info("No countries in DB — using defaults.")
         codes_to_update = [
-            "USA", "GBR", "CHN", "ISR", "JPN", "DEU", "BGD", "IND", "PAK", "AFG", 
-            "SYR", "MYS", "SAU", "ARE", "TUR", "QAT", "EGY", "IDN", "FRA", "RUS", "KOR"
+            "USA", "CAN", "BLZ", "HTI",
+            "BRA", "ARG", "SUR", "GUY",
+            "DEU", "GBR", "MNE", "ISL",
+            "CHN", "JPN", "MDV", "BTN",
+            "NGA", "ZAF", "COM", "DJI",
+            "AUS", "NZL", "TUV", "NRU",
+            "IDN", "SAU", "GMB", "SOM"
         ]
 
     all_countries = {c["code"]: c["name"] for c in get_all_countries()}

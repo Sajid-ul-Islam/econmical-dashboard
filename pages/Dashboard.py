@@ -54,17 +54,25 @@ if df.empty:
     st.stop()
 
 # ── Fallback for Missing WLD Aggregates (Proxy by calculating Mean) ───────
-if global_inflation_df.empty and not df[df["indicator"] == "inflation"].empty:
-    global_inflation_df = df[df["indicator"] == "inflation"].groupby("year", as_index=False)["value"].mean()
-    global_inflation_df["country_code"] = "WLD"
-    global_inflation_df["country_name"] = "World (Avg Proxy)"
-    global_inflation_df["indicator"] = "inflation"
+if global_inflation_df.empty:
+    proxy_infl_df = df[df["indicator"] == "inflation"]
+    if proxy_infl_df.empty:
+        proxy_infl_df = get_country_data_cached(countries, ["inflation"], year_range[0], min(year_range[1], 2026))
+    if not proxy_infl_df.empty:
+        global_inflation_df = proxy_infl_df.groupby("year", as_index=False)["value"].mean()
+        global_inflation_df["country_code"] = "WLD"
+        global_inflation_df["country_name"] = "World (Avg Proxy)"
+        global_inflation_df["indicator"] = "inflation"
 
-if global_unemployment_df.empty and not df[df["indicator"] == "unemployment"].empty:
-    global_unemployment_df = df[df["indicator"] == "unemployment"].groupby("year", as_index=False)["value"].mean()
-    global_unemployment_df["country_code"] = "WLD"
-    global_unemployment_df["country_name"] = "World (Avg Proxy)"
-    global_unemployment_df["indicator"] = "unemployment"
+if global_unemployment_df.empty:
+    proxy_unemp_df = df[df["indicator"] == "unemployment"]
+    if proxy_unemp_df.empty:
+        proxy_unemp_df = get_country_data_cached(countries, ["unemployment"], year_range[0], min(year_range[1], 2026))
+    if not proxy_unemp_df.empty:
+        global_unemployment_df = proxy_unemp_df.groupby("year", as_index=False)["value"].mean()
+        global_unemployment_df["country_code"] = "WLD"
+        global_unemployment_df["country_name"] = "World (Avg Proxy)"
+        global_unemployment_df["indicator"] = "unemployment"
 
 # ── Apply sorting based on latest values ─────────────────────────────────
 kpi_indicator = indicators[0]

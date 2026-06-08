@@ -24,7 +24,15 @@ if "SECRETS_TOML" in os.environ and not os.path.exists(".streamlit/secrets.toml"
 
 # ── Session state defaults ──────────────────────────────────────────────────
 defaults = {
-    "selected_countries": ["USA", "CHN", "DEU", "BGD"],
+    "selected_countries": [
+        "USA", "CAN", "BLZ", "HTI",  # North America
+        "BRA", "ARG", "SUR", "GUY",  # South America
+        "DEU", "GBR", "MNE", "ISL",  # Europe
+        "CHN", "JPN", "MDV", "BTN",  # Asia
+        "NGA", "ZAF", "COM", "DJI",  # Africa
+        "AUS", "NZL", "TUV", "NRU",  # Oceania
+        "IDN", "SAU", "GMB", "SOM"   # Top & Bottom Muslim
+    ],
     "selected_indicators": ["gdp", "gdp_per_capita", "debt_pct_gdp"],
     "year_range": (2000, 2026),
     "chat_history": [],

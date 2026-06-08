@@ -31,8 +31,16 @@ def render_sidebar():
             st.session_state.filter_mode = "Individual Countries"
         if "sel_individual" not in st.session_state:
             st.session_state.sel_individual = st.session_state.get(
-                "selected_countries", 
-                ["USA", "CHN", "DEU", "BGD"]
+                "selected_countries",
+                [
+                    "USA", "CAN", "BLZ", "HTI",
+                    "BRA", "ARG", "SUR", "GUY",
+                    "DEU", "GBR", "MNE", "ISL",
+                    "CHN", "JPN", "MDV", "BTN",
+                    "NGA", "ZAF", "COM", "DJI",
+                    "AUS", "NZL", "TUV", "NRU",
+                    "IDN", "SAU", "GMB", "SOM"
+                ]
             )
         for key in ["sel_region", "sel_org", "sel_income"]:
             if key not in st.session_state:

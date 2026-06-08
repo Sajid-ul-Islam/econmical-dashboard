@@ -2,10 +2,16 @@ import csv
 import json
 import urllib.request
 import os
+import sys
 
 countries = [
-    "USA", "GBR", "CHN", "ISR", "JPN", "DEU", "BGD", "IND", "PAK", "AFG", 
-    "SYR", "MYS", "SAU", "ARE", "TUR", "QAT", "EGY", "IDN", "FRA", "RUS", "KOR"
+    "USA", "CAN", "BLZ", "HTI",
+    "BRA", "ARG", "SUR", "GUY",
+    "DEU", "GBR", "MNE", "ISL",
+    "CHN", "JPN", "MDV", "BTN",
+    "NGA", "ZAF", "COM", "DJI",
+    "AUS", "NZL", "TUV", "NRU",
+    "IDN", "SAU", "GMB", "SOM"
 ]
 
 indicators = {
@@ -31,13 +37,31 @@ if os.path.exists(csv_file):
     except Exception:
         pass
 
+def save_rows(rows_dict):
+    try:
+        with open(csv_file, "w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=["country_code", "country_name", "indicator", "year", "value", "source", "fetched_at"])
+            writer.writeheader()
+            for row in sorted(rows_dict.values(), key=lambda r: (r["country_code"], r["indicator"], int(r["year"]))):
+                writer.writerow(row)
+    except Exception as e:
+        print(f"Error saving to CSV: {e}", flush=True)
+
+total_reqs = len(countries) * len(indicators)
+curr_req = 0
+
 for ccode in countries:
     for ind_name, ind_code in indicators.items():
+        curr_req += 1
+        # Check if already fetched
+        if any(k[0] == ccode and k[1] == ind_name for k in existing_rows.keys()):
+            print(f"[{curr_req}/{total_reqs}] Skipping {ccode} {ind_name} (already in snapshot)", flush=True)
+            continue
         url = f"https://api.worldbank.org/v2/country/{ccode}/indicator/{ind_code}?format=json&per_page=100&mrv=40&date=1990:2026"
-        print(f"Fetching {ccode} {ind_name}...")
+        print(f"[{curr_req}/{total_reqs}] Fetching {ccode} {ind_name}...", flush=True)
         try:
             req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-            with urllib.request.urlopen(req, timeout=15) as response:
+            with urllib.request.urlopen(req, timeout=10) as response:
                 data = json.loads(response.read().decode("utf-8"))
                 if len(data) >= 2 and data[1]:
                     for item in data[1]:
@@ -55,14 +79,8 @@ for ccode in countries:
                                 "fetched_at": "2026-06-08T15:26:10Z"
                             }
                             existing_rows[(ccode, ind_name, year)] = row
+                    save_rows(existing_rows)
         except Exception as e:
-            print(f"Error fetching {ccode} {ind_name}: {e}")
+            print(f"Error fetching {ccode} {ind_name}: {e}", flush=True)
 
-# Save back to CSV
-with open(csv_file, "w", newline="", encoding="utf-8") as f:
-    writer = csv.DictWriter(f, fieldnames=["country_code", "country_name", "indicator", "year", "value", "source", "fetched_at"])
-    writer.writeheader()
-    for row in sorted(existing_rows.values(), key=lambda r: (r["country_code"], r["indicator"], int(r["year"]))):
-        writer.writerow(row)
-
-print("Done fetching!")
+print("Done fetching!", flush=True)
