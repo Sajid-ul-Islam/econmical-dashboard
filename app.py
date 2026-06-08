@@ -4,6 +4,15 @@ Main entry point — Streamlit multipage app
 """
 
 import streamlit as st
+import os
+
+# ── Hugging Face Spaces Secrets Handler ─────────────────────────────────────
+# HF Spaces exposes secrets as environment variables. We map a single TOML 
+# string secret to Streamlit's required secrets.toml file on boot.
+if "SECRETS_TOML" in os.environ and not os.path.exists(".streamlit/secrets.toml"):
+    os.makedirs(".streamlit", exist_ok=True)
+    with open(".streamlit/secrets.toml", "w") as f:
+        f.write(os.environ["SECRETS_TOML"])
 
 # ── Session state defaults ──────────────────────────────────────────────────
 defaults = {
