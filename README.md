@@ -1,3 +1,13 @@
+---
+title: EconVision
+emoji: 📊
+colorFrom: blue
+colorTo: green
+sdk: streamlit
+sdk_version: "1.32.2"
+app_file: app.py
+pinned: false
+---
 # 📊 EconVision — Global Economic Intelligence Dashboard
 
 A full-stack data science portfolio project built on real economic data: live World Bank + FRED APIs, ML forecasting, AI chat agent, and interactive multi-country analysis. Deployed on Streamlit Cloud.
