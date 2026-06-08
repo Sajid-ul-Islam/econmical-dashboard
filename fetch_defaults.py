@@ -11,7 +11,7 @@ from utils.data_fetcher import load_country_data, get_all_countries
 from utils.forecasting import get_or_create_forecasts_batch
 from utils.database import fetch_economic_data
 
-# The 28 default countries (Top 2 & Bottom 2 of every continent + Muslim)
+# The 74 default countries (Top 2 & Bottom 2 of every continent + Muslim + BRICS + SAARC + OPEC + NATO)
 countries = [
     "USA", "CAN", "BLZ", "HTI",
     "BRA", "ARG", "SUR", "GUY",
@@ -19,7 +19,13 @@ countries = [
     "CHN", "JPN", "MDV", "BTN",
     "NGA", "ZAF", "COM", "DJI",
     "AUS", "NZL", "TUV", "NRU",
-    "IDN", "SAU", "GMB", "SOM"
+    "IDN", "SAU", "GMB", "SOM",
+    "RUS", "IND", "EGY", "ETH", "IRN", "ARE",
+    "AFG", "BGD", "NPL", "PAK", "LKA",
+    "DZA", "AGO", "COG", "GNQ", "GAB", "IRQ", "KWT", "LBY", "VEN",
+    "ALB", "BEL", "BGR", "HRV", "CZE", "DNK", "EST", "FIN", "FRA", "GRC",
+    "HUN", "ITA", "LVA", "LTU", "LUX", "MKD", "NLD", "NOR", "POL", "PRT",
+    "ROU", "SVK", "SVN", "ESP", "SWE", "TUR"
 ]
 
 all_countries = {c["code"]: c["name"] for c in get_all_countries()}

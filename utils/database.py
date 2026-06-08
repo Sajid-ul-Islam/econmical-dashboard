@@ -15,6 +15,29 @@ import pandas as pd
 import time
 
 
+from typing import Any
+
+def get_secret_safely(key: str, default: Any = None) -> Any:
+    """Safely fetch a secret from Streamlit secrets or SECRETS_TOML environment variable."""
+    try:
+        val = st.secrets[key]
+        if val is not None:
+            return val
+    except Exception:
+        pass
+
+    import os
+    if "SECRETS_TOML" in os.environ:
+        try:
+            import tomllib
+            parsed = tomllib.loads(os.environ["SECRETS_TOML"])
+            return parsed.get(key, default)
+        except Exception:
+            pass
+
+    return default
+
+
 @st.cache_resource
 def get_supabase() -> Client | None:
     if not HAS_SUPABASE:
@@ -23,19 +46,16 @@ def get_supabase() -> Client | None:
             st.session_state.supabase_warning_shown = True
         return None
 
+    supabase_secrets = get_secret_safely("supabase")
+    if not supabase_secrets:
+        return None
+
     try:
-        url = st.secrets["supabase"]["url"]
-        key = st.secrets["supabase"]["key"]
-    except KeyError:
-        import os
-        if "SECRETS_TOML" in os.environ:
-            import tomllib
-            parsed = tomllib.loads(os.environ["SECRETS_TOML"])
-            url = parsed.get("supabase", {}).get("url")
-            key = parsed.get("supabase", {}).get("key")
-        else:
-            return None
-            
+        url = supabase_secrets.get("url")
+        key = supabase_secrets.get("key")
+    except AttributeError:
+        return None
+
     if not url or not key:
         return None
 

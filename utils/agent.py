@@ -14,7 +14,7 @@ import requests
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from utils.database import log_query, get_recent_queries
+from utils.database import log_query, get_recent_queries, get_secret_safely
 
 
 SYSTEM_PROMPT_TEMPLATE = """You are an expert economic analyst AI assistant with deep knowledge in macroeconomics, development economics, and global finance.
@@ -172,15 +172,7 @@ def ask_agent(
     if cached_response:
         return cached_response, "⚡ Semantic Cache (Vectorized KB)"
 
-    try:
-        secrets = st.secrets["anthropic"]
-    except KeyError:
-        import os
-        if "SECRETS_TOML" in os.environ:
-            import tomllib
-            secrets = tomllib.loads(os.environ["SECRETS_TOML"]).get("anthropic", {})
-        else:
-            secrets = {}
+    secrets = get_secret_safely("anthropic") or {}
 
     anthropic_key = secrets.get("api_key", "")
     groq_key = secrets.get("groq_key", "")

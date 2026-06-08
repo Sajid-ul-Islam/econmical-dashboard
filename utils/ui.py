@@ -39,7 +39,13 @@ def render_sidebar():
                     "CHN", "JPN", "MDV", "BTN",
                     "NGA", "ZAF", "COM", "DJI",
                     "AUS", "NZL", "TUV", "NRU",
-                    "IDN", "SAU", "GMB", "SOM"
+                    "IDN", "SAU", "GMB", "SOM",
+                    "RUS", "IND", "EGY", "ETH", "IRN", "ARE",
+                    "AFG", "BGD", "NPL", "PAK", "LKA",
+                    "DZA", "AGO", "COG", "GNQ", "GAB", "IRQ", "KWT", "LBY", "VEN",
+                    "ALB", "BEL", "BGR", "HRV", "CZE", "DNK", "EST", "FIN", "FRA", "GRC",
+                    "HUN", "ITA", "LVA", "LTU", "LUX", "MKD", "NLD", "NOR", "POL", "PRT",
+                    "ROU", "SVK", "SVN", "ESP", "SWE", "TUR"
                 ]
             )
         for key in ["sel_region", "sel_org", "sel_income"]:

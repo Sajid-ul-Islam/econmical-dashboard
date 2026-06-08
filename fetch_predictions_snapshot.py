@@ -2,7 +2,9 @@ import pandas as pd
 import numpy as np
 import os
 import csv
+import threading
 from datetime import datetime, timezone
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 snapshot_path = "data/economic_data_snapshot.csv"
 output_path = "data/predictions_snapshot.csv"
@@ -83,6 +85,8 @@ def run_linear_forecast(series_df, country_code, indicator, forecast_years=7):
     })
     return result
 
+csv_lock = threading.Lock()
+
 def main():
     if not os.path.exists(snapshot_path):
         print(f"Error: {snapshot_path} does not exist. Run fetch_pure.py first.", flush=True)
@@ -100,31 +104,51 @@ def main():
             pass
 
     df = pd.read_csv(snapshot_path)
-    groups = df.groupby(["country_code", "indicator"])
+    groups = list(df.groupby(["country_code", "indicator"]))
     total = len(groups)
-    current = 0
-
+    
     print(f"Starting forecasting on {total} series...", flush=True)
 
     file_exists = os.path.exists(output_path)
-    with open(output_path, "a", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=["country_code", "indicator", "year", "predicted", "lower_bound", "upper_bound", "model", "created_at"])
-        if not file_exists or os.path.getsize(output_path) == 0:
-            writer.writeheader()
+    f_out = open(output_path, "a", newline="", encoding="utf-8")
+    writer = csv.DictWriter(f_out, fieldnames=["country_code", "indicator", "year", "predicted", "lower_bound", "upper_bound", "model", "created_at"])
+    if not file_exists or os.path.getsize(output_path) == 0:
+        writer.writeheader()
 
-        for (ccode, indicator), group in groups:
-            current += 1
-            if (ccode, indicator) in existing_keys:
-                print(f"[{current}/{total}] Skipping {ccode} {indicator} (already cached)", flush=True)
-                continue
+    completed = 0
+    completed_lock = threading.Lock()
 
-            print(f"[{current}/{total}] Forecasting {ccode} {indicator}...", flush=True)
-            pred_df = run_prophet_forecast(group, ccode, indicator)
-            if pred_df is not None and not pred_df.empty:
+    def process_group(ccode, indicator, group_df):
+        nonlocal completed
+        if (ccode, indicator) in existing_keys:
+            with completed_lock:
+                completed += 1
+            print(f"[{completed}/{total}] Skipping {ccode} {indicator} (already cached)", flush=True)
+            return
+
+        print(f"[{completed+1}/{total}] Forecasting {ccode} {indicator}...", flush=True)
+        pred_df = run_prophet_forecast(group_df, ccode, indicator)
+        
+        with completed_lock:
+            completed += 1
+            
+        if pred_df is not None and not pred_df.empty:
+            with csv_lock:
                 for row in pred_df.to_dict("records"):
                     writer.writerow(row)
-                f.flush()
+                f_out.flush()
+        print(f"[{completed}/{total}] Finished forecasting {ccode} {indicator}", flush=True)
 
+    # Use ThreadPoolExecutor for concurrent forecasting
+    max_workers = 4
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = []
+        for (ccode, indicator), group in groups:
+            futures.append(executor.submit(process_group, ccode, indicator, group))
+        for future in as_completed(futures):
+            pass
+
+    f_out.close()
     print("Successfully completed forecasting and saved snapshots!", flush=True)
 
 if __name__ == "__main__":

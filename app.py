@@ -31,7 +31,13 @@ defaults = {
         "CHN", "JPN", "MDV", "BTN",  # Asia
         "NGA", "ZAF", "COM", "DJI",  # Africa
         "AUS", "NZL", "TUV", "NRU",  # Oceania
-        "IDN", "SAU", "GMB", "SOM"   # Top & Bottom Muslim
+        "IDN", "SAU", "GMB", "SOM",  # Top & Bottom Muslim
+        "RUS", "IND", "EGY", "ETH", "IRN", "ARE", # BRICS additions
+        "AFG", "BGD", "NPL", "PAK", "LKA",        # SAARC additions
+        "DZA", "AGO", "COG", "GNQ", "GAB", "IRQ", "KWT", "LBY", "VEN", # OPEC additions
+        "ALB", "BEL", "BGR", "HRV", "CZE", "DNK", "EST", "FIN", "FRA", "GRC", # NATO additions
+        "HUN", "ITA", "LVA", "LTU", "LUX", "MKD", "NLD", "NOR", "POL", "PRT",
+        "ROU", "SVK", "SVN", "ESP", "SWE", "TUR"
     ],
     "selected_indicators": ["gdp", "gdp_per_capita", "debt_pct_gdp"],
     "year_range": (2000, 2026),

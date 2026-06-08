@@ -16,6 +16,7 @@ from utils.database import (
     batch_update_freshness,
     get_freshness,
     fetch_economic_data,
+    get_secret_safely,
 )
 
 # World Bank indicator codes
@@ -96,7 +97,7 @@ def fetch_world_bank(indicator_code: str, country_code: str, year_start=1990, ye
 def fetch_gold_price_fred(year_start=1990, year_end=2023) -> list[dict]:
     """Fetch annual gold price from FRED (GOLDAMGBD228NLBM)."""
     try:
-        api_key = st.secrets.get("fred", {}).get("api_key", "")
+        api_key = get_secret_safely("fred", {}).get("api_key", "")
         if not api_key:
             return _fallback_gold_data()
 
@@ -167,7 +168,7 @@ def _fallback_silver_data() -> list[dict]:
 def fetch_silver_price_fred(year_start=1990, year_end=2024) -> list[dict]:
     """Fetch annual silver price from FRED (SLVPRUSD)."""
     try:
-        api_key = st.secrets.get("fred", {}).get("api_key", "")
+        api_key = get_secret_safely("fred", {}).get("api_key", "")
         if not api_key:
             return _fallback_silver_data()
         url = (
@@ -192,7 +193,7 @@ def fetch_silver_price_fred(year_start=1990, year_end=2024) -> list[dict]:
 def fetch_oil_price_fred(year_start=1990, year_end=2023) -> list[dict]:
     """Fetch annual Brent crude oil price from FRED (POILBREUSDM)."""
     try:
-        api_key = st.secrets.get("fred", {}).get("api_key", "")
+        api_key = get_secret_safely("fred", {}).get("api_key", "")
         if not api_key:
             return _fallback_oil_data()
 
@@ -236,7 +237,7 @@ def _fallback_oil_data() -> list[dict]:
 def fetch_dxy_fred(year_start=1990, year_end=2023) -> list[dict]:
     """Fetch annual US Dollar Index from FRED (DTWEXBGS)."""
     try:
-        api_key = st.secrets.get("fred", {}).get("api_key", "")
+        api_key = get_secret_safely("fred", {}).get("api_key", "")
         if not api_key:
             return _fallback_dxy_data()
 
