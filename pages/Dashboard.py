@@ -460,44 +460,50 @@ kpi_indicator = indicators[0]
 latest_df = df[(df["indicator"] == kpi_indicator) & (df["year"] == latest_year)]
 
 if not latest_df.empty:
-    cols = st.columns(min(len(countries), 5))
-    for i, code in enumerate(countries[:5]):
-        row = latest_df[latest_df["country_code"] == code]
-        if row.empty:
-            continue
-        val = row["value"].iloc[0]
-        cname = row["country_name"].iloc[0] if "country_name" in row.columns else code
+    cols_per_row = 6
+    for r in range(0, len(countries), cols_per_row):
+        chunk = countries[r:r+cols_per_row]
+        cols = st.columns(cols_per_row)
+        for i, code in enumerate(chunk):
+            row = latest_df[latest_df["country_code"] == code]
+            if row.empty:
+                continue
+            val = row["value"].iloc[0]
+            cname = row["country_name"].iloc[0] if "country_name" in row.columns else code
 
-        # YoY delta
-        prev = df[(df["country_code"] == code) & (df["indicator"] == kpi_indicator) & (df["year"] == latest_year - 1)]
-        delta = None
-        if not prev.empty:
-            prev_val = prev["value"].iloc[0]
-            if prev_val and prev_val != 0:
-                delta = f"{((val - prev_val) / abs(prev_val)) * 100:+.1f}% YoY"
+            # YoY delta
+            prev = df[(df["country_code"] == code) & (df["indicator"] == kpi_indicator) & (df["year"] == latest_year - 1)]
+            delta = None
+            if not prev.empty:
+                prev_val = prev["value"].iloc[0]
+                if prev_val and prev_val != 0:
+                    delta = f"{((val - prev_val) / abs(prev_val)) * 100:+.1f}% YoY"
 
-        with cols[i % 5]:
-            st.metric(
-                label=f"{cname[:18]} ({latest_year})",
-                value=format_value(val, kpi_indicator),
-                delta=delta,
-            )
+            with cols[i]:
+                st.metric(
+                    label=f"{cname[:18]} ({latest_year})",
+                    value=format_value(val, kpi_indicator),
+                    delta=delta,
+                )
 
 # ── Economic Health Scores ────────────────────────────────────────────────
 st.divider()
 st.markdown("#### 🏆 Economic Health Scores")
 st.caption("Composite score based on GDP per capita and debt ratio (0 = weak, 100 = strong)")
 
-score_cols = st.columns(min(len(countries), 5))
-for i, code in enumerate(countries[:5]):
-    cdf = df[df["country_code"] == code]
-    if cdf.empty:
-        continue
-    cname = cdf["country_name"].iloc[0] if "country_name" in cdf.columns else code
-    scores = compute_economic_health_score(cdf, latest_year)
-    with score_cols[i % 5]:
-        fig = health_score_gauge(scores.get("composite", 50), cname)
-        st.plotly_chart(fig, use_container_width=True)
+cols_per_row = 6
+for r in range(0, len(countries), cols_per_row):
+    chunk = countries[r:r+cols_per_row]
+    score_cols = st.columns(cols_per_row)
+    for i, code in enumerate(chunk):
+        cdf = df[df["country_code"] == code]
+        if cdf.empty:
+            continue
+        cname = cdf["country_name"].iloc[0] if "country_name" in cdf.columns else code
+        scores = compute_economic_health_score(cdf, latest_year)
+        with score_cols[i]:
+            fig = health_score_gauge(scores.get("composite", 50), cname)
+            st.plotly_chart(fig, use_container_width=True)
 
 # ── Timeline Charts ───────────────────────────────────────────────────────
 st.divider()

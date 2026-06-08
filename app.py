@@ -6,6 +6,14 @@ Main entry point — Streamlit multipage app
 import streamlit as st
 import os
 
+# ── Page Config ─────────────────────────────────────────────────────────────
+st.set_page_config(
+    page_title="EconVision",
+    page_icon="📊",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 # ── Hugging Face Spaces Secrets Handler ─────────────────────────────────────
 # HF Spaces exposes secrets as environment variables. We map a single TOML 
 # string secret to Streamlit's required secrets.toml file on boot.
