@@ -78,7 +78,6 @@ def run_update():
             "ALB", "BEL", "BGR", "HRV", "CZE", "DNK", "EST", "FIN", "FRA", "GRC",
             "HUN", "ITA", "LVA", "LTU", "LUX", "MKD", "NLD", "NOR", "POL", "PRT",
             "ROU", "SVK", "SVN", "ESP", "SWE", "TUR",
-            "MEX", "PHL", "COD", "VNM", "THA"
             "MEX", "PHL", "COD", "VNM", "THA",
             "ISR", "PRK"
         ]

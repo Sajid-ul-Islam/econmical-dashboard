@@ -376,6 +376,9 @@ def _fallback_countries():
         {"code": "AUS", "iso2": "AU", "name": "Australia", "region": "East Asia & Pacific", "income_level": "High income"},
         {"code": "RUS", "iso2": "RU", "name": "Russia", "region": "Europe & Central Asia", "income_level": "Upper middle income"},
         {"code": "EGY", "iso2": "EG", "name": "Egypt", "region": "Middle East & North Africa", "income_level": "Lower middle income"},
+        {"code": "ISR", "iso2": "IL", "name": "Israel", "region": "Middle East & North Africa", "income_level": "High income"},
+        {"code": "PRK", "iso2": "KP", "name": "North Korea", "region": "East Asia & Pacific", "income_level": "Low income"},
+        {"code": "IRN", "iso2": "IR", "name": "Iran", "region": "Middle East & North Africa", "income_level": "Upper middle income"},
     ]
 
 

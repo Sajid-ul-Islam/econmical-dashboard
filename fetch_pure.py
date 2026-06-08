@@ -43,6 +43,9 @@ except Exception as e:
         {"code": "AUS", "name": "Australia"},
         {"code": "RUS", "name": "Russia"},
         {"code": "EGY", "name": "Egypt"},
+        {"code": "ISR", "name": "Israel"},
+        {"code": "PRK", "name": "North Korea"},
+        {"code": "IRN", "name": "Iran"},
     ]
 
 print(f"Found {len(countries)} countries.", flush=True)
