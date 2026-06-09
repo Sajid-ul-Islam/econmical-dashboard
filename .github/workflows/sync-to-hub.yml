@@ -17,3 +17,9 @@ jobs:
           github_repo_id: ${{ github.repository }}
           huggingface_repo_id: Sajid-ul-Islam/Global-Economical-Analytics   # Replace with your details
           hf_token: ${{ secrets.HF_TOKEN }}
+      - name: Sync to HF/b3ngali/Global-Economic-Analytics
+        uses: huggingface/hub-sync@v0.1.0
+        with:
+          github_repo_id: ${{ github.repository }}
+          huggingface_repo_id: b3ngali/Global-Economic-Analytics   # Replace with your details
+          hf_token: ${{ secrets.HF_TOKEN_BB }}
