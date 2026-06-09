@@ -11,7 +11,8 @@ jobs:
         with:
           fetch-depth: 0   # Fetches the entire history to ensure a proper sync
           lfs: true        # Necessary if you have large files tracked with Git LFS
-      - uses: huggingface/hub-sync@v0.1.0
+      - name: Sync to HF/Sajid-ul-Islam/Global-Economical-Analytics
+        uses: huggingface/hub-sync@v0.1.0
         with:
           github_repo_id: ${{ github.repository }}
           huggingface_repo_id: Sajid-ul-Islam/Global-Economical-Analytics   # Replace with your details
