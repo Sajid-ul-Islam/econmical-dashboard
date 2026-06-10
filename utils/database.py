@@ -13,6 +13,10 @@ except ImportError:
 from datetime import datetime, timezone
 import pandas as pd
 import time
+import threading
+
+_snapshot_lock = threading.Lock()
+
 
 
 from typing import Any
@@ -130,16 +134,17 @@ def save_to_local_snapshot(rows: list[dict]):
                 new_df[c] = None
         new_df = new_df[cols]
 
-        if os.path.exists(LOCAL_SNAPSHOT_CSV):
-            try:
-                old_df = pd.read_csv(LOCAL_SNAPSHOT_CSV)
-                combined = pd.concat([old_df, new_df], ignore_index=True)
-                combined = combined.drop_duplicates(subset=["country_code", "indicator", "year"], keep="last")
-                combined.to_csv(LOCAL_SNAPSHOT_CSV, index=False)
-            except Exception:
+        with _snapshot_lock:
+            if os.path.exists(LOCAL_SNAPSHOT_CSV):
+                try:
+                    old_df = pd.read_csv(LOCAL_SNAPSHOT_CSV)
+                    combined = pd.concat([old_df, new_df], ignore_index=True)
+                    combined = combined.drop_duplicates(subset=["country_code", "indicator", "year"], keep="last")
+                    combined.to_csv(LOCAL_SNAPSHOT_CSV, index=False)
+                except Exception:
+                    new_df.to_csv(LOCAL_SNAPSHOT_CSV, index=False)
+            else:
                 new_df.to_csv(LOCAL_SNAPSHOT_CSV, index=False)
-        else:
-            new_df.to_csv(LOCAL_SNAPSHOT_CSV, index=False)
     except Exception as e:
         print(f"Error saving to local snapshot: {e}")
 
@@ -157,16 +162,17 @@ def save_predictions_to_local_snapshot(rows: list[dict]):
                 new_df[c] = None
         new_df = new_df[cols]
 
-        if os.path.exists(LOCAL_PREDICTIONS_CSV):
-            try:
-                old_df = pd.read_csv(LOCAL_PREDICTIONS_CSV)
-                combined = pd.concat([old_df, new_df], ignore_index=True)
-                combined = combined.drop_duplicates(subset=["country_code", "indicator", "year", "model"], keep="last")
-                combined.to_csv(LOCAL_PREDICTIONS_CSV, index=False)
-            except Exception:
+        with _snapshot_lock:
+            if os.path.exists(LOCAL_PREDICTIONS_CSV):
+                try:
+                    old_df = pd.read_csv(LOCAL_PREDICTIONS_CSV)
+                    combined = pd.concat([old_df, new_df], ignore_index=True)
+                    combined = combined.drop_duplicates(subset=["country_code", "indicator", "year", "model"], keep="last")
+                    combined.to_csv(LOCAL_PREDICTIONS_CSV, index=False)
+                except Exception:
+                    new_df.to_csv(LOCAL_PREDICTIONS_CSV, index=False)
+            else:
                 new_df.to_csv(LOCAL_PREDICTIONS_CSV, index=False)
-        else:
-            new_df.to_csv(LOCAL_PREDICTIONS_CSV, index=False)
     except Exception as e:
         print(f"Error saving predictions to local snapshot: {e}")
 

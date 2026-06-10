@@ -42,6 +42,56 @@ def render_sidebar(active_page: str = None):
         
         st.markdown("### ⚙️ Global Options")
         
+        # 🚀 Presets & Triggers Panel
+        with st.expander("🚀 Quick Presets", expanded=False):
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("🏛️ G7 Nations", key="preset_g7", use_container_width=True):
+                    st.session_state.filter_mode = "By Organization"
+                    st.session_state.sel_org = ["G7"]
+                    st.session_state.selected_indicators = ["gdp", "gdp_per_capita", "debt_pct_gdp"]
+                    st.rerun()
+                if st.button("⚔️ Nuclear Armed", key="preset_nuke", use_container_width=True):
+                    st.session_state.filter_mode = "By Organization"
+                    st.session_state.sel_org = ["Nuclear Armed"]
+                    st.session_state.selected_indicators = ["gdp", "debt_pct_gdp", "inflation"]
+                    st.rerun()
+            with col2:
+                if st.button("🏛️ BRICS Group", key="preset_brics", use_container_width=True):
+                    st.session_state.filter_mode = "By Organization"
+                    st.session_state.sel_org = ["BRICS"]
+                    st.session_state.selected_indicators = ["gdp", "population", "inflation"]
+                    st.rerun()
+                if st.button("🇪🇺 Eurozone (EU)", key="preset_eu", use_container_width=True):
+                    st.session_state.filter_mode = "By Organization"
+                    st.session_state.sel_org = ["EU"]
+                    st.session_state.selected_indicators = ["gdp", "gdp_per_capita", "unemployment"]
+                    st.rerun()
+            
+            st.markdown("<p style='font-size:3px;margin:0;'></p>", unsafe_allow_html=True)
+            col_rst, col_clr = st.columns(2)
+            with col_rst:
+                if st.button("🔄 Reset Defaults", key="preset_reset", use_container_width=True):
+                    st.session_state.filter_mode = "By Organization"
+                    st.session_state.selected_countries = ["USA", "RUS", "GBR", "FRA", "CHN", "IND", "PAK", "ISR", "PRK", "IRN"]
+                    st.session_state.selected_indicators = ["gdp", "gdp_per_capita", "debt_pct_gdp"]
+                    st.session_state.year_range = (2000, 2026)
+                    st.session_state.sel_individual = ["USA", "RUS", "GBR", "FRA", "CHN", "IND", "PAK", "ISR", "PRK", "IRN"]
+                    st.session_state.sel_org = ["Nuclear Armed"]
+                    st.session_state.sel_region = ["Europe"]
+                    st.session_state.sel_income = ["High income"]
+                    st.session_state.sort_order = "Highest to Lowest"
+                    st.session_state.show_predictions = True
+                    st.rerun()
+            with col_clr:
+                if st.button("🧹 Clear All", key="preset_clear", use_container_width=True):
+                    st.session_state.selected_countries = []
+                    st.session_state.sel_individual = []
+                    st.session_state.sel_org = []
+                    st.session_state.sel_region = []
+                    st.session_state.sel_income = []
+                    st.rerun()
+        
         if "filter_mode" not in st.session_state:
             st.session_state.filter_mode = "By Organization"
         if "sel_individual" not in st.session_state:
@@ -56,8 +106,10 @@ def render_sidebar(active_page: str = None):
             if key not in st.session_state:
                 if key == "sel_org":
                     st.session_state[key] = ["Nuclear Armed"]
-                else:
-                    st.session_state[key] = []
+                elif key == "sel_region":
+                    st.session_state[key] = ["Europe"]
+                elif key == "sel_income":
+                    st.session_state[key] = ["High income"]
         
         GROUPS = {
             "🌍 All North American": ["CAN", "USA", "MEX", "GTM", "BLZ", "HND", "SLV", "NIC", "CRI", "PAN", "CUB", "DOM", "HTI", "JAM", "TTO", "BRB"],
@@ -113,9 +165,28 @@ def render_sidebar(active_page: str = None):
 
         elif filter_mode == "By Region":
             regions = ["Africa", "Asia", "Europe", "North America", "South America", "Oceania"]
-            selected_regions = st.multiselect("Select Regions", options=regions, default=st.session_state.sel_region)
-            st.session_state.sel_region = selected_regions
+            selected_regions = st.multiselect(
+                "Select Regions",
+                options=["🌍 Select All", "❌ Clear All"] + regions,
+                default=st.session_state.sel_region
+            )
+            region_expanded = False
+            temp_regions = []
             for r in selected_regions:
+                if r == "🌍 Select All":
+                    temp_regions = regions
+                    region_expanded = True
+                    break
+                elif r == "❌ Clear All":
+                    temp_regions = []
+                    region_expanded = True
+                    break
+                else:
+                    temp_regions.append(r)
+            st.session_state.sel_region = temp_regions
+            if region_expanded:
+                st.rerun()
+            for r in temp_regions:
                 if r in ["North America", "South America", "Oceania"]:
                     final_codes.extend([c for c in GROUPS[f"🌍 All {r}"] if c in valid_codes])
                 else:
@@ -123,20 +194,84 @@ def render_sidebar(active_page: str = None):
 
         elif filter_mode == "By Organization":
             orgs = ["NATO", "EU", "BRICS", "SAARC", "OIC", "Arab League", "OPEC", "G7", "G20", "Nuclear Armed", "Top Oil Producers", "Top Populated"]
-            selected_orgs = st.multiselect("Select Organizations", options=orgs, default=st.session_state.sel_org)
-            st.session_state.sel_org = selected_orgs
+            selected_orgs = st.multiselect(
+                "Select Organizations",
+                options=["🏛️ Select All", "❌ Clear All"] + orgs,
+                default=st.session_state.sel_org
+            )
+            org_expanded = False
+            temp_orgs = []
             for o in selected_orgs:
+                if o == "🏛️ Select All":
+                    temp_orgs = orgs
+                    org_expanded = True
+                    break
+                elif o == "❌ Clear All":
+                    temp_orgs = []
+                    org_expanded = True
+                    break
+                else:
+                    temp_orgs.append(o)
+            st.session_state.sel_org = temp_orgs
+            if org_expanded:
+                st.rerun()
+            for o in temp_orgs:
                 final_codes.extend([c for c in GROUPS[f"🏛️ All {o}"] if c in valid_codes])
 
         elif filter_mode == "By Income Level":
             incomes = ["High income", "Upper middle income", "Lower middle income", "Low income"]
-            selected_incomes = st.multiselect("Select Income Levels", options=incomes, default=st.session_state.sel_income)
-            st.session_state.sel_income = selected_incomes
+            selected_incomes = st.multiselect(
+                "Select Income Levels",
+                options=["💰 Select All", "❌ Clear All"] + incomes,
+                default=st.session_state.sel_income
+            )
+            income_expanded = False
+            temp_incomes = []
             for i in selected_incomes:
+                if i == "💰 Select All":
+                    temp_incomes = incomes
+                    income_expanded = True
+                    break
+                elif i == "❌ Clear All":
+                    temp_incomes = []
+                    income_expanded = True
+                    break
+                else:
+                    temp_incomes.append(i)
+            st.session_state.sel_income = temp_incomes
+            if income_expanded:
+                st.rerun()
+            for i in temp_incomes:
                 final_codes.extend([c["code"] for c in all_countries if c.get("income_level") == i])
                 
         final_codes = list(dict.fromkeys(final_codes))
         st.session_state.selected_countries = final_codes
+
+        # Empty Selection Recovery Warning
+        if not final_codes:
+            st.markdown(
+                "<div style='background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); "
+                "padding: 10px; border-radius: 8px; font-size: 11px; color: #F87171; text-align: center; "
+                "font-weight: 500; margin-bottom: 12px; margin-top: 10px;'>⚠️ No countries selected! The dashboard is empty.</div>",
+                unsafe_allow_html=True
+            )
+            if st.button("🔌 Load Default Group (Nuclear Armed)", key="load_default_btn", use_container_width=True):
+                st.session_state.filter_mode = "By Organization"
+                st.session_state.sel_org = ["Nuclear Armed"]
+                st.rerun()
+        
+        # Display list of active countries in the sidebar
+        if final_codes:
+            cnames_map = {c["code"]: c["name"] for c in all_countries}
+            active_names = [cnames_map.get(code, code) for code in final_codes]
+            display_limit = 5
+            display_str = ", ".join(active_names[:display_limit])
+            if len(active_names) > display_limit:
+                display_str += f" (+{len(active_names) - display_limit} more)"
+            st.markdown(
+                f"<p style='color:#00D4FF;font-size:11px;margin-top:-8px;margin-bottom:12px;'><b>Active ({len(final_codes)}):</b> {display_str}</p>",
+                unsafe_allow_html=True
+            )
         
         default_inds = [k for k, v in indicator_options.items() if v in st.session_state.get("selected_indicators", ["gdp", "gdp_per_capita", "debt_pct_gdp"])]
         

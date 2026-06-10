@@ -326,34 +326,7 @@ def get_all_countries() -> list[dict]:
 
 
 def _fallback_countries():
-    from utils.database import LOCAL_SNAPSHOT_CSV
-    if os.path.exists(LOCAL_SNAPSHOT_CSV):
-        try:
-            import csv
-            countries_map = {}
-            with open(LOCAL_SNAPSHOT_CSV, "r", encoding="utf-8") as f:
-                reader = csv.DictReader(f)
-                for row in reader:
-                    code = row.get("country_code")
-                    name = row.get("country_name")
-                    if code and name and code != "WLD":
-                        countries_map[code] = name
-            if countries_map:
-                res = [
-                    {
-                        "code": code,
-                        "iso2": code[:2],
-                        "name": name,
-                        "region": "Global Snapshot",
-                        "income_level": "Unknown",
-                    }
-                    for code, name in countries_map.items()
-                ]
-                return sorted(res, key=lambda x: x["name"])
-        except Exception:
-            pass
-
-    return [
+    hardcoded = [
         {"code": "USA", "iso2": "US", "name": "United States", "region": "North America", "income_level": "High income"},
         {"code": "CHN", "iso2": "CN", "name": "China", "region": "East Asia & Pacific", "income_level": "Upper middle income"},
         {"code": "DEU", "iso2": "DE", "name": "Germany", "region": "Europe & Central Asia", "income_level": "High income"},
@@ -380,6 +353,32 @@ def _fallback_countries():
         {"code": "PRK", "iso2": "KP", "name": "North Korea", "region": "East Asia & Pacific", "income_level": "Low income"},
         {"code": "IRN", "iso2": "IR", "name": "Iran", "region": "Middle East & North Africa", "income_level": "Upper middle income"},
     ]
+    
+    seen_codes = {c["code"] for c in hardcoded}
+    merged = list(hardcoded)
+
+    from utils.database import LOCAL_SNAPSHOT_CSV
+    if os.path.exists(LOCAL_SNAPSHOT_CSV):
+        try:
+            import csv
+            with open(LOCAL_SNAPSHOT_CSV, "r", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    code = row.get("country_code")
+                    name = row.get("country_name")
+                    if code and name and code != "WLD" and code not in seen_codes:
+                        seen_codes.add(code)
+                        merged.append({
+                            "code": code,
+                            "iso2": code[:2],
+                            "name": name,
+                            "region": "Global Snapshot",
+                            "income_level": "Unknown",
+                        })
+        except Exception:
+            pass
+
+    return sorted(merged, key=lambda x: x["name"])
 
 
 def load_country_data(country_code: str, country_name: str, force: bool = False) -> bool:
@@ -393,12 +392,24 @@ def load_country_data(country_code: str, country_name: str, force: bool = False)
     freshness_updates = []
     now_str = datetime.now(timezone.utc).isoformat()
 
-    for indicator, wb_code in WB_INDICATORS.items():
-        if not force and not is_stale(country_code, indicator):
-            continue
+    from concurrent.futures import ThreadPoolExecutor
 
-        rows_raw = fetch_world_bank(wb_code, country_code)
-        if rows_raw:
+    def fetch_single_indicator(indicator, wb_code):
+        if not force and not is_stale(country_code, indicator):
+            return None
+        rows = fetch_world_bank(wb_code, country_code)
+        if rows:
+            return indicator, rows
+        return None
+
+    # Fetch World Bank indicators in parallel to prevent UI blocking
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        futures = [executor.submit(fetch_single_indicator, ind, code) for ind, code in WB_INDICATORS.items()]
+        results = [f.result() for f in futures]
+
+    for res in results:
+        if res is not None:
+            indicator, rows_raw = res
             all_data_rows.extend([
                 {
                     "country_code": country_code,
@@ -520,13 +531,22 @@ def get_country_data_cached(
                 load_country_data("WLD", "World")
                 break
 
+    stale_countries = []
     for code in country_codes:
         name = country_map.get(code, code)
         # Quietly refresh in background if stale
+        needs_load = False
         for ind in indicators:
             if ind not in global_inds and is_stale(code, ind):
-                load_country_data(code, name)
+                needs_load = True
                 break
+        if needs_load:
+            stale_countries.append((code, name))
+
+    if stale_countries:
+        from concurrent.futures import ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=min(len(stale_countries), 10)) as executor:
+            executor.map(lambda c: load_country_data(c[0], c[1]), stale_countries)
 
     df = fetch_economic_data(country_codes, indicators, year_start, year_end)
 

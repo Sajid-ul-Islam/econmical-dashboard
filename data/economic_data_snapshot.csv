@@ -16253,211 +16253,6 @@ ISL,Iceland,unemployment,2022,3.789,World Bank API,2026-06-08T09:53:20.076415+00
 ISL,Iceland,unemployment,2023,3.518,World Bank API,2026-06-08T09:53:20.076415+00:00
 ISL,Iceland,unemployment,2024,3.6,World Bank API,2026-06-08T09:53:20.076415+00:00
 ISL,Iceland,unemployment,2025,3.625,World Bank API,2026-06-08T09:53:20.076415+00:00
-ISR,Israel,debt_pct_gdp,1990,132.118898345577,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,debt_pct_gdp,1991,117.72768005178,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,debt_pct_gdp,1992,114.123027913945,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,debt_pct_gdp,1993,111.866313277602,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,debt_pct_gdp,1994,103.501650613099,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,debt_pct_gdp,1995,99.2859658269312,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,debt_pct_gdp,1996,98.1735667246328,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,debt_pct_gdp,1997,93.4134801274242,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,debt_pct_gdp,1998,94.4480151714433,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,debt_pct_gdp,1999,88.2425171142693,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,1985,28905736366.7079,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,1986,35834154873.5622,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,1987,43049543634.9607,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,1988,52650948910.3748,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,1989,52443479454.114,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,1990,62016729540.7093,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,1991,70998755006.9019,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,1992,79457685757.166,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,1993,79855877174.4429,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,1994,90740103828.6058,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,1995,105497418058.646,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,1996,115116595544.694,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,1997,119459826346.611,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,1998,120547409278.703,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,1999,121417185061.719,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2000,136512300542.025,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2001,135002039612.906,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2002,125332331883.997,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2003,131408914824.005,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2004,140047984605.087,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2005,147519922009.047,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2006,158900547825.306,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2007,184681214673.45,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2008,221231658862.876,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2009,213403181852.86,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2010,239679036634.372,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2011,268094998225.028,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2012,263589172712.391,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2013,298478070673.058,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2014,315017088116.716,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2015,303469434072.296,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2016,321940971558.016,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2017,358451839052.991,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2018,376299083108.497,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2019,400645216358.857,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2020,410768352657.612,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2021,489851549972.347,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2022,525181008025.57,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2023,512184638998.974,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp,2024,540379921261.681,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,1985,6828.66439090667,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,1986,8335.46286893748,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,1987,9853.40893452981,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,1988,11852.9826452892,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,1989,11607.6758419907,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,1990,13308.311060238,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,1991,14346.0810278646,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,1992,15509.9913638817,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,1993,15178.8399875391,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,1994,16806.8353081322,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,1995,19025.6840502517,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,1996,20224.2789080629,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,1997,20469.4699017497,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,1998,20188.8141481667,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,1999,19823.2138876277,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2000,21706.5194056329,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2001,20966.3052667971,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2002,19076.4584298321,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2003,19643.4690380742,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2004,20568.0694088834,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2005,21286.8388636595,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2006,22527.2619795719,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2007,25721.2594077311,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2008,30269.217773489,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2009,28508.4938886475,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2010,31439.0887027614,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2011,34522.5215979073,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2012,33321.4300881602,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2013,37034.3161080785,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2014,38343.3046626235,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2015,36213.1041481958,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2016,37671.5389138798,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2017,41138.470964272,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2018,42362.6652754196,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2019,44250.6313628073,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2020,44575.5719045492,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2021,52270.9040241956,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2022,54949.621556429,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2023,52003.7200729997,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,gdp_per_capita,2024,54176.6844383302,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,1985,307.161914643941,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,1986,47.6449275362319,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,1987,19.079754601227,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,1988,16.3833075734158,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,1989,20.3187250996016,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,1990,17.2553348050036,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,1991,19.1088798242862,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,1992,12.0653319283457,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,1993,10.8838740009403,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,1994,12.253550985796,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,1995,9.93389990557126,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,1996,11.4585122831129,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,1997,8.95499383477184,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,1998,5.48875371339656,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,1999,5.18975459299983,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2000,1.03263640999489,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2001,1.12302839116721,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2002,5.80234589468429,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2003,0.70763061681807,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2004,-0.421595034547416,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2005,1.34070328119492,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2006,2.05407914587443,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2007,0.466226972936065,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2008,4.52744765138651,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2009,3.3676231727125,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2010,2.70270270270273,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2011,3.48837209302323,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2012,1.67553715750052,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2013,1.58976347421476,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2014,0.467557251908503,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2015,-0.617342577642765,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2016,-0.535168195718695,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2017,0.249807840123008,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2018,0.805060379528526,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2019,0.817645940292794,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2020,-0.575254620897756,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2021,1.47965474722561,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2022,4.41162725488371,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2023,4.22522603168918,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,inflation,2024,3.07480889805025,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,1985,75.2073170731707,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,1986,74.9560975609756,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,1987,75.2585365853659,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,1988,74.4365853658537,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,1989,76.3073170731707,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,1990,76.6073170731707,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,1991,76.7585365853659,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,1992,76.5048780487805,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,1993,77.1536585365854,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,1994,77.4024390243903,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,1995,77.4512195121951,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,1996,78.1048780487805,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,1997,78.0,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,1998,78.1487804878049,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,1999,78.6585365853659,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2000,78.9536585365854,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2001,79.4073170731707,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2002,79.4512195121951,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2003,79.6487804878049,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2004,80.1463414634146,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2005,80.1512195121951,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2006,80.5536585365854,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2007,80.5048780487805,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2008,80.9512195121951,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2009,81.4048780487805,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2010,81.6024390243903,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2011,81.6560975609756,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2012,81.7048780487805,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2013,82.0560975609756,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2014,82.1536585365854,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2015,82.0512195121951,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2016,82.4073170731707,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2017,82.5512195121951,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2018,82.8024390243903,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2019,82.8048780487805,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2020,82.6487804878049,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2021,82.5,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2022,82.7,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2023,83.1951219512195,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,life_expectancy,2024,83.1975609756098,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,1991,13.387,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,1992,14.08,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,1993,12.741,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,1994,9.934,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,1995,8.782,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,1996,8.455,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,1997,9.751,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,1998,10.749,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,1999,11.183,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2000,11.102,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2001,11.812,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2002,12.888,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2003,13.505,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2004,13.029,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2005,11.342,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2006,10.707,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2007,9.379,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2008,7.704,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2009,9.534,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2010,8.48,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2011,7.139,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2012,6.762,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2013,6.137,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2014,5.789,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2015,5.176,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2016,4.723,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2017,4.14,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2018,3.917,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2019,3.731,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2020,4.169,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2021,4.812,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2022,3.695,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2023,3.371,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2024,3.595,World Bank API (Snapshot),2026-06-08T15:26:10Z
-ISR,Israel,unemployment,2025,3.489,World Bank API (Snapshot),2026-06-08T15:26:10Z
 ITA,Italy,debt_pct_gdp,1991,71.2588510037498,World Bank API (Snapshot),2026-06-08T15:26:10Z
 ITA,Italy,debt_pct_gdp,1992,77.2855315218802,World Bank API (Snapshot),2026-06-08T15:26:10Z
 ITA,Italy,gdp,1985,453259761687.456,World Bank API (Snapshot),2026-06-08T15:26:10Z
@@ -27485,81 +27280,6 @@ PRI,Puerto Rico (US),unemployment,2022,6.0,World Bank API (Snapshot),2026-06-08T
 PRI,Puerto Rico (US),unemployment,2023,5.725,World Bank API (Snapshot),2026-06-08T15:26:10Z
 PRI,Puerto Rico (US),unemployment,2024,5.639,World Bank API (Snapshot),2026-06-08T15:26:10Z
 PRI,Puerto Rico (US),unemployment,2025,5.991,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,1985,69.231,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,1986,69.541,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,1987,69.767,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,1988,70.052,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,1989,70.269,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,1990,70.484,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,1991,70.717,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,1992,71.009,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,1993,70.794,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,1994,70.472,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,1995,60.766,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,1996,60.82,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,1997,60.869,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,1998,60.887,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,1999,60.91,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2000,60.911,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2001,60.893,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2002,60.877,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2003,69.399,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2004,69.294,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2005,69.168,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2006,69.061,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2007,69.021,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2008,69.303,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2009,69.702,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2010,70.246,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2011,70.772,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2012,71.317,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2013,71.867,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2014,72.451,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2015,72.825,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2016,72.971,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2017,73.034,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2018,73.02,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2019,72.928,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2020,72.783,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2021,73.437,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2022,73.641,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2023,73.642,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",life_expectancy,2024,73.743,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,1991,2.845,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,1992,2.875,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,1993,2.98,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,1994,3.092,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,1995,3.114,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,1996,3.153,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,1997,3.253,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,1998,3.461,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,1999,3.67,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2000,3.653,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2001,3.676,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2002,3.644,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2003,3.668,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2004,3.62,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2005,3.576,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2006,3.55,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2007,3.547,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2008,3.48,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2009,3.48,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2010,3.419,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2011,3.516,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2012,3.542,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2013,3.567,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2014,3.509,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2015,3.523,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2016,3.574,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2017,3.498,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2018,3.409,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2019,3.439,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2020,3.624,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2021,3.692,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2022,3.457,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2023,3.463,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2024,3.539,World Bank API (Snapshot),2026-06-08T15:26:10Z
-PRK,"Korea, Dem. People's Rep.",unemployment,2025,3.545,World Bank API (Snapshot),2026-06-08T15:26:10Z
 PRT,Portugal,debt_pct_gdp,1993,8.24573773536288,World Bank API (Snapshot),2026-06-08T15:26:10Z
 PRT,Portugal,debt_pct_gdp,1994,5.6574045702943,World Bank API (Snapshot),2026-06-08T15:26:10Z
 PRT,Portugal,gdp,1985,27115807742.0873,World Bank API (Snapshot),2026-06-08T15:26:10Z
@@ -36340,130 +36060,10 @@ WLD,World,dxy,2002,114.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
 WLD,World,dxy,2003,103.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
 WLD,World,dxy,2004,94.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
 WLD,World,dxy,2005,89.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,dxy,2006,88.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,dxy,2007,83.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,dxy,2008,77.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,dxy,2009,81.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,dxy,2010,80.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,dxy,2011,76.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,dxy,2012,80.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,dxy,2013,81.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,dxy,2014,83.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,dxy,2015,93.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,dxy,2016,98.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,dxy,2017,99.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,dxy,2018,94.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,dxy,2019,97.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,dxy,2020,96.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,dxy,2021,93.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,dxy,2022,104.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,dxy,2023,103.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
 WLD,World,dxy,2024,104.5,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,1990,383.5,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,1991,362.1,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,1992,344.7,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,1993,359.8,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,1994,384.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,1995,384.1,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,1996,387.7,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,1997,331.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,1998,294.2,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,1999,278.9,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2000,279.1,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2001,271.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2002,309.7,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2003,363.4,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2004,409.2,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2005,444.7,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2006,603.5,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2007,695.4,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2008,871.7,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2009,972.4,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2010,1224.5,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2011,1571.5,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2012,1668.9,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2013,1411.2,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2014,1266.4,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2015,1160.1,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2016,1250.8,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2017,1257.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2018,1268.5,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2019,1393.4,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2020,1769.6,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2021,1798.6,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2022,1800.9,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2023,1941.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,gold_price,2024,2300.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
 WLD,World,oil_price,1990,23.73,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
 WLD,World,oil_price,1991,20.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,1992,19.32,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,1993,16.97,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,1994,15.82,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,1995,17.02,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,1996,20.67,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,1997,19.09,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,1998,12.72,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,1999,17.97,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2000,28.5,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2001,24.44,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2002,25.02,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2003,28.83,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2004,38.27,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2005,54.19,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2006,65.14,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2007,72.39,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2008,97.26,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2009,61.67,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2010,79.5,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2011,111.26,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2012,111.67,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2013,108.66,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2014,98.95,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2015,52.39,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2016,43.73,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2017,54.19,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2018,71.31,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2019,64.22,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2020,41.84,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2021,70.89,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2022,100.93,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,oil_price,2023,82.49,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
 WLD,World,oil_price,2024,83.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,1990,4.8,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,1991,4.1,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,1992,3.9,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,1993,4.3,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,1994,5.3,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,1995,5.2,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,1996,5.2,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,1997,4.9,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,1998,5.5,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,1999,5.2,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2000,4.9,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2001,4.4,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2002,4.6,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2003,4.9,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2004,6.7,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2005,7.3,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2006,11.5,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2007,13.4,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2008,14.9,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2009,14.7,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2010,20.2,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2011,35.1,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2012,31.2,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2013,23.8,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2014,19.1,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2015,15.7,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2016,17.1,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2017,17.0,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2018,15.7,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2019,16.2,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2020,20.5,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2021,25.1,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2022,21.8,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2023,23.4,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
-WLD,World,silver_price,2024,28.5,FRED / Fallback,2026-06-08T09:55:34.966571+00:00
 WSM,Samoa,gdp,1985,95572172.9835657,World Bank API (Snapshot),2026-06-08T15:26:10Z
 WSM,Samoa,gdp,1986,100947848.64478,World Bank API (Snapshot),2026-06-08T15:26:10Z
 WSM,Samoa,gdp,1987,111713922.141578,World Bank API (Snapshot),2026-06-08T15:26:10Z
@@ -37601,46 +37201,6 @@ CHN,China,population,1988,1101630000.0,World Bank API,2026-06-08T10:33:35.320665
 CHN,China,population,1987,1084035000.0,World Bank API,2026-06-08T10:33:35.320665+00:00
 CHN,China,population,1986,1066790000.0,World Bank API,2026-06-08T10:33:35.320665+00:00
 CHN,China,population,1985,1051040000.0,World Bank API,2026-06-08T10:33:35.320665+00:00
-PRK,"Korea, Dem. People's Rep.",population,2024,26498823.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2023,26418204.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2022,26328845.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2021,26232534.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2020,26136312.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2019,26037632.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2018,25931147.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2017,25817709.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2016,25698326.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2015,25575350.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2014,25451262.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2013,25329451.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2012,25211728.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2011,25097874.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2010,24987258.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2009,24878332.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2008,24764618.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2007,24646383.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2006,24524507.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2005,24396433.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2004,24254943.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2003,24090380.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2002,23943973.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2001,23815358.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,2000,23665910.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,1999,23497599.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,1998,23311564.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,1997,23110830.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,1996,22895746.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,1995,22669304.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,1994,22393975.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,1993,22073352.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,1992,21750911.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,1991,21428638.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,1990,21112137.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,1989,20804367.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,1988,20503161.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,1987,20205483.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,1986,19910855.0,World Bank API,2026-06-08T10:33:39.717080+00:00
-PRK,"Korea, Dem. People's Rep.",population,1985,19620388.0,World Bank API,2026-06-08T10:33:39.717080+00:00
 USA,United States,population,2024,340110988.0,World Bank API,2026-06-08T10:34:51.466072+00:00
 USA,United States,population,2023,336806231.0,World Bank API,2026-06-08T10:34:51.466072+00:00
 USA,United States,population,2022,334017321.0,World Bank API,2026-06-08T10:34:51.466072+00:00
@@ -37841,3 +37401,483 @@ SVK,Slovak Republic,population,1988,5250596.0,World Bank API,2026-06-08T10:38:40
 SVK,Slovak Republic,population,1987,5222840.0,World Bank API,2026-06-08T10:38:40.615401+00:00
 SVK,Slovak Republic,population,1986,5193838.0,World Bank API,2026-06-08T10:38:40.615401+00:00
 SVK,Slovak Republic,population,1985,5161768.0,World Bank API,2026-06-08T10:38:40.615401+00:00
+ISR,Israel,gdp,2024,540379921261.681,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2023,512184638998.974,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2022,525181008025.57,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2021,489851549972.347,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2020,410768352657.612,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2019,400645216358.857,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2018,376299083108.497,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2017,358451839052.991,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2016,321940971558.016,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2015,303469434072.296,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2014,315017088116.716,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2013,298478070673.058,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2012,263589172712.391,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2011,268094998225.028,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2010,239679036634.372,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2009,213403181852.86,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2008,221231658862.876,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2007,184681214673.45,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2006,158900547825.306,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2005,147519922009.047,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2004,140047984605.087,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2003,131408914824.005,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2002,125332331883.997,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2001,135002039612.906,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,2000,136512300542.025,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,1999,121417185061.719,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,1998,120547409278.703,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,1997,119459826346.611,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,1996,115116595544.694,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,1995,105497418058.646,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,1994,90740103828.6058,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,1993,79855877174.4429,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,1992,79457685757.166,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,1991,70998755006.9019,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,1990,62016729540.7093,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,1989,52443479454.114,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,1988,52650948910.3748,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,1987,43049543634.9607,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,1986,35834154873.5622,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp,1985,28905736366.7079,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2024,54176.6844383302,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2023,52003.7200729997,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2022,54949.621556429,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2021,52270.9040241956,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2020,44575.5719045492,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2019,44250.6313628073,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2018,42362.6652754196,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2017,41138.470964272,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2016,37671.5389138798,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2015,36213.1041481958,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2014,38343.3046626235,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2013,37034.3161080785,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2012,33321.4300881602,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2011,34522.5215979073,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2010,31439.0887027614,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2009,28508.4938886475,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2008,30269.217773489,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2007,25721.2594077311,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2006,22527.2619795719,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2005,21286.8388636595,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2004,20568.0694088834,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2003,19643.4690380742,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2002,19076.4584298321,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2001,20966.3052667971,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,2000,21706.5194056329,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,1999,19823.2138876277,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,1998,20188.8141481667,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,1997,20469.4699017497,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,1996,20224.2789080629,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,1995,19025.6840502517,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,1994,16806.8353081322,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,1993,15178.8399875391,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,1992,15509.9913638817,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,1991,14346.0810278646,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,1990,13308.311060238,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,1989,11607.6758419907,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,1988,11852.9826452892,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,1987,9853.40893452981,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,1986,8335.46286893748,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,gdp_per_capita,1985,6828.66439090667,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,debt_pct_gdp,1999,88.2425171142693,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,debt_pct_gdp,1998,94.4480151714433,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,debt_pct_gdp,1997,93.4134801274242,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,debt_pct_gdp,1996,98.1735667246328,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,debt_pct_gdp,1995,99.2859658269312,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,debt_pct_gdp,1994,103.501650613099,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,debt_pct_gdp,1993,111.866313277602,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,debt_pct_gdp,1992,114.123027913945,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,debt_pct_gdp,1991,117.72768005178,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,debt_pct_gdp,1990,132.118898345577,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2024,3.07480889805025,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2023,4.22522603168918,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2022,4.41162725488371,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2021,1.47965474722561,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2020,-0.575254620897756,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2019,0.817645940292794,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2018,0.805060379528526,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2017,0.249807840123008,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2016,-0.535168195718695,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2015,-0.617342577642765,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2014,0.467557251908503,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2013,1.58976347421476,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2012,1.67553715750052,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2011,3.48837209302323,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2010,2.70270270270273,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2009,3.3676231727125,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2008,4.52744765138651,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2007,0.466226972936065,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2006,2.05407914587443,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2005,1.34070328119492,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2004,-0.421595034547416,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2003,0.70763061681807,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2002,5.80234589468429,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2001,1.12302839116721,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,2000,1.03263640999489,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,1999,5.18975459299983,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,1998,5.48875371339656,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,1997,8.95499383477184,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,1996,11.4585122831129,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,1995,9.93389990557126,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,1994,12.253550985796,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,1993,10.8838740009403,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,1992,12.0653319283457,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,1991,19.1088798242862,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,1990,17.2553348050036,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,1989,20.3187250996016,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,1988,16.3833075734158,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,1987,19.079754601227,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,1986,47.6449275362319,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,inflation,1985,307.161914643941,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2025,3.489,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2024,3.595,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2023,3.371,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2022,3.695,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2021,4.812,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2020,4.169,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2019,3.731,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2018,3.917,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2017,4.14,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2016,4.723,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2015,5.176,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2014,5.789,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2013,6.137,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2012,6.762,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2011,7.139,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2010,8.48,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2009,9.534,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2008,7.704,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2007,9.379,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2006,10.707,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2005,11.342,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2004,13.029,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2003,13.505,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2002,12.888,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2001,11.812,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,2000,11.102,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,1999,11.183,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,1998,10.749,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,1997,9.751,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,1996,8.455,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,1995,8.782,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,1994,9.934,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,1993,12.741,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,1992,14.08,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,unemployment,1991,13.387,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2024,83.1975609756098,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2023,83.1951219512195,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2022,82.7,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2021,82.5,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2020,82.6487804878049,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2019,82.8048780487805,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2018,82.8024390243903,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2017,82.5512195121951,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2016,82.4073170731707,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2015,82.0512195121951,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2014,82.1536585365854,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2013,82.0560975609756,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2012,81.7048780487805,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2011,81.6560975609756,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2010,81.6024390243903,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2009,81.4048780487805,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2008,80.9512195121951,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2007,80.5048780487805,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2006,80.5536585365854,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2005,80.1512195121951,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2004,80.1463414634146,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2003,79.6487804878049,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2002,79.4512195121951,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2001,79.4073170731707,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,2000,78.9536585365854,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,1999,78.6585365853659,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,1998,78.1487804878049,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,1997,78.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,1996,78.1048780487805,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,1995,77.4512195121951,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,1994,77.4024390243903,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,1993,77.1536585365854,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,1992,76.5048780487805,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,1991,76.7585365853659,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,1990,76.6073170731707,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,1989,76.3073170731707,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,1988,74.4365853658537,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,1987,75.2585365853659,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,1986,74.9560975609756,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,life_expectancy,1985,75.2073170731707,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2024,9974400.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2023,9849000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2022,9557500.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2021,9371400.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2020,9215100.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2019,9054000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2018,8882800.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2017,8713300.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2016,8546000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2015,8380100.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2014,8215700.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2013,8059500.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2012,7910500.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2011,7765800.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2010,7623600.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2009,7485600.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2008,7308800.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2007,7180100.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2006,7053700.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2005,6930100.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2004,6809000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2003,6689700.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2002,6570000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2001,6439000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,2000,6289000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,1999,6125000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,1998,5971000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,1997,5836000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,1996,5692000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,1995,5545000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,1994,5399000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,1993,5261000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,1992,5123000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,1991,4949000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,1990,4660000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,1989,4518000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,1988,4442000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,1987,4369000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,1986,4299000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+ISR,Israel,population,1985,4233000.0,World Bank API,2026-06-10T09:42:13.907107+00:00
+PRK,North Korea,unemployment,2025,3.545,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2024,3.539,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2023,3.463,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2022,3.457,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2021,3.692,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2020,3.624,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2019,3.439,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2018,3.409,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2017,3.498,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2016,3.574,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2015,3.523,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2014,3.509,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2013,3.567,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2012,3.542,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2011,3.516,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2010,3.419,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2009,3.48,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2008,3.48,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2007,3.547,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2006,3.55,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2005,3.576,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2004,3.62,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2003,3.668,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2002,3.644,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2001,3.676,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,2000,3.653,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,1999,3.67,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,1998,3.461,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,1997,3.253,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,1996,3.153,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,1995,3.114,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,1994,3.092,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,1993,2.98,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,1992,2.875,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,unemployment,1991,2.845,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2024,73.743,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2023,73.642,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2022,73.641,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2021,73.437,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2020,72.783,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2019,72.928,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2018,73.02,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2017,73.034,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2016,72.971,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2015,72.825,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2014,72.451,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2013,71.867,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2012,71.317,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2011,70.772,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2010,70.246,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2009,69.702,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2008,69.303,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2007,69.021,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2006,69.061,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2005,69.168,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2004,69.294,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2003,69.399,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2002,60.877,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2001,60.893,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,2000,60.911,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,1999,60.91,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,1998,60.887,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,1997,60.869,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,1996,60.82,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,1995,60.766,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,1994,70.472,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,1993,70.794,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,1992,71.009,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,1991,70.717,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,1990,70.484,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,1989,70.269,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,1988,70.052,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,1987,69.767,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,1986,69.541,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,life_expectancy,1985,69.231,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2024,26498823.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2023,26418204.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2022,26328845.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2021,26232534.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2020,26136312.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2019,26037632.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2018,25931147.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2017,25817709.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2016,25698326.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2015,25575350.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2014,25451262.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2013,25329451.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2012,25211728.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2011,25097874.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2010,24987258.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2009,24878332.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2008,24764618.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2007,24646383.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2006,24524507.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2005,24396433.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2004,24254943.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2003,24090380.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2002,23943973.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2001,23815358.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,2000,23665910.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,1999,23497599.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,1998,23311564.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,1997,23110830.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,1996,22895746.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,1995,22669304.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,1994,22393975.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,1993,22073352.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,1992,21750911.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,1991,21428638.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,1990,21112137.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,1989,20804367.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,1988,20503161.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,1987,20205483.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,1986,19910855.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+PRK,North Korea,population,1985,19620388.0,World Bank API,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,1990,383.5,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,1991,362.1,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,1992,344.7,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,1993,359.8,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,1994,384.0,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,1995,384.1,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,1996,387.7,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,1997,331.0,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,1998,294.2,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,1999,278.9,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2000,279.1,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2001,271.0,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2002,309.7,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2003,363.4,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2004,409.2,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2005,444.7,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2006,603.5,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2007,695.4,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2008,871.7,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2009,972.4,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2010,1224.5,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2011,1571.5,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2012,1668.9,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2013,1411.2,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2014,1266.4,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2015,1160.1,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2016,1250.8,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2017,1257.0,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2018,1268.5,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2019,1393.4,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2020,1769.6,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2021,1798.6,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2022,1800.9,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2023,1941.0,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,gold_price,2024,2300.0,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,1990,4.8,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,1991,4.1,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,1992,3.9,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,1993,4.3,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,1994,5.3,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,1995,5.2,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,1996,5.2,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,1997,4.9,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,1998,5.5,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,1999,5.2,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2000,4.9,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2001,4.4,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2002,4.6,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2003,4.9,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2004,6.7,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2005,7.3,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2006,11.5,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2007,13.4,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2008,14.9,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2009,14.7,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2010,20.2,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2011,35.1,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2012,31.2,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2013,23.8,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2014,19.1,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2015,15.7,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2016,17.1,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2017,17.0,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2018,15.7,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2019,16.2,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2020,20.5,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2021,25.1,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2022,21.8,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2023,23.4,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,silver_price,2024,28.5,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,1992,19.35823781291173,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,1993,17.08475926187339,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,1994,15.95965804787,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,1995,17.19874803940021,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,1996,20.80852998149194,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,1997,19.31032363228559,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,1998,13.12621914800176,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,1999,18.10821928132254,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2000,28.84527496235648,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2001,24.71376279095301,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2002,25.11509597528076,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2003,28.77910271974402,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2004,38.23358044733045,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2005,54.68384760649978,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2006,65.60474310653115,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2007,72.65280584572432,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2008,97.33015175826588,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2009,61.58104957180501,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2010,79.80700834431269,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2011,111.53922643359057,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2012,112.01167269747162,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2013,108.96172547681786,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2014,99.3454458011795,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2015,53.02271240353849,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2016,45.07907624380451,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2017,54.88691608632913,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2018,71.61259298732668,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2019,64.19847398676202,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2020,43.3338428226363,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2021,70.83149958435285,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2022,98.99632757701237,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,oil_price,2023,82.32124302810716,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,dxy,2006,98.6005,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,dxy,2007,93.81,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,dxy,2008,90.8801,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,dxy,2009,96.7509,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,dxy,2010,93.0541,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,dxy,2011,88.7767,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,dxy,2012,91.6361,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,dxy,2013,92.7611,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,dxy,2014,95.5876,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,dxy,2015,108.1696,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,dxy,2016,113.0665,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,dxy,2017,112.8101,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,dxy,2018,112.0038,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,dxy,2019,115.7333,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,dxy,2020,117.774,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,dxy,2021,113.1051,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,dxy,2022,120.698,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
+WLD,World,dxy,2023,120.2663,FRED / Fallback,2026-06-10T09:42:19.405544+00:00
