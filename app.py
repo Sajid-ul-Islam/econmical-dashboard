@@ -44,6 +44,7 @@ dashboard = st.Page("pages/Dashboard.py", title="Dashboard", icon="📈")
 compare = st.Page("pages/Compare.py", title="Compare", icon="🔍")
 data_lab = st.Page("pages/Data_Lab.py", title="Data Lab", icon="🗄️")
 world_map = st.Page("pages/World_Map.py", title="World Map", icon="🗺️")
+macro_trends = st.Page("pages/Macro_Trends.py", title="Macro Trends", icon="📉")
 
-pg = st.navigation([global_overview, dashboard, world_map, compare, data_lab])
+pg = st.navigation([global_overview, dashboard, world_map, compare, data_lab, macro_trends])
 pg.run()
