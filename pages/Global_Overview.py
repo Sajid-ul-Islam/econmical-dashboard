@@ -31,13 +31,26 @@ countries = st.session_state.selected_countries
 indicators = st.session_state.selected_indicators
 year_range = st.session_state.year_range
 
-with st.spinner("Loading global economic data..."):
-    gold_df = get_country_data_cached(["WLD"], ["gold_price"], year_range[0], min(year_range[1], 2026))
-    global_inflation_df = get_country_data_cached(["WLD"], ["inflation"], year_range[0], min(year_range[1], 2026))
-    global_unemployment_df = get_country_data_cached(["WLD"], ["unemployment"], year_range[0], min(year_range[1], 2026))
-    global_oil_df = get_country_data_cached(["WLD"], ["oil_price"], year_range[0], min(year_range[1], 2026))
-    global_silver_df = get_country_data_cached(["WLD"], ["silver_price"], year_range[0], min(year_range[1], 2026))
-    global_dxy_df = get_country_data_cached(["WLD"], ["dxy"], year_range[0], min(year_range[1], 2026))
+st.markdown("## 🌍 Global Overview")
+st.caption(f"Showing global market indices and macroeconomic averages · {year_range[0]}–{year_range[1]}")
+st.divider()
+
+# Show skeleton layout while loading
+skeleton = st.empty()
+with skeleton.container():
+    sk_col1, sk_col2 = st.columns(2)
+    for _ in range(3):
+        sk_col1.markdown('<div class="skeleton-chart"></div>', unsafe_allow_html=True)
+        sk_col2.markdown('<div class="skeleton-chart"></div>', unsafe_allow_html=True)
+
+gold_df = get_country_data_cached(["WLD"], ["gold_price"], year_range[0], min(year_range[1], 2026))
+global_inflation_df = get_country_data_cached(["WLD"], ["inflation"], year_range[0], min(year_range[1], 2026))
+global_unemployment_df = get_country_data_cached(["WLD"], ["unemployment"], year_range[0], min(year_range[1], 2026))
+global_oil_df = get_country_data_cached(["WLD"], ["oil_price"], year_range[0], min(year_range[1], 2026))
+global_silver_df = get_country_data_cached(["WLD"], ["silver_price"], year_range[0], min(year_range[1], 2026))
+global_dxy_df = get_country_data_cached(["WLD"], ["dxy"], year_range[0], min(year_range[1], 2026))
+
+skeleton.empty() # Destroy skeleton layout once data is ready
 
 # ── Fallback for Missing WLD Aggregates (Proxy by calculating Mean) ───────
 if global_inflation_df.empty:
@@ -72,11 +85,6 @@ if st.session_state.show_predictions and year_range[1] > 2026:
                 predictions_dfs.append(pred)
 
 predictions_df = pd.concat(predictions_dfs, ignore_index=True) if predictions_dfs else pd.DataFrame()
-
-# ── Header ────────────────────────────────────────────────────────────────
-st.markdown("## 🌍 Global Overview")
-st.caption(f"Showing global market indices and macroeconomic averages · {year_range[0]}–{year_range[1]}")
-st.divider()
 
 @st.dialog("Expanded Chart View", width="large")
 def open_expanded_chart(fig, df, pred_df, indicator):

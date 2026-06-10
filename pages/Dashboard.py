@@ -31,12 +31,28 @@ year_range = st.session_state.year_range
 all_countries = get_all_countries()
 country_map = {c["code"]: c["name"] for c in all_countries}
 
-with st.spinner("Loading economic data..."):
+st.markdown("## 📈 Dashboard")
+st.caption(f"Showing {len(countries)} countries · {len(indicators)} indicators · {year_range[0]}–{year_range[1]}")
+st.divider()
 
-    if countries and indicators:
-        df = get_country_data_cached(countries, indicators, year_range[0], min(year_range[1], 2026))
-    else:
-        df = pd.DataFrame()
+# Show skeleton layout while loading
+skeleton = st.empty()
+with skeleton.container():
+    st.markdown("#### Latest Values")
+    kpi_cols = st.columns(6)
+    for col in kpi_cols:
+        col.markdown('<div class="skeleton-kpi"></div>', unsafe_allow_html=True)
+    st.markdown("#### Time Series")
+    chart_cols = st.columns(2)
+    for col in chart_cols:
+        col.markdown('<div class="skeleton-chart"></div>', unsafe_allow_html=True)
+
+if countries and indicators:
+    df = get_country_data_cached(countries, indicators, year_range[0], min(year_range[1], 2026))
+else:
+    df = pd.DataFrame()
+
+skeleton.empty() # Destroy skeleton layout once data is ready
 
 # ── Apply sorting based on latest values ─────────────────────────────────
 if not df.empty and indicators:
@@ -62,11 +78,6 @@ if st.session_state.show_predictions and year_range[1] > 2026:
 predictions_df = pd.concat(predictions_dfs, ignore_index=True) if predictions_dfs else pd.DataFrame()
 st.session_state["current_df"] = df
 st.session_state["predictions_df"] = predictions_df
-
-# ── Header ────────────────────────────────────────────────────────────────
-st.markdown("## 📈 Dashboard")
-st.caption(f"Showing {len(countries)} countries · {len(indicators)} indicators · {year_range[0]}–{year_range[1]}")
-st.divider()
 
 @st.dialog("Expanded Chart View", width="large")
 def open_expanded_chart(fig, df, pred_df, indicator):

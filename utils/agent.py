@@ -12,7 +12,6 @@ except ImportError:
     HAS_ANTHROPIC = False
 import requests
 import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from utils.database import log_query, get_recent_queries, get_secret_safely
 
@@ -138,8 +137,20 @@ def _get_unit(indicator: str) -> str:
     return units.get(indicator, "")
 
 
-def check_semantic_cache(user_query: str, threshold: float = 0.97) -> str | None:
-    """Check if a semantically similar query exists in the recent logs using a TF-IDF vectorized knowledge base."""
+@st.cache_resource(show_spinner="⏳ Loading AI semantic model (first boot only)...")
+def get_embedding_model():
+    """Load and cache the SentenceTransformer model to prevent reloading on every query."""
+    try:
+        st.toast("Downloading AI semantic model (~80MB). This only happens once!", icon="📦")
+        from sentence_transformers import SentenceTransformer
+        # all-MiniLM-L6-v2 is ultra-fast (~80MB) and highly optimized for semantic similarity
+        return SentenceTransformer('all-MiniLM-L6-v2')
+    except ImportError:
+        return None
+
+
+def check_semantic_cache(user_query: str, threshold: float = 0.90) -> str | None:
+    """Check if a semantically similar query exists in the recent logs using dense embeddings."""
     logs_df = get_recent_queries(limit=200)
     if logs_df.empty or "query" not in logs_df.columns:
         return None
@@ -148,11 +159,16 @@ def check_semantic_cache(user_query: str, threshold: float = 0.97) -> str | None
     responses = logs_df["response"].tolist()
     
     try:
-        vectorizer = TfidfVectorizer()
-        tfidf_matrix = vectorizer.fit_transform(queries + [user_query])
+        model = get_embedding_model()
+        if model is None:
+            return None
         
-        # Compare the last element (user_query) with all previous queries
-        cosine_similarities = cosine_similarity(tfidf_matrix[-1], tfidf_matrix[:-1]).flatten()
+        # Encode the historical queries and the user query into dense semantic vectors
+        corpus_embeddings = model.encode(queries)
+        query_embedding = model.encode([user_query])
+        
+        # Compare the user query with all previous queries
+        cosine_similarities = cosine_similarity(query_embedding, corpus_embeddings).flatten()
         best_match_idx = cosine_similarities.argmax()
         
         if cosine_similarities[best_match_idx] >= threshold:
