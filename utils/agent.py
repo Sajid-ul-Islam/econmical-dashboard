@@ -181,7 +181,8 @@ def ask_agent(
 
     secrets = get_secret_safely("anthropic") or {}
 
-    anthropic_key = secrets.get("api_key", "")
+    custom_key = st.session_state.get("custom_anthropic_key", "")
+    anthropic_key = custom_key if custom_key else secrets.get("api_key", "")
     groq_key = secrets.get("groq_key", "")
     gemini_key = secrets.get("gemini_key", "")
     openrouter_key = secrets.get("openrouter_key", "")

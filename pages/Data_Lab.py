@@ -295,6 +295,15 @@ with tab5:
 
     st.divider()
 
+    # ── API Key Configuration ────────────────────────────────────────────────
+    with st.expander("🔑 API Key Configuration", expanded=False):
+        st.text_input(
+            "Custom Anthropic API Key (Overrides secrets.toml)",
+            type="password",
+            key="custom_anthropic_key",
+            help="Enter your Anthropic API key (starts with sk-ant-) to use Claude 3.5 Sonnet for the AI Agent.",
+        )
+
     # ── Suggested questions ───────────────────────────────────────────────────
     with st.expander("💡 Suggested Questions", expanded=len(st.session_state.chat_history) == 0):
         cols = st.columns(2)

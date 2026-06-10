@@ -32,6 +32,7 @@ defaults = {
     "year_range": (2000, 2026),
     "chat_history": [],
     "data_loaded": False,
+    "custom_anthropic_key": "",
 }
 for k, v in defaults.items():
     if k not in st.session_state:
