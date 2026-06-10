@@ -50,7 +50,7 @@ def base_layout(title: str = "", height: int = 420) -> dict:
     return dict(
         title=dict(text=title, font=dict(size=16, family="monospace"), x=0.02),
         height=height,
-        margin=dict(l=60, r=20, t=50, b=40),
+        margin=dict(l=60, r=20, t=50, b=80),
         hovermode="x unified",
         template="streamlit",
         hoverlabel=dict(
@@ -58,7 +58,51 @@ def base_layout(title: str = "", height: int = 420) -> dict:
             bordercolor="rgba(0, 212, 255, 0.3)",
             font=dict(color="#E2E8F0", family="Inter, sans-serif", size=13),
         ),
+        legend=dict(
+            orientation="h",
+            yanchor="top",
+            y=-0.18,
+            xanchor="center",
+            x=0.5
+        )
     )
+
+def shorten_country_name(name: str) -> str:
+    """Shorten long country names to avoid UI squeezing in legends and charts."""
+    if not isinstance(name, str):
+        return name
+    
+    mapping = {
+        "United Kingdom of Great Britain and Northern Ireland": "United Kingdom",
+        "United States of America": "United States",
+        "Russian Federation": "Russia",
+        "Iran, Islamic Republic of": "Iran",
+        "Iran, Islamic Rep.": "Iran",
+        "Democratic People's Republic of Korea": "North Korea",
+        "Korea, Dem. People's Rep.": "North Korea",
+        "Venezuela, Bolivarian Republic of": "Venezuela",
+        "Egypt, Arab Republic of": "Egypt",
+        "Egypt, Arab Rep.": "Egypt",
+        "Yemen, Republic of": "Yemen",
+        "Syrian Arab Republic": "Syria",
+        "Lao People's Democratic Republic": "Laos",
+        "Congo, Democratic Republic of the": "DR Congo",
+        "Congo, Republic of the": "Congo",
+        "Bahamas, The": "Bahamas",
+        "Gambia, The": "Gambia",
+        "Micronesia, Federated States of": "Micronesia",
+    }
+    
+    # Check exact match or substring
+    for long_n, short_n in mapping.items():
+        if long_n.lower() in name.lower():
+            return short_n
+            
+    # Truncate if still too long (e.g. > 18 characters)
+    if len(name) > 18:
+        return name[:15] + "..."
+        
+    return name
 
 
 def indicator_label(indicator: str) -> str:
@@ -130,12 +174,13 @@ def timeline_chart(
             continue
 
         cname = cdf["country_name"].iloc[0] if "country_name" in cdf.columns else country
+        cname_short = shorten_country_name(cname)
         color = color_map[country]
 
         # Historical line
         fig.add_trace(go.Scatter(
             x=cdf["year"], y=cdf["value"],
-            name=cname,
+            name=cname_short,
             line=dict(color=color, width=2.5),
             hovertemplate=f"<b>{cname}</b><br>Year: %{{x}}<br>{indicator_label(indicator)}: %{{customdata}}<extra></extra>",
             customdata=[format_value(v, indicator) for v in cdf["value"]],
@@ -160,12 +205,12 @@ def timeline_chart(
                     line=dict(color="rgba(0,0,0,0)"),
                     showlegend=False,
                     hoverinfo="skip",
-                    name=f"{cname} CI",
+                    name=f"{cname_short} CI",
                 ))
                 # Forecast line
                 fig.add_trace(go.Scatter(
                     x=pdf["year"], y=pdf["predicted"],
-                    name=f"{cname} (forecast)",
+                    name=f"{cname_short} (forecast)",
                     line=dict(color=color, width=2, dash="dash"),
                     hovertemplate=f"<b>{cname} Forecast</b><br>Year: %{{x}}<br>{indicator_label(indicator)}: %{{customdata}}<extra></extra>",
                     customdata=[format_value(v, indicator) for v in pdf["predicted"]],
@@ -197,10 +242,11 @@ def comparison_bar(
 
     colors = [COLORS[i % len(COLORS)] for i in range(len(filtered))]
     cnames = filtered["country_name"] if "country_name" in filtered.columns else filtered["country_code"]
+    cnames_short = [shorten_country_name(name) for name in cnames]
 
     fig = go.Figure(go.Bar(
         x=filtered["value"],
-        y=cnames,
+        y=cnames_short,
         orientation="h",
         marker=dict(color=colors),
         hovertemplate="%{y}: %{customdata}<extra></extra>",
@@ -234,7 +280,7 @@ def health_score_gauge(score: float, country_name: str) -> go.Figure:
     fig = go.Figure(go.Indicator(
         mode="gauge+number",
         value=score,
-        title={"text": f"{country_name}", "font": {"size": 13}},
+        title={"text": f"{shorten_country_name(country_name)}", "font": {"size": 13}},
         gauge={
             "axis": {"range": [0, 100]},
             "bar": {"color": color},
@@ -263,6 +309,7 @@ def correlation_heatmap(df: pd.DataFrame, indicator1: str, indicator2: str) -> g
     for country in countries:
         cdf = df[df["country_code"] == country]
         cname = cdf["country_name"].iloc[0] if "country_name" in cdf.columns else country
+        cname_short = shorten_country_name(cname)
         ind1 = cdf[cdf["indicator"] == indicator1][["year", "value"]].rename(columns={"value": "v1"})
         ind2 = cdf[cdf["indicator"] == indicator2][["year", "value"]].rename(columns={"value": "v2"})
         merged = pd.merge(ind1, ind2, on="year")
@@ -274,7 +321,7 @@ def correlation_heatmap(df: pd.DataFrame, indicator1: str, indicator2: str) -> g
             x=merged["v1"],
             y=merged["v2"],
             mode="markers",
-            name=cname,
+            name=cname_short,
             marker=dict(color=color_map[country], size=6, opacity=0.75),
             text=labels,
             hovertemplate="%{text}<br>"

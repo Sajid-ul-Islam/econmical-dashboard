@@ -12,7 +12,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 try:
     from utils.ui import render_sidebar
-    render_sidebar()
+    render_sidebar("Global Overview")
 
     from utils.data_fetcher import get_country_data_cached, get_all_countries, get_last_updated_str
     from utils.forecasting import get_or_create_forecasts_batch

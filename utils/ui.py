@@ -1,6 +1,6 @@
 import streamlit as st
 
-def render_sidebar():
+def render_sidebar(active_page: str = None):
     """Renders the global sidebar options across all pages."""
     from utils.data_fetcher import get_all_countries, load_country_data
     
@@ -193,6 +193,90 @@ def render_sidebar():
             st.rerun()
         
         st.divider()
+        st.markdown("### 🤖 AI Economic Agent")
+        
+        # Display active page context in a small muted text
+        if active_page:
+            st.markdown(f"<p style='color:#00D4FF;font-size:11px;margin-bottom:0;'>Context: {active_page} Page</p>", unsafe_allow_html=True)
+            st.session_state.active_page = active_page
+        else:
+            st.markdown("<p style='color:#64748B;font-size:11px;margin-bottom:0;'>Context: General Database</p>", unsafe_allow_html=True)
+            
+        # Chat history reset / API key layout
+        col_clear, col_key = st.columns([1.2, 1])
+        with col_clear:
+            if st.button("🗑️ Clear Chat", key="clear_chat_sidebar", use_container_width=True):
+                st.session_state.chat_history = []
+                st.rerun()
+        with col_key:
+            show_key_input = st.toggle("🔑 Key", value=False, key="toggle_key_sidebar")
+
+        if show_key_input:
+            st.text_input(
+                "Custom Anthropic API Key",
+                type="password",
+                key="custom_anthropic_key",
+                help="Enter your Anthropic API key to use Claude 3.5 Sonnet.",
+            )
+
+        # Suggested Questions
+        from utils.agent import SUGGESTED_QUESTIONS, ask_agent
+        with st.expander("💡 Suggested Questions", expanded=False):
+            for i, q in enumerate(SUGGESTED_QUESTIONS):
+                if st.button(q, key=f"sq_sidebar_{i}", use_container_width=True):
+                    st.session_state.chat_history.append({"role": "user", "content": q})
+                    with st.spinner("Analyzing..."):
+                        import pandas as pd
+                        df = st.session_state.get("current_df", pd.DataFrame())
+                        predictions_df = st.session_state.get("predictions_df", pd.DataFrame())
+                        countries = st.session_state.get("selected_countries", [])
+                        indicators = st.session_state.get("selected_indicators", [])
+                        
+                        response, model = ask_agent(
+                            q, df, predictions_df, countries, indicators,
+                            st.session_state.chat_history[:-1],
+                            active_page=active_page
+                        )
+                    st.session_state.chat_history.append({"role": "assistant", "content": response, "model": model})
+                    st.rerun()
+
+        # Chat history display
+        if "chat_history" not in st.session_state:
+            st.session_state.chat_history = []
+
+        if st.session_state.chat_history:
+            for msg in st.session_state.chat_history:
+                with st.chat_message(msg["role"], avatar="🧑" if msg["role"] == "user" else "📊"):
+                    st.markdown(f"<div style='font-size: 13px;'>{msg['content']}</div>", unsafe_allow_html=True)
+                    if msg.get("model"):
+                        if "Claude" not in msg["model"] and "Cache" not in msg["model"] and "Error" not in msg["model"]:
+                            st.markdown(f"<p style='color:#F59E0B;font-size:9px;margin-top:4px;'>⚠️ Fallback: {msg['model']}</p>", unsafe_allow_html=True)
+                        else:
+                            st.markdown(f"<p style='color:#10B981;font-size:9px;margin-top:4px;'>⚡ {msg['model']}</p>", unsafe_allow_html=True)
+
+        # Chat input form
+        with st.form("sidebar_chat_form", clear_on_submit=True):
+            prompt = st.text_input("Ask about this page or data:", placeholder="Type a question...", key="sidebar_prompt_input")
+            submitted = st.form_submit_button("Send", use_container_width=True)
+
+        if submitted and prompt:
+            st.session_state.chat_history.append({"role": "user", "content": prompt})
+            with st.spinner("Analyzing..."):
+                import pandas as pd
+                df = st.session_state.get("current_df", pd.DataFrame())
+                predictions_df = st.session_state.get("predictions_df", pd.DataFrame())
+                countries = st.session_state.get("selected_countries", [])
+                indicators = st.session_state.get("selected_indicators", [])
+                
+                response, model = ask_agent(
+                    prompt, df, predictions_df, countries, indicators,
+                    st.session_state.chat_history[:-1],
+                    active_page=active_page
+                )
+            st.session_state.chat_history.append({"role": "assistant", "content": response, "model": model})
+            st.rerun()
+
+        st.divider()
         st.markdown("<p style='color:#374151;font-size:10px;text-align:center;margin-top:24px'>Sources: World Bank · FRED<br>ML: Prophet · Linear Trend<br>AI: Claude Sonnet</p>", unsafe_allow_html=True)
 
 def inject_custom_css():
@@ -308,6 +392,17 @@ def inject_custom_css():
     [data-testid="stChatMessage"]:has([data-testid="stIcon"][aria-label="🧑"]) {
         background: rgba(0, 212, 255, 0.03);
         border-color: rgba(0, 212, 255, 0.1);
+    }
+    
+    /* Sidebar Chat compacting */
+    [data-testid="stSidebar"] [data-testid="stChatMessage"] {
+        padding: 8px 12px !important;
+        margin-bottom: 8px !important;
+        border-radius: 8px !important;
+    }
+    [data-testid="stSidebar"] [data-testid="stChatMessage"] p {
+        font-size: 13px !important;
+        line-height: 1.4 !important;
     }
     </style>
     """, unsafe_allow_html=True)

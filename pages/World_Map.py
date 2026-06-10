@@ -14,7 +14,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 try:
     from utils.ui import render_sidebar
-    render_sidebar()
+    render_sidebar("World Map")
 
     from utils.data_fetcher import get_all_countries, load_country_data, get_last_updated_str
     from components.charts import indicator_label, format_value, classify_debt, DEBT_COLOR_MAP

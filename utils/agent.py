@@ -169,6 +169,7 @@ def ask_agent(
     selected_countries: list[str],
     selected_indicators: list[str],
     conversation_history: list[dict],
+    active_page: str = None,
 ) -> tuple[str, str]:
     """
     Send query to AI agent with full data context, returning (response, model_name).
@@ -190,6 +191,57 @@ def ask_agent(
 
     data_context = build_data_context(df, predictions_df, selected_countries, selected_indicators)
 
+    active_page_context = ""
+    if active_page:
+        active_page_context = f"=== ACTIVE DASHBOARD PAGE ===\nThe user is currently looking at the page: '{active_page}'\n"
+        if active_page == "Global Overview":
+            active_page_context += (
+                "This page visualises global market benchmarks: Gold price, Silver price, Brent Crude Oil price, "
+                "US Dollar Index (DXY) value, and world average proxy inflation and unemployment rates.\n"
+                "Data for these world/global benchmarks is stored under the country code 'WLD'.\n"
+            )
+        elif active_page == "Dashboard":
+            active_page_context += (
+                "This page shows primary indicators and metric cards (latest value and annual changes) "
+                "for individual countries. It also displays trend charts and forecasting path timelines.\n"
+                f"Active countries in current view: {', '.join(selected_countries)}\n"
+                f"Active indicators in current view: {', '.join(selected_indicators)}\n"
+            )
+        elif active_page == "World Map":
+            active_page_context += (
+                "This page displays a choropleth map showing geographical distribution of economic indicators. "
+                "It also includes a 3D indicator comparison path over time.\n"
+            )
+        elif active_page == "Compare":
+            active_page_context += (
+                "This page allows pairwise country comparison. It features comparative bar charts, Pearson correlation "
+                "heatmaps/metrics, rankings with YoY changes, and an interactive what-if simplified growth scenario simulator.\n"
+                f"Active countries in current view: {', '.join(selected_countries)}\n"
+                f"Active indicators in current view: {', '.join(selected_indicators)}\n"
+            )
+        elif active_page == "Data Lab":
+            active_page_context += (
+                "This page handles data administration. It includes a raw data table explorer, data freshness tracking (fetching age), "
+                "cross-source live validation (matching with live World Bank API to check for data drift), and data export functions.\n"
+            )
+        elif active_page == "Macro Trends":
+            try:
+                from utils.macro_data import US_INFLATION, GOLD_PRICES, SILVER_PRICES
+                infl_str = ", ".join([f"{y}: {v}%" for y, v in sorted(US_INFLATION.items()) if y >= 1990])
+                gold_str = ", ".join([f"{y}: ${v}" for y, v in sorted(GOLD_PRICES.items()) if y >= 1990])
+                silver_str = ", ".join([f"{y}: ${v}" for y, v in sorted(SILVER_PRICES.items()) if y >= 1990])
+                active_page_context += (
+                    "This page shows long-term inflation and commodities data (since 1970). "
+                    "The user is viewing: 1) US Dollar Purchasing Power erosion based on cumulative compounding CPI; "
+                    "and 2) Gold vs Silver prices comparison with Gold/Silver ratio overlays.\n"
+                    "Here is the historical data shown on this page from 1990 onwards:\n"
+                    f"- Annual US CPI Inflation: {infl_str}\n"
+                    f"- Gold Prices ($/oz): {gold_str}\n"
+                    f"- Silver Prices ($/oz): {silver_str}\n"
+                )
+            except Exception:
+                pass
+
     # Dynamic system prompt based on predictions visibility
     if predictions_df.empty:
         projections_text = ".\n\n- NOTE: ML predictions are currently hidden by the user. Do not forecast or mention future projections."
@@ -203,9 +255,15 @@ def ask_agent(
         messages.append({"role": msg["role"], "content": msg["content"]})
 
     # Add context + current query
+    context_parts = []
+    if active_page_context:
+        context_parts.append(active_page_context)
+    context_parts.append(f"<economic_data>\n{data_context}\n</economic_data>")
+    context_parts.append(f"User question: {user_query}")
+
     messages.append({
         "role": "user",
-        "content": f"<economic_data>\n{data_context}\n</economic_data>\n\nUser question: {user_query}"
+        "content": "\n\n".join(context_parts)
     })
 
     errors = []

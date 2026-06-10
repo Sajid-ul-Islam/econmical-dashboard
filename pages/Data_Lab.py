@@ -13,7 +13,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 try:
     from utils.ui import render_sidebar
-    render_sidebar()
+    render_sidebar("Data Lab")
 
     from utils.database import get_supabase
     from utils.data_fetcher import (
@@ -45,7 +45,7 @@ st.markdown("## 🗄️ Data Lab")
 st.caption("Data provenance, freshness tracking, raw explorer, and verification panel")
 st.divider()
 
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["📋 Raw Data", "🔄 Freshness", "🔬 Verify", "📤 Export", "🤖 AI Agent"])
+tab1, tab2, tab3, tab4 = st.tabs(["📋 Raw Data", "🔄 Freshness", "🔬 Verify", "📤 Export"])
 
 # ── Tab 1: Raw Data Explorer ──────────────────────────────────────────────
 with tab1:
@@ -280,90 +280,3 @@ with tab4:
             )
     else:
         st.info("No data loaded yet.")
-
-# ── Tab 5: AI Agent ───────────────────────────────────────────────────────
-with tab5:
-    col_h, col_btn = st.columns([4, 1])
-    with col_h:
-        st.markdown("#### 🤖 AI Economic Agent")
-        cnames = [country_map.get(c, c) for c in countries[:4]]
-        st.caption(f"Powered by Claude · Context: {', '.join(cnames)} · {len(df)} data points loaded")
-    with col_btn:
-        if st.button("🗑️ Clear Chat", use_container_width=True):
-            st.session_state.chat_history = []
-            st.rerun()
-
-    st.divider()
-
-    # ── API Key Configuration ────────────────────────────────────────────────
-    with st.expander("🔑 API Key Configuration", expanded=False):
-        st.text_input(
-            "Custom Anthropic API Key (Overrides secrets.toml)",
-            type="password",
-            key="custom_anthropic_key",
-            help="Enter your Anthropic API key (starts with sk-ant-) to use Claude 3.5 Sonnet for the AI Agent.",
-        )
-
-    # ── Suggested questions ───────────────────────────────────────────────────
-    with st.expander("💡 Suggested Questions", expanded=len(st.session_state.chat_history) == 0):
-        cols = st.columns(2)
-        for i, q in enumerate(SUGGESTED_QUESTIONS):
-            with cols[i % 2]:
-                if st.button(q, key=f"sq_{i}", use_container_width=True):
-                    st.session_state.chat_history.append({"role": "user", "content": q})
-                    with st.spinner("Thinking..."):
-                        response, model = ask_agent(
-                            q, df, predictions_df, countries, indicators,
-                            st.session_state.chat_history[:-1],
-                        )
-                    st.session_state.chat_history.append({"role": "assistant", "content": response, "model": model})
-                    if model and "Claude" not in model and "Cache" not in model and "Error" not in model:
-                        st.toast("⚠️ Claude API unavailable. Used fallback model.", icon="⚠️")
-                    st.rerun()
-
-    # ── Chat history ──────────────────────────────────────────────────────────
-    for msg in st.session_state.chat_history:
-        with st.chat_message(msg["role"], avatar="🧑" if msg["role"] == "user" else "📊"):
-            st.markdown(msg["content"])
-            if msg.get("model"):
-                if "Claude" not in msg["model"] and "Cache" not in msg["model"] and "Error" not in msg["model"]:
-                    st.caption(f"⚠️ **Fallback Model Used:** {msg['model']}")
-                else:
-                    st.caption(f"⚡ Answered by: {msg['model']}")
-
-    # ── Input ─────────────────────────────────────────────────────────────────
-    if prompt := st.chat_input("Ask about the economic data... (e.g. 'Which country has the highest debt?')"):
-        st.session_state.chat_history.append({"role": "user", "content": prompt})
-
-        with st.chat_message("user", avatar="🧑"):
-            st.markdown(prompt)
-
-        with st.chat_message("assistant", avatar="📊"):
-            with st.spinner("Analysing economic data..."):
-                response, model = ask_agent(
-                    prompt,
-                    df,
-                    predictions_df,
-                    countries,
-                    indicators,
-                    st.session_state.chat_history[:-1],
-                )
-            st.markdown(response)
-            if model:
-                if "Claude" not in model and "Cache" not in model and "Error" not in model:
-                    st.caption(f"⚠️ **Fallback Model Used:** {model}")
-                    st.toast("⚠️ Claude API unavailable. Used fallback model.", icon="⚠️")
-                else:
-                    st.caption(f"⚡ Answered by: {model}")
-
-        st.session_state.chat_history.append({"role": "assistant", "content": response, "model": model})
-        st.rerun()
-
-    # ── Context info panel ────────────────────────────────────────────────────
-    st.divider()
-    with st.expander("🔍 What data does the agent have access to?"):
-        st.markdown("The agent receives this context on every query:")
-
-        from utils.agent import build_data_context
-        context = build_data_context(df, predictions_df, countries, indicators)
-        st.code(context, language="text")

@@ -7,7 +7,7 @@ import pandas as pd
 import numpy as np
 
 from utils.ui import render_sidebar
-render_sidebar()
+render_sidebar("Compare")
 
 from utils.data_fetcher import get_country_data_cached, get_all_countries
 from components.charts import comparison_bar, correlation_heatmap, format_value, indicator_label
