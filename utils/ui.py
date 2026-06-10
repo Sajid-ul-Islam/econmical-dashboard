@@ -24,6 +24,20 @@ def render_sidebar(active_page: str = None):
     with st.sidebar:
         st.markdown("## 📊 EconVision")
         st.markdown("<p style='color:#64748B;font-size:11px;'>Global Economic Intelligence</p>", unsafe_allow_html=True)
+        
+        # Check database connection and display warning if offline
+        from utils.database import get_supabase
+        try:
+            if get_supabase() is None:
+                st.markdown(
+                    "<div style='background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); "
+                    "padding: 8px 12px; border-radius: 8px; margin-top: 10px; margin-bottom: 5px; font-size: 11px; color: #F59E0B; "
+                    "text-align: center; font-weight: 500;'>⚠️ Database Offline<br>Local Snapshot Active</div>",
+                    unsafe_allow_html=True
+                )
+        except Exception:
+            pass
+
         st.divider()
         
         st.markdown("### ⚙️ Global Options")
@@ -403,6 +417,52 @@ def inject_custom_css():
     [data-testid="stSidebar"] [data-testid="stChatMessage"] p {
         font-size: 13px !important;
         line-height: 1.4 !important;
+    }
+
+    /* Responsive layout adjustments for mobile/small screens */
+    @media (max-width: 768px) {
+        /* Optimize block container padding on mobile to save screen space */
+        [data-testid="block-container"] {
+            padding-top: 1.5rem !important;
+            padding-bottom: 2rem !important;
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+        }
+
+        /* Stack columns in the main area on mobile to prevent squashing */
+        [data-testid="stAppViewContainer"] [data-testid="column"] {
+            width: 100% !important;
+            flex: 1 1 100% !important;
+            margin-bottom: 16px !important;
+        }
+        
+        /* Adjust font sizes in metric cards on mobile */
+        [data-testid="metric-container"] [data-testid="stMetricValue"] {
+            font-size: 1.4rem !important;
+        }
+        
+        /* Compact typography for smaller screens */
+        h1, h2, h3 {
+            font-size: 1.4rem !important;
+        }
+        h4, h5, h6 {
+            font-size: 1.1rem !important;
+        }
+        .stMarkdown [data-testid="stMarkdownContainer"] p {
+            font-size: 13px !important;
+        }
+        
+        /* Make tabs scroll horizontally on mobile instead of wrapping poorly */
+        .stTabs [data-baseweb="tab-list"] {
+            overflow-x: auto !important;
+            white-space: nowrap !important;
+            flex-wrap: nowrap !important;
+            gap: 4px !important;
+        }
+        .stTabs [data-baseweb="tab"] {
+            padding: 6px 12px !important;
+            font-size: 13px !important;
+        }
     }
     </style>
     """, unsafe_allow_html=True)

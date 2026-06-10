@@ -114,40 +114,77 @@ with tab1:
 # ── Tab 2: Correlation ────────────────────────────────────────────────────
 with tab2:
     st.markdown("Explore relationship between two economic indicators across all selected countries and years.")
+    # Include both user selected indicators and global commodity indices if they are loaded
+    global_indicators = ["gold_price", "silver_price", "oil_price", "dxy"]
+    available_indicators = list(indicators)
+    if not df.empty:
+        loaded_indicators = df["indicator"].unique()
+        for g_ind in global_indicators:
+            if g_ind in loaded_indicators and g_ind not in available_indicators:
+                available_indicators.append(g_ind)
+
     col_x, col_y = st.columns(2)
     with col_x:
-        ind_x = st.selectbox("X-Axis Indicator", options=indicators, format_func=indicator_label, key="corr_x")
+        ind_x = st.selectbox("X-Axis Indicator", options=available_indicators, format_func=indicator_label, key="corr_x")
     with col_y:
-        other_inds = [i for i in indicators if i != ind_x]
-        ind_y_default = other_inds[0] if other_inds else indicators[0]
+        other_inds = [i for i in available_indicators if i != ind_x]
+        ind_y_default = other_inds[0] if other_inds else available_indicators[0]
         ind_y = st.selectbox(
             "Y-Axis Indicator",
-            options=indicators,
-            index=indicators.index(ind_y_default) if ind_y_default in indicators else 0,
+            options=available_indicators,
+            index=available_indicators.index(ind_y_default) if ind_y_default in available_indicators else 0,
             format_func=indicator_label,
             key="corr_y",
         )
 
     if ind_x != ind_y and not df.empty:
-        fig = correlation_heatmap(df[df["country_code"].isin(countries)], ind_x, ind_y)
+        # Pass full df containing WLD indicators so they can be merged inside the chart component
+        fig = correlation_heatmap(df, ind_x, ind_y)
         st.plotly_chart(fig, use_container_width=True)
 
         # Correlation coefficient
-        countries_overlap = df["country_code"].unique()
+        is_x_global = ind_x in global_indicators
+        is_y_global = ind_y in global_indicators
+        countries_overlap = [c for c in df["country_code"].unique() if c != "WLD"]
+        
         x_vals, y_vals = [], []
-        for code in countries_overlap:
-            cdf = df[df["country_code"] == code]
-            i1 = cdf[cdf["indicator"] == ind_x][["year", "value"]].rename(columns={"value": "v1"})
-            i2 = cdf[cdf["indicator"] == ind_y][["year", "value"]].rename(columns={"value": "v2"})
+        
+        if is_x_global and is_y_global:
+            # Simple global vs global compare
+            wld_df = df[df["country_code"] == "WLD"]
+            i1 = wld_df[wld_df["indicator"] == ind_x][["year", "value"]].rename(columns={"value": "v1"})
+            i2 = wld_df[wld_df["indicator"] == ind_y][["year", "value"]].rename(columns={"value": "v2"})
             merged = pd.merge(i1, i2, on="year")
             x_vals.extend(merged["v1"].tolist())
             y_vals.extend(merged["v2"].tolist())
+        else:
+            for code in countries_overlap:
+                cdf = df[df["country_code"] == code]
+                
+                if is_x_global:
+                    i1 = df[(df["country_code"] == "WLD") & (df["indicator"] == ind_x)][["year", "value"]].rename(columns={"value": "v1"})
+                else:
+                    i1 = cdf[cdf["indicator"] == ind_x][["year", "value"]].rename(columns={"value": "v1"})
+                    
+                if is_y_global:
+                    i2 = df[(df["country_code"] == "WLD") & (df["indicator"] == ind_y)][["year", "value"]].rename(columns={"value": "v2"})
+                else:
+                    i2 = cdf[cdf["indicator"] == ind_y][["year", "value"]].rename(columns={"value": "v2"})
+                    
+                merged = pd.merge(i1, i2, on="year")
+                x_vals.extend(merged["v1"].tolist())
+                y_vals.extend(merged["v2"].tolist())
 
         if len(x_vals) > 3:
             corr = np.corrcoef(x_vals, y_vals)[0, 1]
-            strength = "strong" if abs(corr) > 0.7 else "moderate" if abs(corr) > 0.4 else "weak"
-            direction = "positive" if corr > 0 else "negative"
-            st.metric("Pearson Correlation", f"{corr:.3f}", f"{strength} {direction} relationship")
+            if not np.isnan(corr):
+                strength = "strong" if abs(corr) > 0.7 else "moderate" if abs(corr) > 0.4 else "weak"
+                direction = "positive" if corr > 0 else "negative"
+                st.metric("Pearson Correlation", f"{corr:.3f}", f"{strength} {direction} relationship")
+            else:
+                st.metric("Pearson Correlation", "—", "Insufficient variance to calculate correlation")
+        else:
+            st.metric("Pearson Correlation", "—", "Insufficient overlapping data points")
     else:
         st.info("Select two different indicators to see correlation.")
 

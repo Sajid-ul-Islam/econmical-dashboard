@@ -301,33 +301,65 @@ def health_score_gauge(score: float, country_name: str) -> go.Figure:
 
 def correlation_heatmap(df: pd.DataFrame, indicator1: str, indicator2: str) -> go.Figure:
     """Correlation scatter between two indicators across countries, colored by country."""
-    countries = df["country_code"].unique()
+    global_indicators = ["gold_price", "silver_price", "oil_price", "dxy"]
+    is1_global = indicator1 in global_indicators
+    is2_global = indicator2 in global_indicators
+
+    countries = [c for c in df["country_code"].unique() if c != "WLD"]
     color_map = {c: COLORS[i % len(COLORS)] for i, c in enumerate(countries)}
 
     fig = go.Figure()
 
-    for country in countries:
-        cdf = df[df["country_code"] == country]
-        cname = cdf["country_name"].iloc[0] if "country_name" in cdf.columns else country
-        cname_short = shorten_country_name(cname)
-        ind1 = cdf[cdf["indicator"] == indicator1][["year", "value"]].rename(columns={"value": "v1"})
-        ind2 = cdf[cdf["indicator"] == indicator2][["year", "value"]].rename(columns={"value": "v2"})
+    if is1_global and is2_global:
+        wld_df = df[df["country_code"] == "WLD"]
+        ind1 = wld_df[wld_df["indicator"] == indicator1][["year", "value"]].rename(columns={"value": "v1"})
+        ind2 = wld_df[wld_df["indicator"] == indicator2][["year", "value"]].rename(columns={"value": "v2"})
         merged = pd.merge(ind1, ind2, on="year")
-        if merged.empty:
-            continue
+        if not merged.empty:
+            labels = [f"World {int(r['year'])}" for _, r in merged.iterrows()]
+            fig.add_trace(go.Scatter(
+                x=merged["v1"],
+                y=merged["v2"],
+                mode="markers+lines",
+                name="World Index",
+                marker=dict(color="#00D4FF", size=8, opacity=0.9),
+                text=labels,
+                hovertemplate="%{text}<br>"
+                              f"{indicator_label(indicator1)}: %{{x}}<br>"
+                              f"{indicator_label(indicator2)}: %{{y}}<extra></extra>",
+            ))
+    else:
+        for country in countries:
+            cdf = df[df["country_code"] == country]
+            cname = cdf["country_name"].iloc[0] if "country_name" in cdf.columns else country
+            cname_short = shorten_country_name(cname)
+            
+            if is1_global:
+                ind1 = df[(df["country_code"] == "WLD") & (df["indicator"] == indicator1)][["year", "value"]].rename(columns={"value": "v1"})
+            else:
+                ind1 = cdf[cdf["indicator"] == indicator1][["year", "value"]].rename(columns={"value": "v1"})
+                
+            if is2_global:
+                ind2 = df[(df["country_code"] == "WLD") & (df["indicator"] == indicator2)][["year", "value"]].rename(columns={"value": "v2"})
+            else:
+                ind2 = cdf[cdf["indicator"] == indicator2][["year", "value"]].rename(columns={"value": "v2"})
+                
+            merged = pd.merge(ind1, ind2, on="year")
+            if merged.empty:
+                continue
 
-        labels = [f"{cname} {int(r['year'])}" for _, r in merged.iterrows()]
-        fig.add_trace(go.Scatter(
-            x=merged["v1"],
-            y=merged["v2"],
-            mode="markers",
-            name=cname_short,
-            marker=dict(color=color_map[country], size=6, opacity=0.75),
-            text=labels,
-            hovertemplate="%{text}<br>"
-                          f"{indicator_label(indicator1)}: %{{x}}<br>"
-                          f"{indicator_label(indicator2)}: %{{y}}<extra></extra>",
-        ))
+            labels = [f"{cname} {int(r['year'])}" for _, r in merged.iterrows()]
+            fig.add_trace(go.Scatter(
+                x=merged["v1"],
+                y=merged["v2"],
+                mode="markers",
+                name=cname_short,
+                marker=dict(color=color_map.get(country, "#4ECDC4"), size=6, opacity=0.75),
+                text=labels,
+                hovertemplate="%{text}<br>"
+                              f"{indicator_label(indicator1)}: %{{x}}<br>"
+                              f"{indicator_label(indicator2)}: %{{y}}<extra></extra>",
+            ))
 
     layout = base_layout(f"{indicator_label(indicator1)} vs {indicator_label(indicator2)}", height=420)
     layout.setdefault("xaxis", {})["title"] = indicator_label(indicator1)
